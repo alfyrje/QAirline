@@ -1,8 +1,23 @@
+"use client"
 import Image from "next/image";
 // import styles from "./page.module.css";
 import Navbar from "../components/common/navbar";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [userList, setUserList] = useState([]);
+
+  async function fetchData() {
+    const userInfo = await fetch("http://127.0.0.1:8000/api/users")
+    const res = await userInfo.json();
+    setUserList(res);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   return (
   <body>
     <header>
@@ -51,6 +66,19 @@ export default function Home() {
         <button type="submit">Đăng Ký</button>
         <p>Bằng việc xác nhận, tôi đồng ý chia sẻ thông tin cá nhân với SkyJoy và tất cả các <a href="#">điều khoản của chương trình</a>.</p>
     </form>
+    <h2>Fetched Users</h2>
+      <ul>
+        {userList.length > 0 ? (
+          userList.map((user, index) => (
+            <li key={index}>
+              {/* Replace "user.name" and "user.email" with the actual fields */}
+              Name: {user.name}, Email: {user.email}
+            </li>
+          ))
+        ) : (
+          <p>No users found or failed to fetch data.</p>
+        )}
+      </ul>
 </body>
   );
 }
