@@ -1,0 +1,23 @@
+label, input, select {
+    display: inline-block;
+    width: 45%;
+    margin: 10px;
+}
+  
+label {
+  text-align: right;
+  margin-right: 10px;
+}
+  
+input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+  width: 50%;
+}
+  
+select {
+  width: 50%;
+}
+  
+button {
+  display: block;
+  margin: 20px auto;
+}
