@@ -3,9 +3,8 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Register from "./views/auth/Register";
 import Dashboard from "./views/dashboard/Dashboard";
 import MainWrapper from "../src/layouts/MainWrapper";
-import BookingForm from "./views/booking/BookingForm"
-import FlightSearchForm from "./views/booking/FlightSearchForm"
-import PassengersSelection from "./views/booking/PassengersSelection"
+import FlightSearchPage from "./views/booking/FlightSearchPage"
+import FlightSelect from "./views/booking/FlightSelect"
 
 function App() {
     return (
@@ -14,15 +13,18 @@ function App() {
                 <MainWrapper>
                     <Routes>
                         {/* Authentication */}
-                        <Route path="/register/" element={<Register />} />
+                        <Route path="/register/" element={<Register     />} />
 
 
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
 
-                        <Route path="/flight-search/" element={<FlightSearchForm />} />
-                        <Route path="/passengers-select/" element={<PassengersSelection />} />
-                        <Route path="/booking-form/" element={<BookingForm />} />
+                        {/* Flight Search */}
+                        <Route path="/flight-search/" element={<FlightSearchPage />} />
+
+                        {/* Search Results */}
+                        <Route path="/flight-select" element={<FlightSelect />} />
+
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>

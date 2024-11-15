@@ -12,6 +12,7 @@ class Plane(models.Model):
 
 class Flight(models.Model):
     plane = models.ForeignKey(Plane, on_delete=models.CASCADE)
+    code = models.CharField(max_length=10)
     start_location = models.CharField(max_length=100)
     end_location = models.CharField(max_length=100)
     start_time = models.DateTimeField()
