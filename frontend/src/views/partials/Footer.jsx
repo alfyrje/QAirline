@@ -8,8 +8,8 @@ function Footer() {
         // </footer>
         <>
           <footer class="footer">
-  	 <div class="container">
-  	 	<div class="row">
+  	 <div class="footer-container">
+  	 	<div class="footer-row">
   	 		<div class="footer-col">
   	 			<h4>company</h4>
   	 			<ul>

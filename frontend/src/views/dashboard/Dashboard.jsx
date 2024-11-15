@@ -7,12 +7,9 @@ import "./dashboard.css"
 function Dashboard() {
     return (
         <>  
-        <body>
             <Header />
             {/* <h1>Page content</h1> */}
-            
             <Footer />
-            </body>
         </>
     );
 }
