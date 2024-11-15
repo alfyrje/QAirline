@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Dashboard() {
     return (
-        <>
+        <>  
             <Header />
             {/* <h1>Page content</h1> */}
             <Footer />

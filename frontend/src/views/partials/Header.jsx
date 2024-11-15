@@ -41,17 +41,44 @@ function Header() {
           <Link to="/Đăng nhập" className="signIn">
             Đăng nhập
           </Link>
+          <a id = 'separation'> | </a>
           <Link to="/Đăng kí" className="logOut">
             Đăng ký
           </Link>
         </div>
       </nav>
 
+    {/* sidebar
+      menu-item
+        title 
+        Sublist
+          list-item */}
+
+
+
       <div className="sideBar">
+      <div
+          className={`menu-item ${activeMenu === 0 ? "active" : ""}`
+        }
+          onClick={() => toggleSublist(-1)} // Pass index to toggle
+          id = "logInLogOutMedia"
+        >
+          <div id="authLinkSideBar">
+            <Link to="/Đăng nhập" className="signIn">
+              Đăng nhập
+            </Link>
+            <a id = 'separation'> | </a>
+            <Link to="/Đăng kí" className="logOut">
+              Đăng ký
+            </Link>
+          </div>
+        </div>
+
         <div
           className={`menu-item ${activeMenu === 0 ? "active" : ""}`}
           onClick={() => toggleSublist(0)} // Pass index to toggle
         >
+          
           <div className="title">Khám phá</div>
           <div className="sub-list">
             <div className="sub-title">Sublist 1</div>
