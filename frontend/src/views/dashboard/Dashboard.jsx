@@ -7,7 +7,7 @@ function Dashboard() {
     return (
         <>
             <Header />
-            <h1>Page content</h1>
+            {/* <h1>Page content</h1> */}
             <Footer />
         </>
     );

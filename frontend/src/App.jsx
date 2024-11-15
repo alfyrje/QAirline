@@ -15,7 +15,7 @@ function App() {
                         {/* Authentication */}
                         <Route path="/register/" element={<Register />} />
 
-
+ 
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
                     </Routes>
