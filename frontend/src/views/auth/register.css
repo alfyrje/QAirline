@@ -1,10 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@200;300;400;500;600;700&display=swap");
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   font-family: "Maven Pro", sans-serif;
 }
+
+#root, html, body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   min-height: 100vh;
   display: flex;
@@ -22,7 +26,7 @@ body {
   justify-content: center;
 }
 
-.form-container {
+.register-form-container {
   margin: 5% 10% 5% 10%;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -34,13 +38,13 @@ body {
   background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 
-.form {
+.register-form {
   padding: 0rem 1rem 1rem 1rem;
   width: 60%;
   border-radius: 10px;
   background: #fff;
 }
-form > h1 {
+.register-form > h1 {
   font-size: 1.5rem;
   color: #00558f;
   font-weight: 500;
@@ -49,7 +53,7 @@ form > h1 {
   margin: 1rem 0 1rem 0;
 }
 
-form > h2 {
+.register-form > h2 {
   font-size: 1rem;
   color: #667085;
   font-weight: 100;
@@ -58,14 +62,14 @@ form > h2 {
   margin: 1rem 0 1rem 0;
 }
 
-.form .input-box {
+.register-form .register-input-box {
   width: 100%;
   margin-top: 20px;
 }
-.input-box label {
+.register-input-box label {
   color: #333;
 }
-.form :where(.input-box input, .select-box) {
+.register-form :where(.register-input-box input, .select-box) {
   position: relative;
   height: 50px;
   width: 100%;
@@ -77,43 +81,18 @@ form > h2 {
   border-radius: 6px;
   padding: 0 15px;
 }
-.input-box input:focus {
+.register-input-box input:focus {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 }
-.form .column {
+.resgiter-form .register-column {
   display: flex;
   column-gap: 15px;
 }
-.form .gender-box {
-  margin-top: 20px;
-}
-.gender-box h3 {
-  color: #333;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-.form :where(.gender-option, .gender) {
-  display: flex;
-  align-items: center;
-  column-gap: 50px;
-  flex-wrap: wrap;
-}
-.form .gender {
+
+.register-form .gender {
   column-gap: 5px;
 }
-.gender input {
-  accent-color: #f5bcc3;
-}
-.form :where(.gender input, .gender label) {
-  cursor: pointer;
-}
-.gender label {
-  color: #ffe7e3;
-}
-.address :where(input, .select-box) {
-  margin-top: 15px;
-}
+
 .select-box select {
   height: 100%;
   width: 100%;
@@ -122,7 +101,7 @@ form > h2 {
   color: #333;
   font-size: 1rem;
 }
-.form button {
+.register-form button {
   height: 55px;
   width: 100%;
   color: #fff;
@@ -134,11 +113,6 @@ form > h2 {
   transition: all 0.2s ease;
   background: #e687a5;
 }
-.form button:hover {
+.register-form button:hover {
   background: #e687a5;
-}
-
-.img-wrapper {
-  width: 20%;
-  height: 100%;
 }

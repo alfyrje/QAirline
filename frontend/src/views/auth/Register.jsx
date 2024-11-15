@@ -81,8 +81,7 @@ function Register() {
   return (
     <>
         <section class="register-container">
-          <Header />
-
+        <Header />
           <p
             ref={errRef}
             className={errMsg ? "errmsg" : "offscreen"}
@@ -90,8 +89,8 @@ function Register() {
           >
             {errMsg}
           </p>
-          <div class="form-container">
-            <form class="form">
+          <div class="register-form-container">
+            <form class="register-form">
               <h1>
                   Bạn đã sẵn sàng tham gia qAirline club? Hãy bắt đầu ngay!
               </h1>
@@ -99,7 +98,7 @@ function Register() {
                 Vui lòng điền đầy đủ thông tin cá nhân giống trên CMND/CCCD của
                 bạn.
               </h2>
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="name_lastname">HỌ</label>
                 <input
                   type="text"
@@ -111,7 +110,7 @@ function Register() {
                   placeholder="Họ, ví dụ: Phạm"
                 />
               </div>
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="name_firstname">TÊN ĐỆM & TÊN</label>
                 <input
                   type="text"
@@ -123,8 +122,8 @@ function Register() {
                   placeholder="Tên đệm & tên"
                 />
               </div>
-              <div class="column">
-                <div class="input-box">
+              <div class="register-column">
+                <div class="register-input-box">
                   <label htmlFor="date_birth">NGÀY, THÁNG, NĂM SINH</label>
                   <input
                     type="date"
@@ -135,7 +134,7 @@ function Register() {
                     placeholder="Ngày sinh"
                   />
                 </div>
-                <div class="input-box">
+                <div class="register-input-box">
                   <label htmlFor="gender">GIỚI TÍNH</label>
                   <div class="select-box">
                     <select
@@ -160,7 +159,7 @@ function Register() {
                 được cuộc gọi hoặc tin nhắn liên quan đến chuyến bay và bất kỳ
                 cập nhật về hành lý nào cho hành trình của bạn.
               </h2>
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="email">EMAIL</label>
                 <input
                   type="email"
@@ -177,7 +176,7 @@ function Register() {
                 />
               </div>
 
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="tel">SỐ ĐIỆN THOẠI</label>
                 <input
                   type="tel"
@@ -194,7 +193,7 @@ function Register() {
                 />
               </div>
 
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="id">SỐ HỘ CHIẾU/ CCCD</label>
                 <input
                   type="text"
@@ -211,7 +210,7 @@ function Register() {
                 />
               </div>
 
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="pwd">TẠO MẬT KHẨU</label>
                 <input
                   type="password"
@@ -225,7 +224,7 @@ function Register() {
                 />
               </div>
 
-              <div class="input-box">
+              <div class="register-input-box">
                 <label htmlFor="pwd">NHẬP LẠI MẬT KHẨU</label>
                 <input
                   type="password"
@@ -242,6 +241,7 @@ function Register() {
             </form>
           </div>
           <Footer />
+
         </section>
     </>
   );

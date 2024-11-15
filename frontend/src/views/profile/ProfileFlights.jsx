@@ -7,20 +7,17 @@ import apiInstance from "../../utils/axios";
 import { useAuthStore } from "../../store/auth";
 import { register } from "../../utils/auth";
 
-import "./login.css";
+import "./profile.css";
 
-function LogIn() {
+function ProfileFlights() {
   return (
     <>
-      <section class="login-container">
-        <Header />
-        <div class="login-form-container">
-          <form class="login-form"action="#">
-            <div class="login-form-icon">
+          <form class="form"action="#">
+            <div class="img-login">
             <img src='/icons/hoa.png' width='50px' height='50px'></img>
             </div>
             <h3>Đăng nhập qAirline</h3>
-            <div class="login-input_box">
+            <div class="input_box">
               <label for="email">Email</label>
               <input
                 type="email"
@@ -29,10 +26,10 @@ function LogIn() {
                 required
               />
             </div>
-            <div class="login-input_box">
-              <div class="login-password_title">
+            <div class="input_box">
+              <div class="password_title">
                 <label for="password">Mật khẩu</label>
-                <a class="login-a"href="#">Quên mật khẩu?</a>
+                <a href="#">Quên mật khẩu?</a>
               </div>
               <input
                 type="password"
@@ -41,8 +38,8 @@ function LogIn() {
                 required
               />
             </div>
-            <div class="login-input_box">
-              <div class="login-password_remember">
+            <div class="input_box">
+              <div class="password_remember">
                 <label for="password">Ghi nhớ lần đăng nhập sau</label>
                 <div class="login-checkbox-container">
                 <input
@@ -54,14 +51,11 @@ function LogIn() {
               </div>
             </div>
             <button type="submit">Log In</button>
-            <p>
-              Don't have an account? <a class="login-a" href="#">Sign up</a>
+            <p class="sign_up">
+              Don't have an account? <a href="#">Sign up</a>
             </p>
           </form>
-        </div>
-        <Footer />
-      </section>
     </>
   );
 }
-export default LogIn;
+export default ProfileFlights;
