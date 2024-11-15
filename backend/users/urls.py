@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import PassengerList
 
 urlpatterns = [
-    path('users', views.UsersList.as_view()),
+    path('passengers/', PassengerList.as_view(), name='passenger-list'),
 ]

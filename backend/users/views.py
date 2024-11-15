@@ -1,8 +1,7 @@
-# users/views.py
 from rest_framework.generics import ListAPIView
-from .models import User  # or your actual model name
-from .serializers import UserSerializer
+from .models import Passenger
+from .serializers import PassengerSerializer
 
-class UsersList(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class PassengerList(ListAPIView):
+    queryset = Passenger.objects.all()
+    serializer_class = PassengerSerializer
