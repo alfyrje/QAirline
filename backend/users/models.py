@@ -1,30 +1,37 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 from django.db import models
-import string
-import random
+import uuid
 
-def generate_unique_code():
-    length = 30
+class Passenger(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    date_of_birth = models.DateField()
+    citizen_id = models.CharField(max_length=50)
+    nationality = models.CharField(max_length=20)
+    tel_num = models.CharField(max_length=20)
+    email = models.CharField(max_length=30)
+    address = models.CharField(max_length=100, null=True, blank=True)
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    ]
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default='O',
+    )
+    
+    related_user = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='relatives',
+        null=True,
+        blank=True
+    )
 
-    while True:
-        code = ''.join(random.choices(string.ascii_uppercase, k=length))
-        if User.objects.filter(code=code).count() == 0:
-            break
-
-    return code
-
-class User(models.Model):
-    code = models.CharField(max_length=30, primary_key=True, unique=True)
-    user_name = models.CharField(max_length=30)
-    password = models.CharField(max_length=30)
-    name = models.CharField(max_length=50)
-    age = models.IntegerField(null = False, default = 1)
-    email = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=20)
-    address = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.user_name
+class User(AbstractUser):
+    personal_info = models.OneToOneField(Passenger, on_delete=models.SET_NULL, null=True)
