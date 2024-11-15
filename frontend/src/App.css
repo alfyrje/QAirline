@@ -1,5 +1,15 @@
+.colorcode {
+  color:#c7d5d6;
+  color:#edefee;
+  color:#daef8a;
+  color:#ffe7e3;
+  color:#f5bcc3;
+  color:#e687a5;
+}
+
+
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
   padding: 2rem;
   text-align: center;

@@ -8,7 +8,7 @@ function Header() {
         <header>
             <nav className='navbar'>
                 <Link href='/' className='navbar-logo'>
-                    <img src='../../public/icons/hoa.png' alt='Logo' />
+                    <img src='/icons/hoa.png' alt='Logo' width='50px' height='50px' />
                 </Link>
 
                 <div className='nav-menu'>

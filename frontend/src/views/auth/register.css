@@ -1,23 +1,144 @@
-label, input, select {
-    display: inline-block;
-    width: 45%;
-    margin: 10px;
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@200;300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Maven Pro", sans-serif;
 }
-  
-label {
-  text-align: right;
-  margin-right: 10px;
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-  
-input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
-  width: 50%;
+
+.register-container {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
 }
-  
-select {
-  width: 50%;
+
+.form-container {
+  margin: 5% 10% 5% 10%;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: right;
+  background: url("/auth/register.jpg");
+  background-size: cover; /* Makes the background image cover the entire div */
+  background-position: center; /* Centers the image within the div */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
 }
-  
-button {
-  display: block;
-  margin: 20px auto;
+
+.form {
+  padding: 0rem 1rem 1rem 1rem;
+  width: 60%;
+  border-radius: 10px;
+  background: #fff;
+}
+form > h1 {
+  font-size: 1.5rem;
+  color: #00558f;
+  font-weight: 500;
+  text-align: left;
+  font-family: "Maven Pro";
+  margin: 1rem 0 1rem 0;
+}
+
+form > h2 {
+  font-size: 1rem;
+  color: #667085;
+  font-weight: 100;
+  text-align: left;
+  font-family: "Maven Pro";
+  margin: 1rem 0 1rem 0;
+}
+
+.form .input-box {
+  width: 100%;
+  margin-top: 20px;
+}
+.input-box label {
+  color: #333;
+}
+.form :where(.input-box input, .select-box) {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: #707070;
+  margin-top: 8px;
+  border: 1px solid #edefee;
+  border-radius: 6px;
+  padding: 0 15px;
+}
+.input-box input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+.form .column {
+  display: flex;
+  column-gap: 15px;
+}
+.form .gender-box {
+  margin-top: 20px;
+}
+.gender-box h3 {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.form :where(.gender-option, .gender) {
+  display: flex;
+  align-items: center;
+  column-gap: 50px;
+  flex-wrap: wrap;
+}
+.form .gender {
+  column-gap: 5px;
+}
+.gender input {
+  accent-color: #f5bcc3;
+}
+.form :where(.gender input, .gender label) {
+  cursor: pointer;
+}
+.gender label {
+  color: #ffe7e3;
+}
+.address :where(input, .select-box) {
+  margin-top: 15px;
+}
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: #333;
+  font-size: 1rem;
+}
+.form button {
+  height: 55px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #e687a5;
+}
+.form button:hover {
+  background: #e687a5;
+}
+
+.img-wrapper {
+  width: 20%;
+  height: 100%;
 }
