@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@200;300;400;500;600;700&display=swap");
+* {
+  box-sizing: border-box;
+  font-family: "Maven Pro", sans-serif;
+}
+
+#root, html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-container {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+}
+
+.register-form-container {
+  margin: 5% 10% 5% 10%;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: right;
+  background: url("/auth/register.jpg");
+  background-size: cover; /* Makes the background image cover the entire div */
+  background-position: center; /* Centers the image within the div */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.register-form {
+  padding: 0rem 1rem 1rem 1rem;
+  width: 60%;
+  border-radius: 10px;
+  background: #fff;
+}
+.register-form > h1 {
+  font-size: 1.5rem;
+  color: #00558f;
+  font-weight: 500;
+  text-align: left;
+  font-family: "Maven Pro";
+  margin: 1rem 0 1rem 0;
+}
+
+.register-form > h2 {
+  font-size: 1rem;
+  color: #667085;
+  font-weight: 100;
+  text-align: left;
+  font-family: "Maven Pro";
+  margin: 1rem 0 1rem 0;
+}
+
+.register-form .register-input-box {
+  width: 100%;
+  margin-top: 20px;
+}
+.register-input-box label {
+  color: #333;
+}
+.register-form :where(.register-input-box input, .select-box) {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: #707070;
+  margin-top: 8px;
+  border: 1px solid #edefee;
+  border-radius: 6px;
+  padding: 0 15px;
+}
+.register-input-box input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+.resgiter-form .register-column {
+  display: flex;
+  column-gap: 15px;
+}
+
+.register-form .gender {
+  column-gap: 5px;
+}
+
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: #333;
+  font-size: 1rem;
+}
+.register-form button {
+  height: 55px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #e687a5;
+}
+.register-form button:hover {
+  background: #e687a5;
+}
