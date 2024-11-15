@@ -6,7 +6,6 @@ from django.db import models
 import uuid
 
 class Passenger(models.Model):
-    passenger_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField()
@@ -35,5 +34,4 @@ class Passenger(models.Model):
     )
 
 class User(AbstractUser):
-    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     personal_info = models.OneToOneField(Passenger, on_delete=models.SET_NULL, null=True)
