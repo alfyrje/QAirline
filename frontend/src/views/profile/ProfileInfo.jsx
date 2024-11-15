@@ -12,12 +12,12 @@ import "./profile.css";
 function ProfileInfo() {
   return (
     <>
-          <form class="form"action="#">
-            <div class="img-login">
+          <form className="form"action="#">
+            <div className="img-login">
             <img src='/icons/hoa.png' width='50px' height='50px'></img>
             </div>
             <h3>Đăng nhập qAirline</h3>
-            <div class="input_box">
+            <div className="input_box">
               <label for="email">Email</label>
               <input
                 type="email"
@@ -26,8 +26,8 @@ function ProfileInfo() {
                 required
               />
             </div>
-            <div class="input_box">
-              <div class="password_title">
+            <div className="input_box">
+              <div className="password_title">
                 <label for="password">Mật khẩu</label>
                 <a href="#">Quên mật khẩu?</a>
               </div>
@@ -38,10 +38,10 @@ function ProfileInfo() {
                 required
               />
             </div>
-            <div class="input_box">
-              <div class="password_remember">
+            <div className="input_box">
+              <div className="password_remember">
                 <label for="password">Ghi nhớ lần đăng nhập sau</label>
-                <div class="login-checkbox-container">
+                <div className="login-checkbox-container">
                 <input
                 type="checkbox"
                 id="password_remember"
@@ -51,7 +51,7 @@ function ProfileInfo() {
               </div>
             </div>
             <button type="submit">Log In</button>
-            <p class="sign_up">
+            <p className="sign_up">
               Don't have an account? <a href="#">Sign up</a>
             </p>
           </form>
