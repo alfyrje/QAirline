@@ -7,15 +7,15 @@ class Plane(models.Model):
     manufacturer = models.CharField(max_length=100)
     economic_seats = models.IntegerField()
     business_seats = models.IntegerField()
-    economic_seats_info = models.JSONField(null=True)
-    business_seats_info = models.JSONField(null=True)
+    economic_seats_info = models.JSONField(null=True, blank=True)
+    business_seats_info = models.JSONField(null=True, blank=True)
 
 class Flight(models.Model):
     plane = models.ForeignKey(Plane, on_delete=models.CASCADE)
     start_location = models.CharField(max_length=100)
     end_location = models.CharField(max_length=100)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     delay_status = models.IntegerField()
 
 class Ticket(models.Model):
