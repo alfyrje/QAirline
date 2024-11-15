@@ -3,7 +3,7 @@ import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ProfileFlights from "./ProfileFlights";
-import ProfileInfo from "./ProfileInfo"
+import ProfileInfo from "./ProfileInfo";
 
 import apiInstance from "../../utils/axios";
 import { useAuthStore } from "../../store/auth";
@@ -14,24 +14,26 @@ import "./profile.css";
 function Profile() {
   return (
     <>
-      <section class="container">
+      <section class="profile-container">
         <Header />
-        {/* <ProfileFlights />
-        <ProfileInfo /> */}
-        <div class="profile-container">
-            <div class="profile-menu-nav">
-                <ul>
-                    <li>
-                        <Link to="/profile/flights">Chuyến bay</Link>
-                    </li>
-                    <li>
-                        <Link to="/profile/info">Thông tin</Link>
-                    </li>
-                </ul>
-            </div>
-            <div class="profile-content">
-                <ProfileFlights />
-            </div>
+        <div class="profile-content-container">
+          <div class="profile-sidemenu">
+            <ul class="profile-sidemenu-list">
+              <li class="active">
+                <a class="profile-a"href="#">
+                  <span class="text">Thông tin tài khoản</span>
+                </a>
+              </li>
+              <li>
+                <a class="profile-a"href="#">
+                  <span class="text">Lịch sử chuyến bay</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="profile-content">
+            <ProfileInfo />
+          </div>
         </div>
         <Footer />
       </section>
