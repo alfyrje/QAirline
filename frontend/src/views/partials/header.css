@@ -10,6 +10,7 @@ nav {
   align-items: center;
 }
 .navbar {
+  max-height: 20%;
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
@@ -90,20 +91,22 @@ text-decoration: none;
   display: none;
 }
 
-
 .sidebar {
-  width: 250px;
+  padding-right: 5rem;
+  display:none;
+  width: 100%;
+  max-width: 90%;
   background: white;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  z-index: 9999px;
 }
 
 .menu-item {
   background-color: #f2f4f7;
   padding: 15px 20px;
   border-bottom: 1px solid #f0f0f0;
-  color: #333;
   font-size: 14px;
   cursor: pointer;
+  width: 100%;
 }
 
 .menu-item > .title {
@@ -113,7 +116,7 @@ text-decoration: none;
 }
 
 .menu-item:hover {
-  background-color: #f5f5f5;
+  background-color: #daef8a;
 }
 
 .menu-item .title::after {
@@ -129,7 +132,6 @@ text-decoration: none;
 
 .sub-list {
   display: none;
-  padding: 10px 0 0 20px;
   font-size: 13px;
   color: #666;
 }
@@ -139,15 +141,26 @@ text-decoration: none;
 }
 
 .list-item {
-  padding: 8px 0;
+  /* padding: 8px 0; */
 }
 
 .list-item:hover {
   color: #333;
 }
+#authLinkSideBar {
+  display:none;
+}
+#logInLogOutMedia:hover{
+color: #f2f4f7;
+}
+#separation {
+  font-family: "Funnel Sans", sans-serif;
+  color:black;
+  font-weight: 100;
+}
 
 /* @media (max-width: 991px) */
-@media (max-width: 991px) {
+@media (max-width: 991px ) {
   .navLink {
     display: none;
   }
@@ -155,13 +168,30 @@ text-decoration: none;
     display: none;
   }
   .sideBar {
-    display: block;
-    max-width: 100%;
-    right:0;
-    z-index: 9999;
-    float: right;
+    /* padding: 1rem; */
+    
+    display:block;
+    width: 100%;
+    max-width: 90%;
+    background: #f2f4f7;
+    font-family: "Funnel Sans", sans-serif;
+    font-weight: 500;
+    z-index: 9999px;
+    float:right;
+    padding-right: 1rem;
   }
   .sub-title {
     backgroundcolor:#516076;
   }
+
+  #authLinkSideBar {
+    display:block;
+  }
+  #authLinkSideBar:hover {
+    color: #f2f4f7;
+  }
+  /* .menu-item > .title {
+    background-color: #516076;
+
+  } */
 }
