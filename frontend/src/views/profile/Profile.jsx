@@ -14,12 +14,12 @@ import "./profile.css";
 function Profile() {
   return (
     <>
-      <section class="container">
+      <section className="container">
         <Header />
         {/* <ProfileFlights />
         <ProfileInfo /> */}
-        <div class="profile-container">
-            <div class="profile-menu-nav">
+        <div className="profile-container">
+            <div className="profile-menu-nav">
                 <ul>
                     <li>
                         <Link to="/profile/flights">Chuyến bay</Link>
@@ -29,7 +29,7 @@ function Profile() {
                     </li>
                 </ul>
             </div>
-            <div class="profile-content">
+            <div className="profile-content">
                 <ProfileFlights />
             </div>
         </div>

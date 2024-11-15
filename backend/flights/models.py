@@ -18,6 +18,23 @@ class Flight(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     delay_status = models.IntegerField()
+    @property
+    def duration(self):
+        return self.end_time - self.start_time
+    @property
+    def economic_seats_left(self):
+        booked_economic = Ticket.objects.filter(flight=self, ticket_class='E').count()
+        return self.plane.economic_seats - booked_economic
+    @property
+    def business_seats_left(self):
+        booked_business = Ticket.objects.filter(flight=self, ticket_class='B').count()
+        return self.plane.business_seats - booked_business
+    @property
+    def economic_price(self):
+        return 5000000  # Placeholder price
+    @property
+    def business_price(self):
+        return 10000000  # Placeholder price
 
 class Ticket(models.Model):
     booker = models.ForeignKey(Passenger, on_delete=models.CASCADE)
