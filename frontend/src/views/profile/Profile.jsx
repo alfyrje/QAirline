@@ -14,26 +14,29 @@ import "./profile.css";
 function Profile() {
   return (
     <>
-      <section class="profile-container">
+      <section className="profile-container">
         <Header />
-        <div class="profile-content-container">
-          <div class="profile-sidemenu">
-            <ul class="profile-sidemenu-list">
-              <li class="active">
-                <a class="profile-a"href="#">
-                  <span class="text">Thông tin tài khoản</span>
+        <div className="profile-content-container">
+          <div className="profile-sidemenu">
+            <ul className="profile-sidemenu-list">
+              <li className='profile-sidemenu-item'>
+                <a className="profile-a"href="#">
+                  <span className="text">Thông tin tài khoản</span>
                 </a>
               </li>
-              <li>
-                <a class="profile-a"href="#">
-                  <span class="text">Lịch sử chuyến bay</span>
+              <li className='profile-sidemenu-item'>
+                <a className="profile-a"href="#">
+                  <span className="text">Lịch sử chuyến bay</span>
+                </a>
+              </li>
+              <li className='profile-sidemenu-item'>
+                <a className="profile-a"href="#">
+                  <span className="text">Đổi mật khẩu</span>
                 </a>
               </li>
             </ul>
           </div>
-          <div class="profile-content">
-            <ProfileInfo />
-          </div>
+            <ProfileFlights />
         </div>
         <Footer />
       </section>

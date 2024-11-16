@@ -51,25 +51,26 @@ function Register() {
       return;
     }
     try {
-      const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({ user, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response));
+      const userData = {
+        name_lastname: document.getElementById("name_lastname").value,
+        name_firstname: document.getElementById("name_firstname").value,
+        date_birth: document.getElementById("date_birth").value,
+        gender: document.getElementById("gender").value,
+        email: document.getElementById("email").value,
+        phone_number: document.getElementById("phone_number").value,
+        ID_citizen: document.getElementById("ID_citizen").value,
+        password: document.getElementById("password").value,
+      };
+      const response = await apiInstance.post("/register", userData);
+      console.log(response.data);
       setSuccess(true);
       setUser("");
       setPwd("");
       setMatchPwd("");
     } catch (err) {
-      if (!err?.response) {
+      if (!err.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
+      } else if (err.response.status === 409) {
         setErrMsg("Username Taken");
       } else {
         setErrMsg("Registration Failed");
@@ -80,7 +81,7 @@ function Register() {
 
   return (
     <>
-        <section class="register-container">
+        <section className="register-container">
         <Header />
           <p
             ref={errRef}
@@ -89,8 +90,8 @@ function Register() {
           >
             {errMsg}
           </p>
-          <div class="register-form-container">
-            <form class="register-form">
+          <div className="register-form-container">
+            <form className="register-form">
               <h1>
                   Bạn đã sẵn sàng tham gia qAirline club? Hãy bắt đầu ngay!
               </h1>
@@ -98,7 +99,7 @@ function Register() {
                 Vui lòng điền đầy đủ thông tin cá nhân giống trên CMND/CCCD của
                 bạn.
               </h2>
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="name_lastname">HỌ</label>
                 <input
                   type="text"
@@ -110,7 +111,7 @@ function Register() {
                   placeholder="Họ, ví dụ: Phạm"
                 />
               </div>
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="name_firstname">TÊN ĐỆM & TÊN</label>
                 <input
                   type="text"
@@ -122,8 +123,8 @@ function Register() {
                   placeholder="Tên đệm & tên"
                 />
               </div>
-              <div class="register-column">
-                <div class="register-input-box">
+              <div className="register-column">
+                <div className="register-input-box">
                   <label htmlFor="date_birth">NGÀY, THÁNG, NĂM SINH</label>
                   <input
                     type="date"
@@ -134,9 +135,9 @@ function Register() {
                     placeholder="Ngày sinh"
                   />
                 </div>
-                <div class="register-input-box">
+                <div className="register-input-box">
                   <label htmlFor="gender">GIỚI TÍNH</label>
-                  <div class="select-box">
+                  <div className="select-box">
                     <select
                       id="gender"
                       onChange={(e) => setGender(e.target.value)}
@@ -159,7 +160,7 @@ function Register() {
                 được cuộc gọi hoặc tin nhắn liên quan đến chuyến bay và bất kỳ
                 cập nhật về hành lý nào cho hành trình của bạn.
               </h2>
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="email">EMAIL</label>
                 <input
                   type="email"
@@ -176,7 +177,7 @@ function Register() {
                 />
               </div>
 
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="tel">SỐ ĐIỆN THOẠI</label>
                 <input
                   type="tel"
@@ -193,7 +194,7 @@ function Register() {
                 />
               </div>
 
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="id">SỐ HỘ CHIẾU/ CCCD</label>
                 <input
                   type="text"
@@ -210,7 +211,7 @@ function Register() {
                 />
               </div>
 
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="pwd">TẠO MẬT KHẨU</label>
                 <input
                   type="password"
@@ -224,7 +225,7 @@ function Register() {
                 />
               </div>
 
-              <div class="register-input-box">
+              <div className="register-input-box">
                 <label htmlFor="pwd">NHẬP LẠI MẬT KHẨU</label>
                 <input
                   type="password"
@@ -237,7 +238,7 @@ function Register() {
                   onBlur={() => setMatchFocus(false)}
                 />
               </div>
-              <button id="signup">Sign Up</button>
+              <button id="signup"onClick={handleSubmit}>Sign Up</button>
             </form>
           </div>
           <Footer />
