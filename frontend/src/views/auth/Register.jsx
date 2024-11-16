@@ -85,7 +85,7 @@ function Register() {
         <Header />
           <p
             ref={errRef}
-            className={errMsg ? "errmsg" : "offscreen"}
+            classNameName={errMsg ? "errmsg" : "offscreen"}
             aria-live="assertive"
           >
             {errMsg}

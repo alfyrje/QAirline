@@ -14,8 +14,8 @@ function Header() {
 
   return (
     <>
-      <nav className="navbar">
-        <div className="logoContainer">
+      <nav className="header-navbar">
+        <div className="header-logoContainer">
           <Link to="/">
             <img
               src="/images/0.svg"
@@ -26,85 +26,112 @@ function Header() {
             />
           </Link>
         </div>
-        <div className="navLink">
-          <Link to="/" id="khamPha">
+        <div className="header-navLink">
+          <Link to="/" id="header-khamPha">
             Khám phá
           </Link>
-          <Link to="/bookings" id="datVe">
+          <Link to="/bookings" id="header-datVe">
             Đặt vé
           </Link>
-          <Link to="/contact" id="thongTinHanhTrinh">
+          <Link to="/contact" id="header-thongTinHanhTrinh">
             Thông tin hành trình
           </Link>
         </div>
-        <div className="authLink">
-          <Link to="/Đăng nhập" className="signIn">
+        <div className="header-authLink">
+          <Link to="/Đăng nhập" className="header-signIn">
             Đăng nhập
           </Link>
-          <Link to="/Đăng kí" className="logOut">
+          <a id = 'header-separation'> | </a>
+          <Link to="/Đăng kí" className="header-logOut">
             Đăng ký
           </Link>
         </div>
       </nav>
 
-      <div className="sideBar">
+    {/* sidebar
+      menu-item
+        title 
+        Sublist
+          list-item */}
+
+
+
+      <div className="header-sideBar">
+      <div
+          className={`menu-item ${activeMenu === 0 ? "active" : ""}`
+        }
+          onClick={() => toggleSublist(-1)} // Pass index to toggle
+          id = "logInLogOutMedia"
+        >
+          <div id="header-authLinkSideBar">
+            <Link to="/Đăng nhập" className="header-signIn">
+              Đăng nhập
+            </Link>
+            <a id = 'header-separation'> | </a>
+            <Link to="/Đăng kí" className="header-logOut">
+              Đăng ký
+            </Link>
+          </div>
+        </div>
+
         <div
-          className={`menu-item ${activeMenu === 0 ? "active" : ""}`}
+          className={`header-menu-item ${activeMenu === 0 ? "active" : ""}`}
           onClick={() => toggleSublist(0)} // Pass index to toggle
         >
-          <div className="title">Khám phá</div>
-          <div className="sub-list">
-            <div className="sub-title">Sublist 1</div>
-            <div className="list-item">Item 1</div>
-            <div className="list-item">Item 2</div>
-            <div className="list-item">Item 3</div>
+          
+          <div className="header-title">Khám phá</div>
+          <div className="header-sub-list">
+            <div className="header-sub-title">Sublist 1</div>
+            <div className="header-list-item">Item 1</div>
+            <div className="header-list-item">Item 2</div>
+            <div className="header-list-item">Item 3</div>
           </div>
-          <div className="sub-list">
-            <div className="sub-title">Sublist 2</div>
-            <div className="list-item">Item 1</div>
-            <div className="list-item">Item 2</div>
+          <div className="header-sub-list">
+            <div className="header-sub-title">Sublist 2</div>
+            <div className="header-list-item">Item 1</div>
+            <div className="header-list-item">Item 2</div>
           </div>
-          <div className="sub-list">
-            <div className="sub-title">Sublist 3</div>
-            <div className="list-item">Item 1</div>
-            <div className="list-item">Item 2</div>
-            <div className="list-item">Item 3</div>
+          <div className="header-sub-list">
+            <div className="header-sub-title">Sublist 3</div>
+            <div className="header-list-item">Item 1</div>
+            <div className="header-list-item">Item 2</div>
+            <div className="header-list-item">Item 3</div>
           </div>
         </div>
 
         <div
-          className={`menu-item ${activeMenu === 1 ? "active" : ""}`}
+          className={`header-menu-item ${activeMenu === 1 ? "active" : ""}`}
           onClick={() => toggleSublist(1)}
         >
-          <div className="title">Đặt vé</div>
-          <div className="sub-list">
-            <div className="sub-title">Sublist 1</div>
-            <div className="list-item">Item 1</div>
-            <div className="list-item">Item 2</div>
+          <div className="header-title">Đặt vé</div>
+          <div className="header-sub-list">
+            <div className="header-sub-title">Sublist 1</div>
+            <div className="header-list-item">Item 1</div>
+            <div className="header-list-item">Item 2</div>
           </div>
         </div>
 
         <div
-          className={`menu-item ${activeMenu === 2 ? "active" : ""}`}
+          className={`header-menu-item ${activeMenu === 2 ? "active" : ""}`}
           onClick={() => toggleSublist(2)}
         >
-          <div className="title">Thông tin hành trình</div>
-          <div className="sub-list">
-            <div className="sub-title">Sublist 1</div>
-            <div className="list-item">Item 1</div>
-            <div className="list-item">Item 2</div>
+          <div className="header-title">Thông tin hành trình</div>
+          <div className="header-sub-list">
+            <div className="header-sub-title">Sublist 1</div>
+            <div className="header-list-item">Item 1</div>
+            <div className="header-list-item">Item 2</div>
           </div>
         </div>
 
         <div
-          className={`menu-item ${activeMenu === 3 ? "active" : ""}`}
+          className={`header-menu-item ${activeMenu === 3 ? "active" : ""}`}
           onClick={() => toggleSublist(3)}
         >
-          <div className="title">Bamboo Club</div>
-          <div className="sub-list">
-            <div className="sub-title">Sublist 1</div>
-            <div className="list-item">Item 1</div>
-            <div className="list-item">Item 2</div>
+          <div className="header-title">Bamboo Club</div>
+          <div className="header-sub-list">
+            <div className="header-sub-title">Sublist 1</div>
+            <div className="header-list-item">Item 1</div>
+            <div className="header-list-item">Item 2</div>
           </div>
         </div>
       </div>

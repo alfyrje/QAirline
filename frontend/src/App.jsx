@@ -4,9 +4,6 @@ import Register from "./views/auth/Register";
 import LogIn from "./views/auth/Login";
 import Dashboard from "./views/dashboard/Dashboard";
 import Profile from "./views/profile/Profile";
-import "./App.css"
-import "./index.css"
-
 import MainWrapper from "../src/layouts/MainWrapper";
 import FlightSearchPage from "./views/booking/FlightSearchPage"
 import FlightSelect from "./views/booking/FlightSelect"
@@ -22,8 +19,6 @@ function App() {
                         <Route path="/login/" element={<LogIn />} />
                         <Route path="/profile/" element={<Profile />} />
 
-
- 
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
 

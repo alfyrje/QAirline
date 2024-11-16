@@ -11,15 +11,15 @@ const FlightSelect = () => {
     useEffect(() => {
         if (state?.searchParams) {
             axios.get("http://localhost:8000/flights/search-flights", { params: state.searchParams })
-                .then(response => setFlights(response.data))
+                .then(response => {setFlights(response.data); console.log(response)})
                 .catch(error => console.error("Error fetching flights", error));
         }
     }, [state]);
 
     return (
         <>
-            <div class="container">
-                <FlightList/>
+            <div className="container">
+                <FlightList flights={flights}/>
             </div>
         </>
     );
