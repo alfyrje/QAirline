@@ -3,7 +3,7 @@ import React from "react";
 function Footer() {
     return (
         <footer>
-            <p>&copy; 2024 QAirline. All rights reserved.</p>
+            This is the footer
         </footer>
     );
 }

@@ -1,44 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+a, .sideBar{
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 500;
+}
+.otherInformation {
+  display: inline;
+}
+nav {
+  align-items: center;
+}
 .navbar {
-    background: #c7d5d6;
-    height: 80px;
-    width: 100%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 75rem;
+  margin: 0 auto;
+  color:#76a049;
+
+}
+img.logo {
+  align-items: flex-end;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: flex-end;
+
+}
+.signIn {
+color: #76a049;
+text-decoration: none;
+}
+.logOut{
+color: #e687a5;
+text-decoration: none;
+
+}
+
+.authLink {
+  display: flex;
+  gap: 1rem;
+}
+
+
+.navLink {
+  display: flex;
+  gap: 1rem;
+  color:#736660;
+}
+
+
+
+.navLink {
+  color: #736660;
+  text-decoration: none;
+}
+
+.menuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.mobileLinks {
+  display: none;
+}
+
+#khamPha, #datVe, #thongTinHanhTrinh {
+  color: #736660;
+  text-decoration: none;
+}
+
+#khamPha:hover {
+  color: #3f7308;
+}
+
+#datVe:hover {
+  color: #3f7308;
+}
+
+#thongTinHanhTrinh:hover {
+  color: #3f7308;
+}
+.sideBar {
+  display: none;
+}
+
+
+.sidebar {
+  width: 250px;
+  background: white;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.menu-item {
+  background-color: #f2f4f7;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.menu-item > .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.menu-item .title::after {
+  content: "›";
+  color: #999;
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.menu-item.active .title::after {
+  transform: rotate(90deg);
+}
+
+.sub-list {
+  display: none;
+  padding: 10px 0 0 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+.menu-item.active .sub-list {
+  display: block;
+}
+
+.list-item {
+  padding: 8px 0;
+}
+
+.list-item:hover {
+  color: #333;
+}
+
+/* @media (max-width: 991px) */
+@media (max-width: 991px) {
+  .navLink {
+    display: none;
   }
-  
-  .nav-menu {
-    display: flex; /* Use flex to control layout */
-    justify-content: center; /* Center items horizontally */
-    align-items: center;
-    text-align: center;
-    width: 80%;
-    height: 100%;
+  .authLink {
+    display: none;
   }
-  
-  .navbar-logo {
-    color: #fff;
-    justify-self: start;
-    margin-left: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 2rem;
+  .sideBar {
+    display: block;
+    max-width: 100%;
+    right:0;
+    z-index: 9999;
+    float: right;
   }
-  
-  .nav-item {
-    display: inline-flex; /* Use inline-flex to keep items in line and apply centering */
-    align-items: center;
+  .sub-title {
+    backgroundcolor:#516076;
   }
-  
-  .nav-links {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-  }
-  
-  .nav-links:hover {
-    background-color: #1888ff;
-    border-radius: 4px;
-    transition: all 0.2s ease-out;
-  }
+}
