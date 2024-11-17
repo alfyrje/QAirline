@@ -27,6 +27,7 @@
     "react-router-dom": "6.10.0",
     "styled-components": "^6.1.13",
     "sweetalert2": "^11.6.13",
+    "swiper": "^11.1.14",
     "yet-another-react-lightbox": "^3.14.0",
     "zustand": "^4.4.4"
   },

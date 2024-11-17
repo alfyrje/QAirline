@@ -31,6 +31,7 @@ function App() {
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>
+            <div></div>
         </>
     );
 }
