@@ -14,7 +14,7 @@ const formatDate = (dateString) => {
   const hours = date.getHours().toString().padStart(2, '0'); 
   const minutes = date.getMinutes().toString().padStart(2, '0'); 
 
-  return `${day}/${month}/${year} - ${hours}:${minutes}`;
+  return `${hours}:${minutes}`;
 };
 
 const formatDuration = (durationInSeconds) => {
@@ -44,18 +44,20 @@ const FlightCard = ({ flight }) => {
   return (
     <div className="flight-card">
       <div className="flight-details">
-        <div className="time">
-          <p>{formatDate(flight.start_time)}</p>
+        <div className="flight-info">
+          <div className="location-time">
+            <div className="time">{formatDate(flight.start_time)}</div>
+            <div className="location">{flight.start_location}</div>
+          </div>
           <span>Bay thẳng</span>
-          <p>{formatDate(flight.end_time)}</p>
-        </div>
-        <div className="locations">
-          <p>{flight.start_location}<br /></p>
-          <p>{flight.end_location}<br /></p>
+          <div className="location-time">
+            <div className="time">{formatDate(flight.end_time)}</div>
+            <div className="location">{flight.end_location}</div>
+          </div>
         </div>
         <div className="additional-info">
-          <p>⏱ Thời gian bay {formatDuration(flight.duration)}</p>
-          <p>✈️ {flight.code} </p>
+          <p>⏱ Thời gian bay: {formatDuration(flight.duration)}</p>
+          <p>✈️ Số hiệu: {flight.code} </p>
         </div>
       </div>
 

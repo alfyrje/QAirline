@@ -11,7 +11,6 @@ class FlightSearchView(ListAPIView):
         start_location = self.request.query_params.get('start_location')
         end_location = self.request.query_params.get('end_location')
         start_time = self.request.query_params.get('start_time')
-        end_time = self.request.query_params.get('end_time')
 
         flights = Flight.objects.all()
 
@@ -21,8 +20,6 @@ class FlightSearchView(ListAPIView):
             flights = flights.filter(end_location__icontains=end_location)
         if start_time:
             flights = flights.filter(start_time__gte=start_time)
-        if end_time:
-            flights = flights.filter(end_time__lte=end_time)
         
         return flights
 

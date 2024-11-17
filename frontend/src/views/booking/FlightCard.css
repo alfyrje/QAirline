@@ -1,69 +1,113 @@
 .flight-list {
+    gap: 2rem;
+}
+
+.flight-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #a1cf67;
+    margin-bottom: 1rem;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+.flight-details {
+    flex: 2;
+    display: flex;
+    padding: 1rem 0 1rem 1rem;
+}
+
+.flight-info span {
+    flex-grow: 1;
+    margin: 0 1rem;
+    font-size: 1rem;
+    border-bottom: 2px dotted #a1cf67;
+    text-align: center;
+    color: #e687a5;
+}
+
+.location-time {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-}
-
-.flight-list .flight-card {
-    display: flex;
-    justify-content: space-between;
-    background-color: #ffffff;
-    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.5rem;
+    border: 1px solid #a1cf67;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #007bff;
+    margin: 0;
 }
 
-.flight-list .flight-details {
-    flex: 2;
-}
-
-.flight-list .time {
-    font-size: 18px;
+.location-time .time {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #a1cf67;
+}
+
+.location-time .location {
+    font-size: 0.8rem;
+}
+
+.flight-info {
+    flex: 1;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    text-align: center;
 }
 
-.flight-list .locations {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #555;
-    display: flex;
-    justify-content: space-between;
-}
 
-.flight-list .additional-info {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.flight-list .additional-info a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.flight-list .prices {
+.additional-info {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
 }
 
-.flight-list .price {
+.additional-info p {
+    flex: 1;
+    display: flex;
+    font-size: 0.9rem;
     text-align: center;
-    padding: 10px;
-    border-radius: 4px;
-    font-weight: bold;
+    align-items: center;
 }
 
-.flight-list .price.economy {
-    background-color: #28a745;
-    color: white;
+.prices {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
 }
 
-.flight-list .price.business {
-    background-color: #004085;
-    color: white;
+.price {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+.price.economy {
+    background-color: #a1cf67;
+    color: #42611f;
+}
+
+.price.business {
+    background-color: #f5bcc3;
+    color: #75374b;
+    ;
+}
+
+.price p {
+    margin: 0.2rem 0;
+    font-size: 1rem;
 }

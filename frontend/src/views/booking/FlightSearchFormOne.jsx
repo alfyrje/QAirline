@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
-const FlightSearchForm = ({ onSearch }) => {
+const FlightSearchFormOne = ({ onSearch }) => {
   const [form, setForm] = useState({
     start_location: '',
     end_location: '',
     start_time: '',
-    end_time: '',
   });
 
   const handleChange = (e) => {
@@ -23,10 +22,9 @@ const FlightSearchForm = ({ onSearch }) => {
       <input name="start_location" value={form.start_location} onChange={handleChange} placeholder="Start Location" />
       <input name="end_location" value={form.end_location} onChange={handleChange} placeholder="End Location" />
       <input name="start_time" type="date" value={form.start_time} onChange={handleChange} />
-      <input name="end_time" type="date" value={form.end_time} onChange={handleChange} />
       <button type="submit">Search Flights</button>
     </form>
   );
-};
+};  
 
-export default FlightSearchForm;
+export default FlightSearchFormOne;
