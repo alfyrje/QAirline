@@ -11,9 +11,6 @@ class Passenger(models.Model):
     date_of_birth = models.DateField()
     citizen_id = models.CharField(max_length=50)
     nationality = models.CharField(max_length=20)
-    tel_num = models.CharField(max_length=20)
-    email = models.CharField(max_length=30)
-    address = models.CharField(max_length=100, null=True, blank=True)
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -34,4 +31,6 @@ class Passenger(models.Model):
     )
 
 class User(AbstractUser):
+    email = models.CharField(max_length=30)
+    tel_num = models.CharField(max_length=20)
     personal_info = models.OneToOneField(Passenger, on_delete=models.SET_NULL, null=True)
