@@ -51,25 +51,26 @@ function Register() {
       return;
     }
     try {
-      const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({ user, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response));
+      const userData = {
+        name_lastname: document.getElementById("name_lastname").value,
+        name_firstname: document.getElementById("name_firstname").value,
+        date_birth: document.getElementById("date_birth").value,
+        gender: document.getElementById("gender").value,
+        email: document.getElementById("email").value,
+        phone_number: document.getElementById("phone_number").value,
+        ID_citizen: document.getElementById("ID_citizen").value,
+        password: document.getElementById("password").value,
+      };
+      const response = await apiInstance.post("/register", userData);
+      console.log(response.data);
       setSuccess(true);
       setUser("");
       setPwd("");
       setMatchPwd("");
     } catch (err) {
-      if (!err?.response) {
+      if (!err.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
+      } else if (err.response.status === 409) {
         setErrMsg("Username Taken");
       } else {
         setErrMsg("Registration Failed");
@@ -237,7 +238,7 @@ function Register() {
                   onBlur={() => setMatchFocus(false)}
                 />
               </div>
-              <button id="signup">Sign Up</button>
+              <button id="signup"onClick={handleSubmit}>Sign Up</button>
             </form>
           </div>
           <Footer />

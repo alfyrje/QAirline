@@ -116,3 +116,51 @@ body {
 .register-form button:hover {
   background: #e687a5;
 }
+@media (max-width: 768px) {
+  .register-form-container {
+    background: #ffffff;
+    justify-content: center;
+  }
+  .register-form {
+    width: 100%;
+  }
+  .register-form > h1 {
+    font-size: 1.25rem;
+  }
+
+  .register-form > h2 {
+    font-size: 0.9rem;
+  }
+
+  .register-form .register-column {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form-container {
+    background: #ffffff;
+    justify-content: center;
+  }
+  .register-form {
+    width: 100%;
+  }
+  .register-form > h1 {
+    font-size: 1rem;
+  }
+
+  .register-form > h2 {
+    font-size: 0.8rem;
+  }
+
+  .register-input-box input,
+  .select-box select {
+    font-size: 0.9rem;
+    padding: 0 10px;
+  }
+
+  .register-form button {
+    height: 50px;
+    font-size: 0.9rem;
+  }
+}
