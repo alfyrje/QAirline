@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+.footer-page-container{
+	float: bottom;
+}
+
 .footer-container{
+	float: bottom;
 	max-width: 1170px;
 	margin:auto;
+	margin-bottom: 0px;
 }
 .footer-row{
 	display: flex;
@@ -13,7 +19,7 @@ ul{
 }
 .footer{
 	background-color: #a1cf67;
-    padding: 70px 0;
+    padding: 160px 0;
     flex-shrink: 0;
 }
 
