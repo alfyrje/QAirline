@@ -4,12 +4,35 @@ import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 import apiInstance from "../../utils/axios";
-import { useAuthStore } from "../../store/auth";
-import { register } from "../../utils/auth";
+import login from "../../utils/requests"
 
 import "./login.css";
 
 function LogIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    setError("");
+  
+    try {
+      const response = await apiInstance.post("http://127.0.0.1:8000/users/login/", {
+        email,
+        password,
+      });
+  
+      if (response.status === 200) {
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("refresh_token", response.data.refresh_token);
+        navigate("/profile");
+      }
+    } catch (err) {
+      setError(err.response?.data?.error_message || "Login failed. Please try again.");
+    }
+  };
   return (
     <>
       <section className="login-container">
@@ -26,6 +49,8 @@ function LogIn() {
                 type="email"
                 id="email"
                 placeholder="Email của bạn"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -38,6 +63,8 @@ function LogIn() {
                 type="password"
                 id="password"
                 placeholder="Nhập mật khẩu của bạn"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -53,7 +80,7 @@ function LogIn() {
                 </div>
               </div>
             </div>
-            <button type="submit">Log In</button>
+            <button type="submit"onClick={handleLogin}>Log In</button>
             <p>
               Don't have an account? <a className="login-a" href="#">Sign up</a>
             </p>
