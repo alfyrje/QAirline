@@ -36,7 +36,8 @@ function Profile() {
               </li>
             </ul>
           </div>
-            <ProfileFlights />
+            {/* <ProfileFlights /> */}
+            <ProfileInfo />
         </div>
         <Footer />
       </section>
