@@ -2,31 +2,33 @@
     gap: 2rem;
 }
 
-.flight-card {
+.flight-list .flight-card {
     display: flex;
     align-items: center;
-    border: 1px solid #a1cf67;
+    border: 2px solid #a1cf67;
     margin-bottom: 1rem;
     background-color: white;
-    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.flight-details {
+.flight-list .flight-details {
     flex: 2;
     display: flex;
     padding: 1rem 0 1rem 1rem;
 }
 
-.flight-info span {
+.flight-list .flight-info span {
     flex-grow: 1;
     margin: 0 1rem;
     font-size: 1rem;
     border-bottom: 2px dotted #a1cf67;
     text-align: center;
-    color: #e687a5;
+    color: #d36286;
+    font-weight: 800;
 }
 
-.location-time {
+.flight-list .location-time {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,17 +40,17 @@
     margin: 0;
 }
 
-.location-time .time {
+.flight-list .location-time .time {
     font-size: 1.5rem;
     font-weight: bold;
     color: #a1cf67;
 }
 
-.location-time .location {
+.flight-list .location-time .location {
     font-size: 0.8rem;
 }
 
-.flight-info {
+.flight-list .flight-info {
     flex: 1;
     display: flex;
     justify-content: space-between;
@@ -58,7 +60,7 @@
 }
 
 
-.additional-info {
+.flight-list .additional-info {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -68,7 +70,7 @@
     color: #555;
 }
 
-.additional-info p {
+.flight-list .additional-info p {
     flex: 1;
     display: flex;
     font-size: 0.9rem;
@@ -76,7 +78,7 @@
     align-items: center;
 }
 
-.prices {
+.flight-list .prices {
     flex: 1;
     display: flex;
     align-items: stretch;
@@ -85,7 +87,7 @@
     margin: 0;
 }
 
-.price {
+.flight-list .price {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -96,18 +98,18 @@
     text-align: center;
 }
 
-.price.economy {
+.flight-list .price .economy {
     background-color: #a1cf67;
     color: #42611f;
 }
 
-.price.business {
-    background-color: #f5bcc3;
-    color: #75374b;
+.flight-list .price .business {
+    background-color: #f7c6cc;
+    color: #934960;
     ;
 }
 
-.price p {
+.flight-list .price p {
     margin: 0.2rem 0;
     font-size: 1rem;
 }

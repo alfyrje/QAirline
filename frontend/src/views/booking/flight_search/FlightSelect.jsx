@@ -2,9 +2,10 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import './FlightSelect.css'
-import Header from "../partials/Header";
-import Footer from "../partials/Footer";
+import Header from "../../partials/Header";
+import Footer from "../../partials/Footer";
 import FlightList from "./FlightList";
+import FlightInfo from "./FlightInfo";
 
 const FlightSelect = () => {
     const { state } = useLocation();
@@ -23,6 +24,7 @@ const FlightSelect = () => {
         <>
             <Header/>
             <div className="container">
+                <FlightInfo/>
                 <FlightList flights={flights}/>
             </div>
             <Footer/>
