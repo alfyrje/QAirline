@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import FlightSearchFormOne from "./FlightSearchFormOne";
-import FlightSearchFormRound from "./FlightSearchFormRound";
+import FlightSearchForm from "./FlightSearchForm";
+import { round } from "yet-another-react-lightbox";
 
-const FlightSearchPage = () => {
+const FlightSearchPage = ({roundTrip}) => {
     const navigate = useNavigate();
 
     const handleSearch = (params) => {
-        navigate("/flight-select", { state: { searchParams: params } });
+        navigate("/flight-select", { state: { searchParams: params, roundTrip } });
     };
 
     return (
         <div>
             <h1>Search Flights</h1>
-            <FlightSearchFormOne onSearch={handleSearch} />
+            <FlightSearchForm onSearch={handleSearch} roundTrip = {roundTrip} />
         </div>
     );
 };

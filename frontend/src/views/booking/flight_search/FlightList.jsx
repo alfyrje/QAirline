@@ -5,16 +5,28 @@ const formatPrice = (price) => {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 };
 
-const formatDate = (dateString) => {
+const formatTime = (dateString) => {
   const date = new Date(dateString);
-
-  const day = date.getDate(); 
-  const month = date.getMonth(); 
-  const year = date.getFullYear().toString().slice(2);
-  const hours = date.getHours().toString().padStart(2, '0'); 
-  const minutes = date.getMinutes().toString().padStart(2, '0'); 
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
 
   return `${hours}:${minutes}`;
+};
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return 'Invalid date';
+
+  const date = new Date(dateStr);
+  if (isNaN(date)) {
+    console.error(`Invalid date value: ${dateStr}`);
+    return 'Invalid date';
+  }
+
+  return new Intl.DateTimeFormat('vi-VN', {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+  }).format(date);
 };
 
 const formatDuration = (durationInSeconds) => {
@@ -40,34 +52,41 @@ const formatDuration = (durationInSeconds) => {
   return formattedDuration.trim();
 };
 
-const FlightCard = ({ flight }) => {
+const FlightCard = ({ flight, onSelectSeat }) => {
+  const handleSelectSeat = (seatClass) => {
+    onSelectSeat({
+      flight: flight,
+      seatClass,
+    });
+  };
   return (
     <div className="flight-card">
       <div className="flight-details">
         <div className="flight-info">
           <div className="location-time">
-            <div className="time">{formatDate(flight.start_time)}</div>
+            <div className="time">{formatTime(flight.start_time)}</div>
             <div className="location">{flight.start_location}</div>
           </div>
           <span>Bay thẳng</span>
           <div className="location-time">
-            <div className="time">{formatDate(flight.end_time)}</div>
+            <div className="time">{formatTime(flight.end_time)}</div>
             <div className="location">{flight.end_location}</div>
           </div>
         </div>
         <div className="additional-info">
+          <p>{formatDate(flight.start_time)} - {formatDate(flight.end_time)}</p>
           <p>⏱ Thời gian bay: {formatDuration(flight.duration)}</p>
           <p>✈️ Số hiệu: {flight.code} </p>
         </div>
       </div>
 
       <div className="prices">
-        <div className="price economy">
+        <div className="price economy" onClick={() => handleSelectSeat('E')}>
           <span>{flight.economic_seats_left} chỗ còn lại</span>
           <p>Economy</p>
           <p>từ {formatPrice(flight.economic_price)}</p>
         </div>
-        <div className="price business">
+        <div className="price business" onClick={() => handleSelectSeat('B')}>
           <span>{flight.business_seats_left} chỗ còn lại</span>
           <p>Business</p>
           <p>từ {formatPrice(flight.business_price)}</p>
@@ -77,7 +96,7 @@ const FlightCard = ({ flight }) => {
   );
 };
 
-const FlightList = ({ flights }) => {
+const FlightList = ({ flights, onSelectSeat }) => {
   if (flights.length === 0) {
     return (
       <p>
@@ -88,7 +107,7 @@ const FlightList = ({ flights }) => {
   return (
     <div className="flight-list">
       {flights.map((flight) => (
-        <FlightCard key={flight.id} flight={flight} />
+        <FlightCard key={flight.id} flight={flight} onSelectSeat={onSelectSeat} />
       ))}
     </div>
   );

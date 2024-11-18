@@ -1,8 +1,8 @@
-.flight-list {
+.booking-cards {
     gap: 2rem;
 }
 
-.flight-list .flight-card {
+.booking-cards .booking-card {
     display: flex;
     align-items: center;
     border: 2px solid #a1cf67;
@@ -12,13 +12,13 @@
     overflow: hidden;
 }
 
-.flight-list .flight-details {
+.booking-cards .flight-details {
     flex: 2;
     display: flex;
     padding: 1rem 0 1rem 1rem;
 }
 
-.flight-list .flight-info span {
+.booking-cards .flight-info span {
     flex-grow: 1;
     margin: 0 1rem;
     font-size: 1rem;
@@ -28,7 +28,7 @@
     font-weight: 800;
 }
 
-.flight-list .location-time {
+.booking-cards .location-time {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,17 +40,17 @@
     margin: 0;
 }
 
-.flight-list .location-time .time {
+.booking-cards .location-time .time {
     font-size: 1.5rem;
     font-weight: bold;
     color: #a1cf67;
 }
 
-.flight-list .location-time .location {
+.booking-cards .location-time .location {
     font-size: 0.8rem;
 }
 
-.flight-list .flight-info {
+.booking-cards .flight-info {
     flex: 1;
     display: flex;
     justify-content: space-between;
@@ -60,7 +60,7 @@
 }
 
 
-.flight-list .additional-info {
+.booking-cards .additional-info {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -70,7 +70,7 @@
     color: #555;
 }
 
-.flight-list .additional-info p {
+.booking-cards .additional-info p {
     flex: 1;
     display: flex;
     font-size: 0.9rem;
@@ -78,47 +78,30 @@
     align-items: center;
 }
 
-.flight-list .prices {
+.booking-cards .selected-seat {
     flex: 1;
-    display: flex;
-    align-items: stretch;
-    justify-content: space-around;
-    padding: 0;
-    margin: 0;
-}
-
-.flight-list .price {
     flex-grow: 1;
     display: flex;
+    align-items: stretch;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 1rem;
+    padding: 0;
     margin: 0;
     text-align: center;
 }
 
-.flight-list .price.economy {
+.booking-cards .selected-seat.economy {
     background-color: #a1cf67;
     color: #42611f;
-    cursor: pointer;
 }
 
-.flight-list .price.economy:hover {
-    background-color: #749b45;
-}
-
-.flight-list .price.business {
-    cursor: pointer;
+.booking-cards .selected-seat.business {
     background-color: #f7c6cc;
     color: #934960;
 }
 
-.flight-list .price.business:hover {
-    background-color: #c38e94;
-}
 
-.flight-list .price p {
+.booking-cards .selected-seat p {
     margin: 0.2rem 0;
     font-size: 1rem;
 }

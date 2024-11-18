@@ -9,6 +9,8 @@ class Plane(models.Model):
     business_seats = models.IntegerField()
     economic_seats_info = models.JSONField(null=True, blank=True)
     business_seats_info = models.JSONField(null=True, blank=True)
+    def __str__(self):
+        return f"{self.name}"
 
 class Flight(models.Model):
     plane = models.ForeignKey(Plane, on_delete=models.CASCADE)
@@ -35,6 +37,8 @@ class Flight(models.Model):
     @property
     def business_price(self):
         return 10000000  # Placeholder price
+    def __str__(self):
+        return f"{self.code}"
 
 class Ticket(models.Model):
     booker = models.ForeignKey(Passenger, on_delete=models.CASCADE)
@@ -45,3 +49,5 @@ class Ticket(models.Model):
         ('B', 'Business'),
     ]
     ticket_class = models.CharField(max_length=1, choices=CLASS_CHOICES, default='E')
+    def __str__(self):
+        return f"{self.booker} - {self.flight} - {self.ticket_class}"
