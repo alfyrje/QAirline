@@ -1,8 +1,12 @@
 from rest_framework.generics import ListAPIView
 from .models import Flight, Ticket
 from .serializers import FlightSerializer, TicketSerializer
+from users.serializers import PassengerSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
+from .serializers import TicketSerializer
+from rest_framework.views import APIView
 
 class FlightSearchView(ListAPIView):
     serializer_class = FlightSerializer
@@ -23,15 +27,50 @@ class FlightSearchView(ListAPIView):
         
         return flights
 
-class TicketBookingView(ListAPIView):
-    serializer_class = TicketSerializer
-
+class CreateTicketsAPI(APIView):
     def post(self, request, *args, **kwargs):
-        flight_id = request.data.get('flight_id')
-        booker_id = request.data.get('booker_id')
-        seat = request.data.get('seat')
-        ticket_class = request.data.get('ticket_class')
+        data = request.data
 
-        ticket = Ticket.objects.create(flight_id=flight_id, booker_id=booker_id, seat=seat, ticket_class=ticket_class)
+        flights = data.get('flights', [])
+        passengers_data = data.get('passengers', [])
 
-        return Response({'status': 'ticket booked successfully'}, status=status.HTTP_201_CREATED)
+        if not flights or not passengers_data:
+            return Response(
+                {"error": "Missing required fields: flights or passengers"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        tickets = []
+
+        for flight_info in flights:
+            flight_id = flight_info.get('flightId')
+            seat_class = flight_info.get('seatClass')
+
+            try:
+                flight = Flight.objects.get(id=flight_id)
+            except Flight.DoesNotExist:
+                return Response(
+                    {"error": f"Flight with ID {flight_id} not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            for passenger_data in passengers_data:
+                passenger_serializer = PassengerSerializer(data=passenger_data)
+                print(passenger_serializer.is_valid(raise_exception=True))
+                passenger = passenger_serializer.save()
+
+                ticket_data = {
+                    'booker': passenger.id,
+                    'flight': flight.id,
+                    'seat': passenger_data.get('seat', ''),
+                    'ticket_class': seat_class
+                }
+
+                ticket_serializer = TicketSerializer(data=ticket_data)
+                ticket_serializer.is_valid(raise_exception=True)
+                tickets.append(ticket_serializer.save())
+
+        return Response(
+            {"message": "Passengers and tickets created successfully", "tickets": [TicketSerializer(t).data for t in tickets]},
+            status=status.HTTP_201_CREATED
+        )

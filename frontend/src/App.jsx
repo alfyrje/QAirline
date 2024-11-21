@@ -8,6 +8,7 @@ import MainWrapper from "../src/layouts/MainWrapper";
 import FlightSearchPage from "./views/booking/flight_search/FlightSearchPage"
 import FlightSelect from "./views/booking/flight_search/FlightSelect"
 import BookingInfo from "./views/booking/booking_info/BookingInfo";
+import PassengersDetail from "./views/booking/passengers_detail/PassengersDetail";
 
 function App() {
     return (
@@ -31,6 +32,9 @@ function App() {
 
                         {/* Booking Info */}
                         <Route path="/booking-info" element={<BookingInfo />} />
+
+                        {/* Passengers Detail */}
+                        <Route path="/passengers-detail" element={<PassengersDetail />} />
 
                     </Routes>
                 </MainWrapper>

@@ -10,6 +10,7 @@
     background-color: white;
     border-radius: 10px;
     overflow: hidden;
+    height: 8rem;
 }
 
 .booking-cards .flight-details {
@@ -80,28 +81,67 @@
 
 .booking-cards .selected-seat {
     flex: 1;
-    flex-grow: 1;
     display: flex;
-    align-items: stretch;
     flex-direction: column;
     justify-content: center;
     padding: 0;
     margin: 0;
     text-align: center;
+    height: 100%;
 }
 
 .booking-cards .selected-seat.economy {
-    background-color: #a1cf67;
-    color: #42611f;
+    background-color: #89b751;
+    color: white;
 }
 
 .booking-cards .selected-seat.business {
-    background-color: #f7c6cc;
-    color: #934960;
+    background-color: #f5c2c8;
+    color: white;
 }
 
 
 .booking-cards .selected-seat p {
     margin: 0.2rem 0;
     font-size: 1rem;
+}
+
+h1 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #e687a5;
+}
+
+.total-price-section {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.total-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4caf50; 
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #89b751; 
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #8dbf56;
 }

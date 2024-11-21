@@ -14,7 +14,7 @@ const FlightSelect = () => {
     const [isReturnFlight, setIsReturnFlight] = useState(false);
     const navigate = useNavigate();
     const roundTrip = state?.roundTrip;
-    const passengersNo = state?.searchParams.passengers_no
+    const flight = state?.searchParams
 
     const handleSelectSeat = (selection) => {
         setSelectedFlights((prev) => [...prev, selection]);
@@ -22,7 +22,7 @@ const FlightSelect = () => {
         if (roundTrip && !isReturnFlight) {
             setIsReturnFlight(true);
           } else {
-            navigate("/booking-info", { state: { selectedFlights: [...selectedFlights, selection], passengersNo } });
+            navigate("/booking-info", { state: { selectedFlights: [...selectedFlights, selection], flight: flight } });
           }
     };
 

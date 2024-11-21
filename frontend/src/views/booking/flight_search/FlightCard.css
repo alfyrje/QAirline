@@ -10,6 +10,7 @@
     background-color: white;
     border-radius: 10px;
     overflow: hidden;
+    height: 8rem;
 }
 
 .flight-list .flight-details {
@@ -85,6 +86,7 @@
     justify-content: space-around;
     padding: 0;
     margin: 0;
+    height: 100%;
 }
 
 .flight-list .price {

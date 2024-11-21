@@ -1,7 +1,9 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import './BookingInfo.css'
 import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
+import FlightInfo from "../flight_search/FlightInfo";
+import "../flight_search/FlightInfo.css"
 
 const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -83,17 +85,40 @@ const BookingCard = ({ flight, seatClass }) => {
 const BookingInfo = () => {
     const { state } = useLocation();
     const selectedFlights = state?.selectedFlights || [];
+    const flight = state?.flight;
+    const navigate = useNavigate()
+    const calculateIndividualPrice = () => {
+        return selectedFlights.reduce((total, selectedFlight) => {
+            const price = selectedFlight.seatClass === 'E' 
+                ? selectedFlight.flight.economic_price 
+                : selectedFlight.flight.business_price;
+            return total + price;
+        }, 0);
+    };
+    const totalPrice = calculateIndividualPrice() * flight.passengers_no;
+    const handleNavigate = () => {
+        navigate("/passengers-detail", { state: { selectedFlights: selectedFlights, flight: flight } });
+    };
 
     return (
         <>
             <Header />
             <div className="container">
+                <FlightInfo flight={flight}/>
                 <h1>Các chuyến bay của bạn</h1>
                 <div className="booking-cards">
                     {selectedFlights.map((flight, index) => {
                         const seatClass = flight.seatClass;
                         return <BookingCard key={index} flight={flight.flight} seatClass={seatClass} />;
                     })}
+                </div>
+                <div className="total-price-section">
+                    <p className="total-price">
+                        Tổng giá: {formatPrice(totalPrice)}
+                    </p>
+                    <button className="btn btn-primary" onClick={handleNavigate}>
+                        Điền thông tin hành khách
+                    </button>
                 </div>
             </div>
             <Footer />

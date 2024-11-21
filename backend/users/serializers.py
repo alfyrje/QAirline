@@ -1,6 +1,6 @@
 # users/serializers.py
 from rest_framework import serializers
-from .models import User, Passenger  # or your actual model name
+from .models import User, Passenger
 
 class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
