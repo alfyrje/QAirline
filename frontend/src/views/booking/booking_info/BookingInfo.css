@@ -1,0 +1,107 @@
+.booking-cards {
+    gap: 2rem;
+}
+
+.booking-cards .booking-card {
+    display: flex;
+    align-items: center;
+    border: 2px solid #a1cf67;
+    margin-bottom: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.booking-cards .flight-details {
+    flex: 2;
+    display: flex;
+    padding: 1rem 0 1rem 1rem;
+}
+
+.booking-cards .flight-info span {
+    flex-grow: 1;
+    margin: 0 1rem;
+    font-size: 1rem;
+    border-bottom: 2px dotted #a1cf67;
+    text-align: center;
+    color: #d36286;
+    font-weight: 800;
+}
+
+.booking-cards .location-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.5rem;
+    border: 1px solid #a1cf67;
+    border-radius: 8px;
+    margin: 0;
+}
+
+.booking-cards .location-time .time {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #a1cf67;
+}
+
+.booking-cards .location-time .location {
+    font-size: 0.8rem;
+}
+
+.booking-cards .flight-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    text-align: center;
+}
+
+
+.booking-cards .additional-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.booking-cards .additional-info p {
+    flex: 1;
+    display: flex;
+    font-size: 0.9rem;
+    text-align: center;
+    align-items: center;
+}
+
+.booking-cards .selected-seat {
+    flex: 1;
+    flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.booking-cards .selected-seat.economy {
+    background-color: #a1cf67;
+    color: #42611f;
+}
+
+.booking-cards .selected-seat.business {
+    background-color: #f7c6cc;
+    color: #934960;
+}
+
+
+.booking-cards .selected-seat p {
+    margin: 0.2rem 0;
+    font-size: 1rem;
+}

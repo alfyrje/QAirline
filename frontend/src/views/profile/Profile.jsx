@@ -3,7 +3,7 @@ import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ProfileFlights from "./ProfileFlights";
-import ProfileInfo from "./ProfileInfo"
+import ProfileInfo from "./ProfileInfo";
 
 import apiInstance from "../../utils/axios";
 import { useAuthStore } from "../../store/auth";
@@ -14,24 +14,30 @@ import "./profile.css";
 function Profile() {
   return (
     <>
-      <section class="container">
+      <section className="profile-container">
         <Header />
-        {/* <ProfileFlights />
-        <ProfileInfo /> */}
-        <div class="profile-container">
-            <div class="profile-menu-nav">
-                <ul>
-                    <li>
-                        <Link to="/profile/flights">Chuyến bay</Link>
-                    </li>
-                    <li>
-                        <Link to="/profile/info">Thông tin</Link>
-                    </li>
-                </ul>
-            </div>
-            <div class="profile-content">
-                <ProfileFlights />
-            </div>
+        <div className="profile-content-container">
+          <div className="profile-sidemenu">
+            <ul className="profile-sidemenu-list">
+              <li className='profile-sidemenu-item'>
+                <a className="profile-a"href="#">
+                  <span className="text">Thông tin tài khoản</span>
+                </a>
+              </li>
+              <li className='profile-sidemenu-item'>
+                <a className="profile-a"href="#">
+                  <span className="text">Lịch sử chuyến bay</span>
+                </a>
+              </li>
+              <li className='profile-sidemenu-item'>
+                <a className="profile-a"href="#">
+                  <span className="text">Đổi mật khẩu</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+            {/* <ProfileFlights /> */}
+            <ProfileInfo />
         </div>
         <Footer />
       </section>
