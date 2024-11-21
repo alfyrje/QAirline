@@ -1,0 +1,33 @@
+.flight-info-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    width: 100%;
+    background-color: white;
+}
+
+.flight-info-card .route {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2rem;
+}
+
+.flight-info-card .airport {
+    font-weight: bold;
+}
+
+.flight-info-card .arrow {
+    font-size: 1.2em;
+}
+
+.flight-info-card .details {
+    display: flex;
+    gap: 2rem;
+}
+
+.flight-info-card .label {
+    font-size: 0.8em;
+    color: gray;
+    display: block;
+}
