@@ -28,7 +28,7 @@ function App() {
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={true} />} />
 
                         {/* Search Results */}
-                        <Route path="/flight-select" element={<FlightSelect />} />
+                        {/* <Route path="/flight-select" element={<FlightSelect />} /> */}
 
                         {/* Booking Info */}
                         <Route path="/booking-info" element={<BookingInfo />} />
@@ -39,6 +39,7 @@ function App() {
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>
+            <div></div>
         </>
     );
 }
