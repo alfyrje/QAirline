@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import "./dashboard.css"
 import { FaLightbulb } from "react-icons/fa";
 import BookingPart from "./BookingPart";
-import CardSlider from "./CardSlider";
-import NewsCarousel from "./NewsCarousel";
+import CityCarousel from "./CityCarousel";
+
+
 function Dashboard() {
     return (
         <>  
@@ -15,7 +16,7 @@ function Dashboard() {
             {/* <h1>Page content</h1> */}
             <BookingPart/>
             {/* <CardSlider/> */}
-            <NewsCarousel/>
+            <CityCarousel/>
             <Footer/>
             {/* <CardSlider/> */}
         </>

@@ -1,8 +1,13 @@
 import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { useNavigate } from "react-router-dom";
 
-const NewsCarousel = () => {
+
+const CityCarousel = () => {
+  const navigate = useNavigate();
+
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -24,33 +29,39 @@ const NewsCarousel = () => {
   const newsItems = [
     { 
       id: 1, 
-      title: "News Item 1", 
+      title: "Kyoto", 
       description: "Brief description for news item 1", 
-      image: "/images_new/1.jpg" 
+      image: "/images_new/1.jpg" ,
+      link: "/cityIntroduction/Kyoto"
+      
     },
     { 
       id: 2, 
-      title: "News Item 2", 
+      title: "Osaka", 
       description: "Brief description for news item 2", 
-      image: "/images_new/2.jpg" 
+      image: "/images_new/2.jpg" ,
+      link: "./cityIntroduction/Osaka"
     },
     { 
       id: 3, 
-      title: "News Item 3", 
+      title: "Hiroshima", 
       description: "Brief description for news item 3", 
-      image: "/images_new/3.jpg" 
+      image: "/images_new/3.jpg" ,
+      link: "./cityIntroduction/Hiroshima"
     },
     { 
       id: 4, 
-      title: "News Item 4", 
+      title: "Nagoya", 
       description: "Brief description for news item 4", 
-      image: "/images_new/4.jpg" 
+      image: "/images_new/4.jpg" ,
+      link: "./cityIntroduction/Nagoya"
     },
     { 
       id: 5, 
-      title: "News Item 5", 
+      title: "Sendai", 
       description: "Brief description for news item 5", 
-      image: "/images_new/5.jpg" 
+      image: "/images_new/5.jpg" ,
+      link: "./cityIntroduction/Sendai"
     },
   ];
 
@@ -88,6 +99,7 @@ const NewsCarousel = () => {
         {newsItems.map((item) => (
           <div
             key={item.id}
+            onClick={() => navigate(item.link)}
             style={{
               background: "#f5f5f5",
               borderRadius: "8px",
@@ -115,4 +127,4 @@ const NewsCarousel = () => {
   );
 };
 
-export default NewsCarousel;
+export default CityCarousel;
