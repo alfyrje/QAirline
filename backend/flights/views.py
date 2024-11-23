@@ -7,6 +7,10 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from .serializers import TicketSerializer
 from rest_framework.views import APIView
+import logging
+from django.contrib.auth.models import AnonymousUser
+
+logger = logging.getLogger(__name__)
 
 class FlightSearchView(ListAPIView):
     serializer_class = FlightSerializer
@@ -27,20 +31,21 @@ class FlightSearchView(ListAPIView):
         
         return flights
 
-class CreateTicketsAPI(APIView):
+class CreateTicketsAPI(ListAPIView):
     def post(self, request, *args, **kwargs):
         data = request.data
 
         flights = data.get('flights', [])
         passengers_data = data.get('passengers', [])
-
+       
         if not flights or not passengers_data:
             return Response(
                 {"error": "Missing required fields: flights or passengers"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        
         tickets = []
+        booker = request.user if not isinstance(request.user, AnonymousUser) else None
 
         for flight_info in flights:
             flight_id = flight_info.get('flightId')
@@ -53,19 +58,19 @@ class CreateTicketsAPI(APIView):
                     {"error": f"Flight with ID {flight_id} not found"},
                     status=status.HTTP_404_NOT_FOUND
                 )
-
             for passenger_data in passengers_data:
                 passenger_serializer = PassengerSerializer(data=passenger_data)
-                print(passenger_serializer.is_valid(raise_exception=True))
+                passenger_serializer.is_valid(raise_exception=True)
                 passenger = passenger_serializer.save()
 
                 ticket_data = {
-                    'booker': passenger.id,
+                    'booker': booker.id if booker else None,
                     'flight': flight.id,
-                    'seat': passenger_data.get('seat', ''),
-                    'ticket_class': seat_class
+                    'passenger': passenger.id,
+                    'seat': 'TEMP',
+                    'ticket_class': seat_class,
                 }
-
+        
                 ticket_serializer = TicketSerializer(data=ticket_data)
                 ticket_serializer.is_valid(raise_exception=True)
                 tickets.append(ticket_serializer.save())

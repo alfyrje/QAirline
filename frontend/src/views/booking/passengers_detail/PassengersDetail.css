@@ -1,0 +1,162 @@
+.container.passenger-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4%; 
+    justify-content: space-between;
+}
+
+.passenger-details .passenger-form {
+    border: 0.2rem solid #a1cf67;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.passenger-details h2 {
+    font-size: 1.2rem;
+    color: #232020;
+    padding: 0.1rem;
+    font-style: italic;
+}
+
+.passenger-details .passenger-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #a1cf67;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.passenger-details .passenger-header button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #232020;
+}
+
+.passenger-details .passenger-body {
+    padding: 1rem;
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+    max-height: 0;
+    opacity: 0;
+}
+
+.passenger-details .passenger-body.active {
+    display: block;
+    max-height: 50rem;
+    opacity: 1;
+}
+
+.passenger-details .passenger-body input,
+.passenger-details .passenger-body select {
+    width: 100%;
+    margin: 0.3rem 0;
+    padding: 0.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.passenger-details .submit-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.passenger-details button.btn.confirm {
+    background-color: #3FA7D6;
+    color: white;
+    border: none;
+    font-size: 1.8rem;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    
+}
+
+.passenger-details button.btn.confirm:hover {
+    background-color: #197caa;
+}
+
+.passenger-details input[type="text"],
+.passenger-details input[type="date"],
+.passenger-details input[type="tel"],
+.passenger-details select {
+    border: none;
+    border-bottom: 2px solid #f5bcc3;
+    outline: none;
+    width: 100%;
+    padding: 0.5rem 0.3rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.passenger-details input[type="text"]:focus,
+.passenger-details input[type="date"]:focus,
+.passenger-details input[type="tel"]:focus,
+.passenger-details select:focus {
+    border-bottom: 2px solid #e687a5;
+}
+
+.passenger-details .form-group {
+    position: relative;
+    margin-bottom: 2rem;
+    width: 50%; 
+    display: inline-block; 
+}
+
+
+.passenger-details .form-group label {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.2rem;
+    color: #aaa;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.passenger-details .form-group input:focus ~ label,
+.passenger-details .form-group input:not(:placeholder-shown) ~ label {
+    top: -1rem;
+    font-size: 0.8rem;
+    color: #e4648c;
+}
+
+.passenger-details .form-group input:focus {
+    border-bottom: 2px solid #e4648c;
+}
+
+.passenger-details .gender-group {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    border: 0px;
+}
+
+.passenger-details .gender-group legend {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+    color: #232020;
+}
+
+.passenger-details .gender-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.passenger-details .gender-group input[type="radio"] {
+    accent-color: #e4648c;
+    width: 1.2rem;
+    height: 1.2rem;
+}
