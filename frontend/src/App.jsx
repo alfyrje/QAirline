@@ -8,6 +8,14 @@ import MainWrapper from "../src/layouts/MainWrapper";
 import FlightSearchPage from "./views/booking/flight_search/FlightSearchPage"
 import FlightSelect from "./views/booking/flight_search/FlightSelect"
 import BookingInfo from "./views/booking/booking_info/BookingInfo";
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "./store/auth";
+
+const PrivateRoute = ({ children }) => {
+    const loggedIn = useAuthStore((state) => state.isLoggedIn)();
+  
+    return loggedIn ? children : <Navigate to="/login/" />;
+};
 
 function App() {
     return (
@@ -30,8 +38,13 @@ function App() {
                         {/* <Route path="/flight-select" element={<FlightSelect />} /> */}
 
                         {/* Booking Info */}
-                        <Route path="/booking-info" element={<BookingInfo />} />
-
+                        <Route path="/booking-info" 
+                            element={
+                            <PrivateRoute>
+                                <BookingInfo />
+                            </PrivateRoute>
+                        } 
+                        />
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>

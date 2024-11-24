@@ -9,6 +9,9 @@ import { register } from "../../utils/auth";
 
 import "./register.css";
 import { addToolbarButton } from "yet-another-react-lightbox";
+
+import { setAuthUser } from "../../utils/auth";
+
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 function Register() {
@@ -96,23 +99,23 @@ function Register() {
         },
         username: document.getElementById("email").value,
         password: document.getElementById("password").value,
-
       };
-      console.log(userData);
       const response = await apiInstance.post("/users/register/", userData);
-      console.log(response.data);
-      setSuccess(true);
-      setFormData({
-        name_lastname: "",
-        name_firstname: "",
-        date_birth: "",
-        gender: "male",
-        email: "",
-        phone_number: "",
-        ID_citizen: "",
-        password: "",
-        confirm_pwd: "",
-      });
+      if (response.status === 201) {
+        setAuthUser(response.data.access_token, response.data.refresh_token);
+        setSuccess(true);
+        setFormData({
+          name_lastname: "",
+          name_firstname: "",
+          date_birth: "",
+          gender: "male",
+          email: "",
+          phone_number: "",
+          ID_citizen: "",
+          password: "",
+          confirm_pwd: "",
+        });
+      }
     } catch (err) {
       if (!err.response) {
         setErrMsg("No Server Response");

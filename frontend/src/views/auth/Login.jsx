@@ -25,8 +25,7 @@ function LogIn() {
       });
   
       if (response.status === 200) {
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("refresh_token", response.data.refresh_token);
+        setAuthUser(response.data.access_token, response.data.refresh_token);
         navigate("/profile");
       }
     } catch (err) {
