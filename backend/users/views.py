@@ -10,15 +10,22 @@ from .serializers import PassengerSerializer, UserSerializer, UserLoginSerialize
 from .utils import *
 
 from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny
 
 class PassengerView(ListAPIView):
     queryset = Passenger.objects.all()
     serializer_class = PassengerSerializer
-
+    permission_classes = [AllowAny]  # Allow unauthenticated access
 class UserRegisterView(APIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+
+    def get(self, request):
+        return Response({
+            "message": "Please send a POST request to register a new user."
+        }, status=200)
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -37,6 +44,7 @@ class UserRegisterView(APIView):
             }, status=400)
 
 class UserLoginView(APIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -44,12 +52,12 @@ class UserLoginView(APIView):
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
 
-            # Authenticate user using email and password
             user = authenticate(request, username=email, password=password)
             print(user)
             if user is not None:
                 # User authenticated, generate tokens
-                refresh = TokenObtainPairSerializer.get_token(user)
+                print("OK")
+                refresh = RefreshToken.for_user(user)
                 data = {
                     'refresh_token': str(refresh),
                     'access_token': str(refresh.access_token),
@@ -57,10 +65,7 @@ class UserLoginView(APIView):
                 return Response(data, status=200)
             else:
                 # Authentication failed
-                return Response({
-                    'error_message': 'Incorrect email or password!',
-                    'error_code': 400,
-                }, status=400)
+                return Response({'error': 'Invalid credentials'}, status=401)
 
         return Response({
             'error_message': serializer.errors,
@@ -72,5 +77,6 @@ class UserLogoutView(ListAPIView):
         return Response({"message": "Logout successful"})
     
 class UserView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     queryset = User.objects.all()
     serializer_class = UserSerializer
