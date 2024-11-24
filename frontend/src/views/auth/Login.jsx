@@ -4,7 +4,7 @@ import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 import apiInstance from "../../utils/axios";
-import login from "../../utils/requests"
+import { setAuthUser } from "../../utils/auth";
 
 import "./login.css";
 
@@ -25,6 +25,7 @@ function LogIn() {
       });
   
       if (response.status === 200) {
+        console.log("hihi");
         setAuthUser(response.data.access_token, response.data.refresh_token);
         navigate("/profile");
       }

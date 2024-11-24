@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import "./header.css";
 import "../../index.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/auth";
+import { logout } from "../../utils/auth";
 
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
+  const navigate = useNavigate();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
 
   // Function to toggle the 'active' class
   const toggleSublist = (index) => {
@@ -38,13 +48,21 @@ function Header() {
           </Link>
         </div>
         <div className="header-authLink">
-          <Link to="/Đăng nhập" className="header-signIn">
-            Đăng nhập
-          </Link>
-          <a id = 'header-separation'> | </a>
-          <Link to="/Đăng kí" className="header-logOut">
-            Đăng ký
-          </Link>
+        {isLoggedIn ? (
+            <button onClick={handleLogout} className="header-logOut">
+              Đăng xuất
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="header-signIn">
+                Đăng nhập
+              </Link>
+              <a id="header-separation"> | </a>
+              <Link to="/register" className="header-logOut">
+                Đăng ký
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 

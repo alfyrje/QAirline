@@ -1,17 +1,9 @@
-// Importing the useAuthStore hook from the '../store/auth' file to manage authentication state
 import { useAuthStore } from "../store/auth";
-
-// Importing the axios library for making HTTP requests
 import axios from "axios";
-
-// Importing jwt_decode to decode JSON Web Tokens
 import jwt_decode from "jwt-decode";
-
-// Importing the Cookies library to handle browser cookies
 import Cookies from "js-cookie";
-
-// Importing Swal (SweetAlert2) for displaying toast notifications
 import Swal from "sweetalert2";
+
 // Configuring global toast notifications using Swal.mixin
 const Toast = Swal.mixin({
   toast: true,
@@ -95,25 +87,27 @@ export const logout = () => {
     icon: "success",
     title: "You have been logged out.",
   });
+  console.log("User has been logged out."); // Log statement to indicate logout
 };
 
 // Function to set the authenticated user on page load
 export const setUser = async () => {
-  // Retrieving access and refresh tokens from cookies
-  const accessToken = Cookies.get("access_token");
-  const refreshToken = Cookies.get("refresh_token");
+  try {
+    const accessToken = Cookies.get("access_token");
+    const refreshToken = Cookies.get("refresh_token");
 
-  // Checking if tokens are present
-  if (!accessToken || !refreshToken) {
-    return;
-  }
+    if (!accessToken || !refreshToken) {
+      return;
+    }
 
-  // If access token is expired, refresh it; otherwise, set the authenticated user
-  if (isAccessTokenExpired(accessToken)) {
-    const response = await getRefreshToken(refreshToken);
-    setAuthUser(response.access, response.refresh);
-  } else {
-    setAuthUser(accessToken, refreshToken);
+    if (isAccessTokenExpired(accessToken)) {
+      const response = await getRefreshToken(refreshToken);
+      setAuthUser(response.access, response.refresh);
+    } else {
+      setAuthUser(accessToken, refreshToken);
+    }
+  } catch (error) {
+    console.error("Error setting user:", error);
   }
 };
 Cookies;
@@ -128,13 +122,22 @@ export const setAuthUser = (access_token, refresh_token) => {
     useAuthStore.getState().setUser(user);
   }
   useAuthStore.getState().setLoading(false);
+  console.log(
+    "User state after setting auth:",
+    useAuthStore.getState().allUserData
+  ); // Log the state
 };
 
 // Function to refresh the access token using the refresh token
 export const getRefreshToken = async (refresh_token) => {
-  const response = await axios.post("user/token/refresh/", {
-    refresh: refresh_token,
-  });
+  console.log("Sending request to refresh token...");
+  const response = await axios.post(
+    "http://127.0.0.1:8000/users/api/token/refresh/",
+    {
+      refresh: refresh_token,
+    }
+  );
+  console.log("Received new tokens:", response.data);
   return response.data;
 };
 

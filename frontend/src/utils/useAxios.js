@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { API_BASE_URL } from "./constants";
-
+import { setAuthUser } from "./auth";
 const useAxios = () => {
   const accessToken = Cookies.get("access_token");
   const refreshToken = Cookies.get("refresh_token");
