@@ -11,7 +11,7 @@ const FlightSearchPage = ({roundTrip}) => {
 
     return (
         <div>
-            <h1>Search Flights</h1>
+            <h1>Search Flights</h1> 
             <FlightSearchForm onSearch={handleSearch} roundTrip = {roundTrip} />
         </div>
     );

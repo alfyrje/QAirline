@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-from users.models import Passenger
+from users.models import Passenger, User
 
 class Plane(models.Model):
     name = models.CharField(max_length=100)
@@ -41,8 +41,9 @@ class Flight(models.Model):
         return f"{self.code}"
 
 class Ticket(models.Model):
-    booker = models.ForeignKey(Passenger, on_delete=models.CASCADE)
+    booker = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
+    passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
     seat = models.CharField(max_length=10)
     CLASS_CHOICES = [
         ('E', 'Economic'),
@@ -50,4 +51,4 @@ class Ticket(models.Model):
     ]
     ticket_class = models.CharField(max_length=1, choices=CLASS_CHOICES, default='E')
     def __str__(self):
-        return f"{self.booker} - {self.flight} - {self.ticket_class}"
+        return f"{self.booker} - {self.passenger} - {self.flight} - {self.ticket_class}"

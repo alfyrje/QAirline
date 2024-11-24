@@ -16,6 +16,7 @@ const PrivateRoute = ({ children }) => {
   
     return loggedIn ? children : <Navigate to="/login/" />;
 };
+import PassengersDetail from "./views/booking/passengers_detail/PassengersDetail";
 
 function App() {
     return (
@@ -35,7 +36,7 @@ function App() {
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={true} />} />
 
                         {/* Search Results */}
-                        {/* <Route path="/flight-select" element={<FlightSelect />} /> */}
+                        <Route path="/flight-select" element={<FlightSelect />} />
 
                         {/* Booking Info */}
                         <Route path="/booking-info" 
@@ -45,6 +46,9 @@ function App() {
                             </PrivateRoute>
                         } 
                         />
+                        {/* Passengers Detail */}
+                        <Route path="/passengers-detail" element={<PassengersDetail />} />
+
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>
