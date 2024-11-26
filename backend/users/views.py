@@ -17,8 +17,6 @@ from rest_framework import status
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
-class MyTokenRefreshView(TokenRefreshView):
-    permission_classes = [AllowAny]
 class MyTokenObtainPairView(TokenObtainPairView):
     permission_classes = [AllowAny]
     serializer_class = serializers.MyTokenObtainPairSerializer
@@ -64,32 +62,32 @@ class UserRegisterView(APIView):
                 'errors_code': 400,
             }, status=400)
 
-# class UserLoginView(APIView):
-#     permission_classes = [AllowAny]  # Allow unauthenticated access
-#     def post(self, request):
-#         serializer = serializers.UserLoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data['email']
-#             password = serializer.validated_data['password']
+class UserLoginView(APIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+    def post(self, request):
+        serializer = serializers.UserLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
 
-#             user = authenticate(request, username=email, password=password)
-#             print(user)
-#             if user is not None:
-#                 # User authenticated, generate tokens
-#                 refresh = RefreshToken.for_user(user)
-#                 data = {
-#                     'refresh_token': str(refresh),
-#                     'access_token': str(refresh.access_token),
-#                 }
-#                 return Response(data, status=200)
-#             else:
-#                 # Authentication failed
-#                 return Response({'error': 'Invalid credentials'}, status=401)
+            user = authenticate(request, username=email, password=password)
+            print(user)
+            if user is not None:
+                # User authenticated, generate tokens
+                refresh = RefreshToken.for_user(user)
+                data = {
+                    'refresh_token': str(refresh),
+                    'access_token': str(refresh.access_token),
+                }
+                return Response(data, status=200)
+            else:
+                # Authentication failed
+                return Response({'error': 'Invalid credentials'}, status=401)
 
-#         return Response({
-#             'error_message': serializer.errors,
-#             'error_code': 400,
-#         }, status=400)
+        return Response({
+            'error_message': serializer.errors,
+            'error_code': 400,
+        }, status=400)
     
 # class UserLogoutView(ListAPIView):
 #     def post(self, request):
