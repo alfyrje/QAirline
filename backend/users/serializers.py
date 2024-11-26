@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'tel_num', 'personal_info', 'username','password', 'first_name', 'last_name']
+        fields = ['email', 'personal_info', 'username','password', 'first_name', 'last_name']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -35,8 +35,8 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         personal_info_data = validated_data.pop('personal_info')
         passenger = Passenger.objects.create(**personal_info_data)
-        user.personal_info = passenger
         user = User.objects.create(**validated_data)
+        user.personal_info = passenger
         user.set_password(validated_data['password'])
         user.save()
         return user
