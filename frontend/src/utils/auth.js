@@ -133,7 +133,8 @@ export const register = async (formData) => {
   try {
     const { data } = await axios.post("http://127.0.0.1:8000/users/register/", {
       email,
-      tel_num: phone_number,
+      first_name: name_firstname,
+      last_name: name_lastname,
       personal_info: {
         tel_num: phone_number,
         first_name: name_firstname,
