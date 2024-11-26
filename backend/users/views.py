@@ -14,19 +14,24 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from rest_framework import status
-
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
+class MyTokenRefreshView(TokenRefreshView):
+    permission_classes = [AllowAny]
 class MyTokenObtainPairView(TokenObtainPairView):
     permission_classes = [AllowAny]
     serializer_class = serializers.MyTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
+        print("receive login request")
         serializer = self.get_serializer(data=request.data)
-        # try:
-        #     serializer.is_valid(raise_exception=True)
-        # except Exception as e:
-        #     print("hello")
-        #     return Response({"message": "helppppp me"})
-        serializer.is_valid(raise_exception=True)
+        print("serialized")
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return Response({"message": "helppppp me"})
+        print("serializer is valid")
         user = serializer.validated_data['user']
         print(user)
         refresh = RefreshToken.for_user(user)
@@ -46,6 +51,7 @@ class UserRegisterView(APIView):
         print("received request")
         serializer = serializers.UserSerializer(data=request.data)
         if serializer.is_valid():
+            print("serializer is valid")
             user = serializer.save()
             return JsonResponse({
                 'message': 'Register successful!',
