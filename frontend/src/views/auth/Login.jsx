@@ -3,8 +3,8 @@ import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
-import apiInstance from "../../utils/axios";
-import { setAuthUser } from "../../utils/auth";
+import { useAuthStore } from "../../store/auth";
+import {login} from "../../utils/auth";
 
 import "./login.css";
 
@@ -12,33 +12,48 @@ function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",   
+  });
+  const[isLoading, setIsLoading] = useState(false);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      password: "",
+    });
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-    setError("");
-  
-    try {
-      const response = await apiInstance.post("http://127.0.0.1:8000/users/login/", {
-        email,
-        password,
-      });
-  
-      if (response.status === 200) {
-        console.log("hihi");
-        setAuthUser(response.data.access_token, response.data.refresh_token);
-        navigate("/profile");
-      }
-    } catch (err) {
-      setError(err.response?.data?.error_message || "Login failed. Please try again.");
+    setIsLoading(true);
+    const error = await login(formData.email, formData.password);
+    if (error) {
+      alert(JSON.stringify(error));
+      resetForm();
+    } else {
+      navigate("/profile");
     }
+    setIsLoading(false);
   };
   return (
     <>
       <section className="login-container">
         <Header />
         <div className="login-form-container">
-          <form className="login-form"action="#">
+          <form className="login-form"action="#"onSubmit={handleLogin}>
             <div className="login-form-icon">
             <img src='/icons/hoa.png' width='50px' height='50px'></img>
             </div>
@@ -68,7 +83,7 @@ function LogIn() {
                 required
               />
             </div>
-            <div className="login-input_box">
+            {/* <div className="login-input_box">
               <div className="login-password_remember">
                 <label for="password">Ghi nhớ lần đăng nhập sau</label>
                 <div className="login-checkbox-container">
@@ -79,8 +94,8 @@ function LogIn() {
               />
                 </div>
               </div>
-            </div>
-            <button type="submit"onClick={handleLogin}>Log In</button>
+            </div> */}
+            <button type="submit">Log In</button>
             <p>
               Don't have an account? <a className="login-a" href="#">Sign up</a>
             </p>

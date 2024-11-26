@@ -5,7 +5,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import ProfileFlights from "./ProfileFlights";
 import ProfileInfo from "./ProfileInfo";
 
-import apiInstance from "../../utils/axios";
 import { useAuthStore } from "../../store/auth";
 import { register } from "../../utils/auth";
 

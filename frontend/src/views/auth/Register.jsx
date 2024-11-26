@@ -2,96 +2,61 @@ import React, { useState, useRef, useEffect } from "react";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useNavigate } from "react-router-dom";
-import apiInstance from "../../utils/axios";
 import { setAuthUser } from "../../utils/auth";
+import { register } from "../../utils/auth";
 import "./register.css";
+
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 function Register() {
   const userRef = useRef();
-  const errRef = useRef();
-  const navigate = useNavigate();
-
-  const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     name_lastname: "",
     name_firstname: "",
     date_birth: "",
-    gender: "male",
+    gender: "",
+    nationality: "",
     email: "",
     phone_number: "",
     ID_citizen: "",
     password: "",
     confirm_pwd: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    });
   };
+  const resetForm = () => {
+    setFormData({
+      name_lastname: "",
+      name_firstname: "",
+      date_birth: "",
+      gender: "",
+      nationality: "",
+      email: "",
+      phone_number: "",
+      ID_citizen: "",
+      password: "",
+      confirm_pwd: "",
+    }); 
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const {
-      name_lastname,
-      name_firstname,
-      date_birth,
-      gender,
-      email,
-      phone_number,
-      ID_citizen,
-      password,
-      confirm_pwd,
-    } = formData;
-
-    try {
-      const userData = {
-        email: document.getElementById("email").value,
-        tel_num: document.getElementById("phone_number").value,
-        personal_info: {
-          first_name: document.getElementById("name_firstname").value,
-          last_name: document.getElementById("name_lastname").value,
-          date_of_birth: document.getElementById("date_birth").value,
-          citizen_id: document.getElementById("ID_citizen").value,
-          nationality: document.getElementById("nationality").value,
-          email: document.getElementById("email").value,
-          address: document.getElementById("address").value,
-        },
-        username: document.getElementById("email").value,
-        password: document.getElementById("password").value,
-      };
-      const response = await apiInstance.post("/users/register/", userData);
-      if (response.status === 201) {
-        // setAuthUser(response.data.access_token, response.data.refresh_token);
-        setSuccess(true);
-        setFormData({
-          name_lastname: "",
-          name_firstname: "",
-          date_birth: "",
-          gender: "male",
-          email: "",
-          phone_number: "",
-          ID_citizen: "",
-          password: "",
-          confirm_pwd: "",
-        });
-        navigate("/profile");
-      }
-    } catch (err) {
-      if (!err.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response.status === 409) {
-        setErrMsg("User Taken");
-      } else {
-        setErrMsg("Registration Failed");
-      }
-      errRef.current.focus();
+    setIsLoading(true);
+    const error = await register(formData);
+    if (error) {
+      alert(JSON.stringify(error));
+      resetForm();
+    } else {
+      navigate("/login");
     }
   };
 
@@ -99,9 +64,6 @@ function Register() {
     <>
       <section className="register-container">
         <Header />
-        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
-          {errMsg}
-        </p>
         <div className="register-form-container">
           <form className="register-form" onSubmit={handleSubmit}>
             <h1>Bạn đã sẵn sàng tham gia qAirline club? Hãy bắt đầu ngay!</h1>
@@ -153,6 +115,19 @@ function Register() {
                 </div>
               </div>
             </div>
+
+            <div className="register-input-box">
+              <label htmlFor="nationality">QUỐC TỊCH</label>
+              <input
+                type="text"
+                id="nationality"
+                autoComplete="off"
+                onChange={handleChange}
+                required
+                placeholder="Quốc tịch"
+              />
+            </div>
+
             <div className="register-input-box">
               <label htmlFor="email">EMAIL</label>
               <input

@@ -18,7 +18,7 @@ const PassengersDetail = () => {
         Array.from({ length: passengersNo }, () => ({
             first_name: "",
             last_name: "",
-            tel_num: "",
+            // tel_num: "",
             date_of_birth: "",
             citizen_id: "",
             nationality: "",

@@ -33,7 +33,7 @@ function App() {
                         <Route path="/dashboard/" element={<Dashboard />} />
 
                         {/* Flight Search */}
-                        <Route path="/flight-search/" element={<FlightSearchPage roundTrip={true} />} />
+                        <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />
 
                         {/* Search Results */}
                         <Route path="/flight-select" element={<FlightSelect />} />
@@ -47,7 +47,13 @@ function App() {
                         } 
                         />
                         {/* Passengers Detail */}
-                        <Route path="/passengers-detail" element={<PassengersDetail />} />
+                        <Route path="/passengers-detail"
+                            element={
+                            <PrivateRoute>
+                                <PassengersDetail />                            
+                            </PrivateRoute>
+                        } 
+                        />
 
                     </Routes>
                 </MainWrapper>
