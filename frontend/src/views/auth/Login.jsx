@@ -39,12 +39,11 @@ function LogIn() {
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     setIsLoading(true);
-    const error = await login(formData.email, formData.password);
-    if (error) {
-      alert(JSON.stringify(error));
-      resetForm();
-    } else {
+    const response = await login(formData.email, formData.password);
+    if (response) {
       navigate("/profile");
+    } else {
+      alert(JSON.stringify(response.error));
     }
     setIsLoading(false);
   };
@@ -64,8 +63,7 @@ function LogIn() {
                 type="email"
                 id="email"
                 placeholder="Email của bạn"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -78,8 +76,7 @@ function LogIn() {
                 type="password"
                 id="password"
                 placeholder="Nhập mật khẩu của bạn"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>

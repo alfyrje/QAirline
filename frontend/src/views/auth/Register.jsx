@@ -52,12 +52,11 @@ function Register() {
     console.log(formData)
     e.preventDefault();
     setIsLoading(true);
-    const error = await register(formData);
-    if (error) {
-      alert(JSON.stringify(error));
+    const response = await register(formData);
+    if (response) {
       navigate("/login");
     } else {
-      navigate("/login");
+      alert(JSON.stringify(response.error));
     }
   };
 

@@ -2,15 +2,6 @@ import { useAuthStore } from "../store/auth";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
-import Swal from "sweetalert2";
-
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top",
-  showConfirmButton: false,
-  timer: 1500,
-  timerProgressBar: true,
-});
 
 export const isAccessTokenExpired = (accessToken) => {
   try {
@@ -39,11 +30,6 @@ export const getRefreshToken = async (refresh_token) => {
 };
 
 export const setAuthUser = (access_token, refresh_token) => {
-  console.log(
-    "Calling setAuthUser function with:",
-    access_token,
-    refresh_token
-  );
   Cookies.set("access_token", access_token, { expires: 1, secure: true });
   Cookies.set("refresh_token", refresh_token, { expires: 7, secure: true });
 
@@ -52,10 +38,6 @@ export const setAuthUser = (access_token, refresh_token) => {
     useAuthStore.getState().setUser(user);
   }
   useAuthStore.getState().setLoading(false);
-  console.log(
-    "User state after setting auth:",
-    useAuthStore.getState().allUserData
-  );
 };
 
 export const setUser = async () => {
@@ -81,26 +63,28 @@ export const setUser = async () => {
 
 export const login = async (email, password) => {
   try {
-    const { data, status } = await axios.post(
-      "http://127.0.0.1:8000/users/token/",
-      {
-        email,
-        password,
-      }
-    );
+    const response = await fetch("http://127.0.0.1:8000/users/token/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: email,
+        password: password,
+      }),
+    });
+    const data = await response.json();
 
-    if (status === 200) {
+    if (response.status === 200) {
       setAuthUser(data.access, data.refresh);
-      Toast.fire({
-        icon: "success",
-        title: "Signed in successfully",
-      });
+      return { data: "Success", error: null };
+    } else {
+      return { data: null, error };
     }
-    return { data, error: null };
   } catch (error) {
     return {
       data: null,
-      error: error.response.data?.detail || "Something went wrong",
+      error: "Network error or server unreachable",
     };
   }
 };
@@ -109,10 +93,6 @@ export const logout = () => {
   Cookies.remove("access_token");
   Cookies.remove("refresh_token");
   useAuthStore.getState().setUser(null);
-  Toast.fire({
-    icon: "success",
-    title: "You have been logged out.",
-  });
   console.log("User has been logged out.");
 };
 
@@ -146,11 +126,6 @@ export const register = async (formData) => {
       },
       username: email,
       password,
-    });
-    await login(email, password);
-    Toast.fire({
-      icon: "success",
-      title: "Signed Up Successfully",
     });
 
     return { data, error: null };
