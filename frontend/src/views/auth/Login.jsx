@@ -40,7 +40,8 @@ function LogIn() {
     e.preventDefault(); // Prevent the default form submission behavior
     setIsLoading(true);
     const response = await login(formData.email, formData.password);
-    if (response) {
+    console.log(response);
+    if (response.data==="Success") {
       navigate("/profile");
     } else {
       alert(JSON.stringify(response.error));

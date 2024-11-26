@@ -53,8 +53,9 @@ function Register() {
     e.preventDefault();
     setIsLoading(true);
     const response = await register(formData);
-    if (response) {
+    if (response.data === "Success") {
       navigate("/login");
+      // console.log(response)
     } else {
       alert(JSON.stringify(response.error));
     }

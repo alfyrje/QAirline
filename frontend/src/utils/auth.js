@@ -30,20 +30,23 @@ export const getRefreshToken = async (refresh_token) => {
 };
 
 export const setAuthUser = (access_token, refresh_token) => {
-  Cookies.set("access_token", access_token, { expires: 1, secure: true });
-  Cookies.set("refresh_token", refresh_token, { expires: 7, secure: true });
+  localStorage.setItem("access_token", access_token);
+  localStorage.setItem("refresh_token", refresh_token);
 
   const user = jwt_decode(access_token) ?? null;
   if (user) {
     useAuthStore.getState().setUser(user);
+    useAuthStore.setState({ isLoggedIn: true });
+  } else {
+    useAuthStore.setState({ isLoggedIn: false });
   }
   useAuthStore.getState().setLoading(false);
 };
 
 export const setUser = async () => {
   try {
-    const accessToken = Cookies.get("access_token");
-    const refreshToken = Cookies.get("refresh_token");
+    const accessToken = localStorage.getItem("access_token");
+    const refreshToken = localStorage.getItem("refresh_token");
 
     if (!accessToken || !refreshToken) {
       return;
@@ -60,7 +63,6 @@ export const setUser = async () => {
     console.error("Error setting user:", error);
   }
 };
-
 export const login = async (email, password) => {
   try {
     const response = await fetch("http://127.0.0.1:8000/users/token/", {
@@ -77,22 +79,24 @@ export const login = async (email, password) => {
 
     if (response.status === 200) {
       setAuthUser(data.access, data.refresh);
+      console.log("set Auth user");
       return { data: "Success", error: null };
     } else {
-      return { data: null, error };
+      return { data: "Failed", error };
     }
   } catch (error) {
     return {
-      data: null,
+      data: "Failed",
       error: "Network error or server unreachable",
     };
   }
 };
 
 export const logout = () => {
-  Cookies.remove("access_token");
-  Cookies.remove("refresh_token");
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
   useAuthStore.getState().setUser(null);
+  useAuthStore.setState({ isLoggedIn: false });
   console.log("User has been logged out.");
 };
 
@@ -121,17 +125,17 @@ export const register = async (formData) => {
         last_name: name_lastname,
         date_of_birth: date_birth,
         citizen_id: ID_citizen,
-        nationality: nationality, // Add nationality field if needed
+        nationality: nationality,
         gender,
       },
       username: email,
       password,
     });
 
-    return { error: null };
+    return { data: "Success", error: null };
   } catch (error) {
     return {
-      data: null,
+      data: "Failed",
       error: error || "Something went wrong",
     };
   }

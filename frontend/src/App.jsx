@@ -12,8 +12,8 @@ import { Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/auth";
 
 const PrivateRoute = ({ children }) => {
-    const loggedIn = useAuthStore((state) => state.isLoggedIn)();
-  
+    const loggedIn = useAuthStore((state) => state.isLoggedIn);
+    console.log(loggedIn);
     return loggedIn ? children : <Navigate to="/login/" />;
 };
 import PassengersDetail from "./views/booking/passengers_detail/PassengersDetail";
@@ -27,7 +27,11 @@ function App() {
                         {/* Authentication */}
                         <Route path="/register/" element={<Register />} />
                         <Route path="/login/" element={<LogIn />} />
-                        <Route path="/profile/" element={<Profile />} />
+                        <Route path="/profile/" element={
+                            <PrivateRoute>
+                            <Profile />
+                            </PrivateRoute>
+                            } />
 
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
