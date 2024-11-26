@@ -9,10 +9,14 @@ from .serializers import TicketSerializer
 from rest_framework.views import APIView
 import logging
 from django.contrib.auth.models import AnonymousUser
+from rest_framework.permissions import AllowAny
 
 logger = logging.getLogger(__name__)
 
 class FlightSearchView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+    # authentication_classes = [TokenAuthentication]
+
     serializer_class = FlightSerializer
 
     def get_queryset(self):
@@ -32,6 +36,7 @@ class FlightSearchView(ListAPIView):
         return flights
 
 class CreateTicketsAPI(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     def post(self, request, *args, **kwargs):
         data = request.data
 
