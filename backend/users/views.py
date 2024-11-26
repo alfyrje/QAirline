@@ -44,11 +44,11 @@ class PassengerView(ListAPIView):
 
 class UserRegisterView(APIView):
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny] 
     def post(self, request):
-        print("received request")
-        print(request.data)
+        # print(request.data)
         serializer = serializers.UserSerializer(data=request.data)
+
         if serializer.is_valid():
             print("serializer is valid")
             user = serializer.save()
@@ -56,10 +56,10 @@ class UserRegisterView(APIView):
                 'message': 'Register successful!',
             }, status=201)
         else:
-            print(serializer.errors)
+            first_field = list(serializer.errors.keys())[0]
+            error_message = serializer.errors[first_field][0]
             return JsonResponse({
-                'error_message': 'This email has already exist!',
-                'errors_code': 400,
+                'error_message': error_message,
             }, status=400)
 
 class UserLoginView(APIView):
