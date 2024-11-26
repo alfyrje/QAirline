@@ -8,14 +8,13 @@ const MainWrapper = ({ children }) => {
         const handler = async () => {
             try {
                 setLoading(true);
-                await setUser();
+                // await setUser();
             } catch (error) {
                 console.error("Error in MainWrapper:", error);
             } finally {
                 setLoading(false);
             }
         };
-
         handler();
     }, []);
 

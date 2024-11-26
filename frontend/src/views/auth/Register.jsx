@@ -53,8 +53,8 @@ function Register() {
     setIsLoading(true);
     const error = await register(formData);
     if (error) {
+      console.log(error);
       alert(JSON.stringify(error));
-      resetForm();
     } else {
       navigate("/login");
     }

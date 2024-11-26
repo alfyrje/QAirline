@@ -3,6 +3,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import apiInstance from "./axios";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -81,14 +82,16 @@ export const setUser = async () => {
 
 export const login = async (email, password) => {
   try {
-    const { data, status } = await axios.post(
-      "http://127.0.0.1:8000/users/token/",
+    console.log("Send response");
+
+    const { data, status } = await apiInstance.post(
+      "http://127.0.0.1:8000/users/login/",
       {
-        email,
-        password,
+        email: email,
+        password: password,
       }
     );
-
+    console.log("Receive response");
     if (status === 200) {
       setAuthUser(data.access, data.refresh);
       Toast.fire({
@@ -147,16 +150,14 @@ export const register = async (formData) => {
       username: email,
       password,
     });
-    await login(email, password);
     Toast.fire({
       icon: "success",
       title: "Signed Up Successfully",
     });
 
-    return { data, error: null };
+    return { error: null };
   } catch (error) {
     return {
-      data: null,
       error: error.response.data || "Something went wrong",
     };
   }

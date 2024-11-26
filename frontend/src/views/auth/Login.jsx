@@ -42,11 +42,9 @@ function LogIn() {
     const error = await login(formData.email, formData.password);
     if (error) {
       alert(JSON.stringify(error));
-      resetForm();
     } else {
       navigate("/profile");
     }
-    setIsLoading(false);
   };
   return (
     <>
@@ -79,7 +77,7 @@ function LogIn() {
                 id="password"
                 placeholder="Nhập mật khẩu của bạn"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>
