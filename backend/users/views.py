@@ -1,108 +1,94 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth import authenticate
+from rest_framework.response import Response
 
-from .models import Passenger, User
-from .serializers import PassengerSerializer, UserSerializer, UserLoginSerializer
+from users import models
+from users import serializers
 from .utils import *
 
 from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny
+from rest_framework import status
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    permission_classes = [AllowAny]
+    serializer_class = serializers.MyTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # try:
+        #     serializer.is_valid(raise_exception=True)
+        # except Exception as e:
+        #     print("hello")
+        #     return Response({"message": "helppppp me"})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        print(user)
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_200_OK)
 
 class PassengerView(ListAPIView):
-    queryset = Passenger.objects.all()
-    serializer_class = PassengerSerializer
+    queryset = models.Passenger.objects.all()
+    serializer_class = serializers.PassengerSerializer
 
 class UserRegisterView(APIView):
+    queryset = models.User.objects.all()
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        print("received request")
+        serializer = serializers.UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.validated_data['password'] = serializer.validated_data['password']
-            serializer.save()
+            user = serializer.save()
             return JsonResponse({
-                'message': 'Register successful!'
-            }, status=201)        
+                'message': 'Register successful!',
+            }, status=201)
         else:
-            print(serializer.errors)  # In lỗi ra console (hoặc dùng logging)
+            print(serializer.errors)
             return JsonResponse({
                 'error_message': 'This email has already exist!',
                 'errors_code': 400,
-            }, status=400)        
-class UserLoginView(APIView):
-    # def post(self, request):
-    #     serializer = UserLoginSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         print("OK")
-    #         try: 
-    #             user = User.objects.get(email=serializer.validated_data['email'], activated=True)
-    #             if user is not None:
-    #                 if user.password == serializer.validated_data['password']:
-    #                     re
-    #         except:
-    #             return Response({
-    #                 'error_message': 'Email or password is incorrect!',
-    #         })
+            }, status=400)
 
-    #         user = authenticate(
-    #             email=serializer.validated_data['email'],
-    #             password=serializer.validated_data['password']
-    #         )
-    #         print(user)
-    #         if user:
-    #             refresh = TokenObtainPairSerializer.get_token(user)
-    #             data = {
-    #                 'refresh_token': str(refresh),
-    #                 'access_token': str(refresh.access_token)
-    #             }
-    #             return Response(data, status=200)
+# class UserLoginView(APIView):
+#     permission_classes = [AllowAny]  # Allow unauthenticated access
+#     def post(self, request):
+#         serializer = serializers.UserLoginSerializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data['email']
+#             password = serializer.validated_data['password']
 
-    #         return Response({
-    #             'error_message': 'Email or password is incorrect!',
-    #             'error_code': 400
-    #         }, status=400)
-        
-    #     return Response({
-    #         'error_message': serializer.errors,
-    #         'error_code': 400
-    #     }, status=400)
-    def post(self, request):
-        serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid():
-            print("OK")
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
+#             user = authenticate(request, username=email, password=password)
+#             print(user)
+#             if user is not None:
+#                 # User authenticated, generate tokens
+#                 refresh = RefreshToken.for_user(user)
+#                 data = {
+#                     'refresh_token': str(refresh),
+#                     'access_token': str(refresh.access_token),
+#                 }
+#                 return Response(data, status=200)
+#             else:
+#                 # Authentication failed
+#                 return Response({'error': 'Invalid credentials'}, status=401)
 
-            # Authenticate user using email and password
-            user = authenticate(request, username=email, password=password)
-            print(user)
-            if user is not None:
-                # User authenticated, generate tokens
-                refresh = TokenObtainPairSerializer.get_token(user)
-                data = {
-                    'refresh_token': str(refresh),
-                    'access_token': str(refresh.access_token),
-                }
-                return Response(data, status=200)
-            else:
-                # Authentication failed
-                return Response({
-                    'error_message': 'Incorrect email or password!',
-                    'error_code': 400,
-                }, status=400)
-
-        return Response({
-            'error_message': serializer.errors,
-            'error_code': 400,
-        }, status=400)
+#         return Response({
+#             'error_message': serializer.errors,
+#             'error_code': 400,
+#         }, status=400)
     
-class UserLogoutView(ListAPIView):
-    def post(self, request):
-        return Response({"message": "Logout successful"})
+# class UserLogoutView(ListAPIView):
+#     def post(self, request):
+#         return Response({"message": "Logout successful"})
     
 class UserView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = serializers.UserSerializer

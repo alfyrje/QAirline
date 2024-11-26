@@ -1,6 +1,14 @@
 # users/serializers.py
 from rest_framework import serializers
 from .models import User, Passenger
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['email'] = user.email
+        return token
 
 class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,8 +38,4 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-
-class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(required=True)
     
