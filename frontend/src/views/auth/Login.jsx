@@ -59,7 +59,7 @@ function LogIn() {
             </div>
             <h3>Đăng nhập qAirline</h3>
             <div className="login-input_box">
-              <label for="email">Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
@@ -71,7 +71,7 @@ function LogIn() {
             </div>
             <div className="login-input_box">
               <div className="login-password_title">
-                <label for="password">Mật khẩu</label>
+                <label htmlFor="password">Mật khẩu</label>
                 <a className="login-a"href="#">Quên mật khẩu?</a>
               </div>
               <input

@@ -157,7 +157,7 @@ export const register = async (formData) => {
   } catch (error) {
     return {
       data: null,
-      error: error.response.data || "Something went wrong",
+      error: error || "Something went wrong",
     };
   }
 };
