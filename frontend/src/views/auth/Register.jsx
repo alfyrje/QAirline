@@ -16,7 +16,7 @@ function Register() {
     name_lastname: "",
     name_firstname: "",
     date_birth: "",
-    gender: "",
+    gender: "M",
     nationality: "",
     email: "",
     phone_number: "",
@@ -38,7 +38,7 @@ function Register() {
       name_lastname: "",
       name_firstname: "",
       date_birth: "",
-      gender: "",
+      gender: "M",
       nationality: "",
       email: "",
       phone_number: "",
@@ -49,14 +49,14 @@ function Register() {
   }
 
   const handleSubmit = async (e) => {
+    console.log(formData)
     e.preventDefault();
     setIsLoading(true);
-    const error = await register(formData);
-    if (error) {
-      console.log(error);
-      alert(JSON.stringify(error));
-    } else {
+    const response = await register(formData);
+    if (response) {
       navigate("/login");
+    } else {
+      alert(JSON.stringify(response.error));
     }
   };
 

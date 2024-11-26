@@ -39,11 +39,11 @@ function LogIn() {
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     setIsLoading(true);
-    const error = await login(formData.email, formData.password);
-    if (error) {
-      alert(JSON.stringify(error));
-    } else {
+    const response = await login(formData.email, formData.password);
+    if (response) {
       navigate("/profile");
+    } else {
+      alert(JSON.stringify(response.error));
     }
   };
   return (
@@ -57,26 +57,24 @@ function LogIn() {
             </div>
             <h3>Đăng nhập qAirline</h3>
             <div className="login-input_box">
-              <label for="email">Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
                 placeholder="Email của bạn"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>
             <div className="login-input_box">
               <div className="login-password_title">
-                <label for="password">Mật khẩu</label>
+                <label htmlFor="password">Mật khẩu</label>
                 <a className="login-a"href="#">Quên mật khẩu?</a>
               </div>
               <input
                 type="password"
                 id="password"
                 placeholder="Nhập mật khẩu của bạn"
-                value={password}
                 onChange={handleChange}
                 required
               />
