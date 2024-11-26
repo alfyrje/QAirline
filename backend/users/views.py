@@ -49,6 +49,7 @@ class UserRegisterView(APIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     def post(self, request):
         print("received request")
+        print(request)
         serializer = serializers.UserSerializer(data=request.data)
         if serializer.is_valid():
             print("serializer is valid")
