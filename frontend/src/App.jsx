@@ -13,7 +13,6 @@ import { useAuthStore } from "./store/auth";
 
 const PrivateRoute = ({ children }) => {
     const loggedIn = useAuthStore((state) => state.isLoggedIn);
-    console.log(loggedIn);
     return loggedIn ? children : <Navigate to="/login/" />;
 };
 import PassengersDetail from "./views/booking/passengers_detail/PassengersDetail";

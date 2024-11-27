@@ -79,7 +79,7 @@ export const login = async (email, password) => {
 
     if (response.status === 200) {
       setAuthUser(data.access, data.refresh);
-      console.log("set Auth user");
+      console.log(useAuthStore.getState().allUserData.user_id);
       return { data: "Success", error: null };
     } else {
       return { data: "Failed", error };
