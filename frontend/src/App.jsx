@@ -6,11 +6,10 @@ import LogIn from "./views/auth/Login";
 import Dashboard from "./views/dashboard/Dashboard";
 import Profile from "./views/profile/Profile";
 import MainWrapper from "../src/layouts/MainWrapper";
-import FlightSearchPage from "./views/booking/FlightSearchPage"
-import FlightSelect from "./views/booking/FlightSelect"
-// import CityPage from './CityPage';
+import FlightSearchPage from "./views/booking/flight_search/FlightSearchPage"
+import FlightSelect from "./views/booking/flight_search/FlightSelect"
+import BookingInfo from "./views/booking/booking_info/BookingInfo";
 import CityPage from './views/dashboard/CityPage.jsx';
-
 function App() {
     return (
         <>

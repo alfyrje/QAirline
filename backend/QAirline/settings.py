@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi',
+        'PASSWORD': 'denhothoi1',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }
@@ -144,7 +144,7 @@ AUTH_USER_MODEL = 'users.User'
 
 AUTH_USER_MODEL = 'users.User'
 
-CORS_ALLOW_ALL_ORIGINS = TArue
+CORS_ALLOW_ALL_ORIGINS = True
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
