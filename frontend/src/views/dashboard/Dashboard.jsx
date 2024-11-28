@@ -7,18 +7,21 @@ import "./dashboard.css"
 import { FaLightbulb } from "react-icons/fa";
 import BookingPart from "./BookingPart";
 import CityCarousel from "./CityCarousel";
-
+import PromoteLayout from "./PromoteLayout";
 
 function Dashboard() {
     return (
         <>  
+        <div className="dashboardContainer">
             <Header/>
             {/* <h1>Page content</h1> */}
             <BookingPart/>
             {/* <CardSlider/> */}
+            <PromoteLayout/>
             <CityCarousel/>
             <Footer/>
             {/* <CardSlider/> */}
+        </div>
         </>
     );
 }

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users',
     'flights',
+    'city_introduction',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,7 +137,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 AUTH_USER_MODEL = 'users.User'
 
-MEDIA_ROOT = "../../../frontend/public/"
-MEDIA_URL = '/media/'
-
-
+# MEDIA_ROOT = "../../../frontend/public/"
+MEDIA_ROOT = r"D:\Downloads\Kì này\Web\QAirline\frontend\public"
+MEDIA_URL = "/"

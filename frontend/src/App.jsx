@@ -7,10 +7,15 @@ import Profile from "./views/profile/Profile";
 import MainWrapper from "../src/layouts/MainWrapper";
 import FlightSearchPage from "./views/booking/FlightSearchPage"
 import FlightSelect from "./views/booking/FlightSelect"
+// import CityPage from './CityPage';
+import CityPage from './views/dashboard/CityPage.jsx';
 
 function App() {
     return (
         <>
+        <div className = 'app-container'>
+            
+        </div>
             <BrowserRouter>
                 <MainWrapper>
                     <Routes>
@@ -18,7 +23,7 @@ function App() {
                         <Route path="/register/" element={<Register />} />
                         <Route path="/login/" element={<LogIn />} />
                         <Route path="/profile/" element={<Profile />} />
-                       
+                        <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
 
@@ -31,7 +36,9 @@ function App() {
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>
-            <div></div>
+            <div>
+
+            </div>
         </>
     );
 }
