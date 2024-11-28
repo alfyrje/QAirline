@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+
+.city_page_container {
+    background-color: #ffffff;
+}
+
+
+.inside_container {
+    max-width: 70rem;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.artificial_padding {
+    padding-bottom: 2rem;
+}
+
+.city_name {
+    margin: 0 auto;
+    color:#5a7937;
+}
+.city_introduction_container {
+    /* max-width: 60rem; */
+    padding: 1rem;
+    margin: 0 auto;
+    margin-bottom: 5rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+    color: #333333;
+    border: 1px solid #eaeaea;
+}

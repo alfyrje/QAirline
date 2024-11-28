@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from "react";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
@@ -6,18 +7,22 @@ import { Link } from "react-router-dom";
 import "./dashboard.css"
 import { FaLightbulb } from "react-icons/fa";
 import BookingPart from "./BookingPart";
-import CardSlider from "./CardSlider";
-import NewsCarousel from "./NewsCarousel";
+import CityCarousel from "./CityCarousel";
+import PromoteLayout from "./PromoteLayout";
+
 function Dashboard() {
     return (
         <>  
+        <div className="dashboardContainer">
             <Header/>
             {/* <h1>Page content</h1> */}
             <BookingPart/>
             {/* <CardSlider/> */}
-            <NewsCarousel/>
+            <PromoteLayout/>
+            <CityCarousel/>
             <Footer/>
             {/* <CardSlider/> */}
+        </div>
         </>
     );
 }
