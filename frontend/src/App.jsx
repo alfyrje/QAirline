@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Register from "./views/auth/Register";
