@@ -32,6 +32,7 @@ function App() {
                         {/* Authentication */}
                         <Route path="/register/" element={<Register />} />
                         <Route path="/login/" element={<LogIn />} />
+                        <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
                         <Route path="/profile/" element={
                             <PrivateRoute>
                             <Profile />
