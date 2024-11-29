@@ -1,166 +1,138 @@
-// Importing the useAuthStore hook from the '../store/auth' file to manage authentication state
 import { useAuthStore } from "../store/auth";
-
-// Importing the axios library for making HTTP requests
-import axios from "./axios";
-
-// Importing jwt_decode to decode JSON Web Tokens
+import axios from "axios";
 import jwt_decode from "jwt-decode";
-
-// Importing the Cookies library to handle browser cookies
 import Cookies from "js-cookie";
 
-// Importing Swal (SweetAlert2) for displaying toast notifications
-import Swal from "sweetalert2";
-
-// Configuring global toast notifications using Swal.mixin
-const Toast = Swal.mixin({
-    toast: true,
-    position: "top",
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: true,
-});
-
-// Function to handle user login
-export const login = async (email, password) => {
-    try {
-        // Making a POST request to obtain user tokens
-        const { data, status } = await axios.post("user/token/", {
-            email,
-            password,
-        });
-
-        // If the request is successful (status code 200), set authentication user and display success toast
-        if (status === 200) {
-            setAuthUser(data.access, data.refresh);
-
-            // Displaying a success toast notification
-            Toast.fire({
-                icon: "success",
-                title: "Signed in successfully",
-            });
-        }
-
-        // Returning data and error information
-        return { data, error: null };
-    } catch (error) {
-        // Handling errors and returning data and error information
-        return {
-            data: null,
-            error: error.response.data?.detail || "Something went wrong",
-        };
-    }
+export const isAccessTokenExpired = (accessToken) => {
+  try {
+    const decodedToken = jwt_decode(accessToken);
+    return decodedToken.exp < Date.now() / 10000;
+  } catch (err) {
+    return true;
+  }
 };
 
-// Function to handle user registration
-export const register = async (full_name, email, password, password2) => {
-    try {
-        // Making a POST request to register a new user
-        const { data } = await axios.post("user/register/", {
-            full_name,
-            email,
-            password,
-            password2,
-        });
-
-        // Logging in the newly registered user and displaying success toast
-        await login(email, password);
-
-        // Displaying a success toast notification
-        Toast.fire({
-            icon: "success",
-            title: "Signed Up Successfully",
-        });
-
-        // Returning data and error information
-        return { data, error: null };
-    } catch (error) {
-        // Handling errors and returning data and error information
-        return {
-            data: null,
-            error: error.response.data || "Something went wrong",
-        };
-    }
+export const getRefreshToken = async (refresh_token) => {
+  console.log("Sending request to refresh token with:", refresh_token);
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/users/token/refresh/",
+      {
+        refresh: refresh_token,
+      }
+    );
+    console.log("Received new tokens:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to refresh token", error);
+    throw error;
+  }
 };
 
-// Function to handle user logout
-export const logout = () => {
-    // Removing access and refresh tokens from cookies, resetting user state, and displaying success toast
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
-    useAuthStore.getState().setUser(null);
+export const setAuthUser = (access_token, refresh_token) => {
+  Cookies.set("access_token", access_token, { expires: 1, secure: true });
+  Cookies.set("refresh_token", refresh_token, { expires: 7, secure: true });
 
-    // Displaying a success toast notification
-    Toast.fire({
-        icon: "success",
-        title: "You have been logged out.",
-    });
+  const user = jwt_decode(access_token) ?? null;
+  if (user) {
+    useAuthStore.getState().setUser(user);
+  }
+  useAuthStore.getState().setLoading(false);
 };
 
-// Function to set the authenticated user on page load
 export const setUser = async () => {
-    // Retrieving access and refresh tokens from cookies
+  try {
     const accessToken = Cookies.get("access_token");
     const refreshToken = Cookies.get("refresh_token");
 
-    // Checking if tokens are present
     if (!accessToken || !refreshToken) {
-        return;
+      return;
     }
 
-    // If access token is expired, refresh it; otherwise, set the authenticated user
     if (isAccessTokenExpired(accessToken)) {
-        const response = await getRefreshToken(refreshToken);
-        setAuthUser(response.access, response.refresh);
+      console.log("Access token expired. Attempting to refresh token...");
+      const response = await getRefreshToken(refreshToken);
+      setAuthUser(response.access, response.refresh);
     } else {
-        setAuthUser(accessToken, refreshToken);
+      setAuthUser(accessToken, refreshToken);
     }
+  } catch (error) {
+    console.error("Error setting user:", error);
+  }
 };
 
-// Function to set the authenticated user and update user state
-export const setAuthUser = (access_token, refresh_token) => {
-    // Setting access and refresh tokens in cookies with expiration dates
-    Cookies.set("access_token", access_token, {
-        expires: 1, // Access token expires in 1 day
-        secure: true,
+export const login = async (email, password) => {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/users/token/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: email,
+        password: password,
+      }),
     });
+    const data = await response.json();
 
-    Cookies.set("refresh_token", refresh_token, {
-        expires: 7, // Refresh token expires in 7 days
-        secure: true,
-    });
-
-    // Decoding access token to get user information
-    const user = jwt_decode(access_token) ?? null;
-
-    // If user information is present, update user state; otherwise, set loading state to false
-    if (user) {
-        useAuthStore.getState().setUser(user);
+    if (response.status === 200) {
+      setAuthUser(data.access, data.refresh);
+      return { data: "Success", error: null };
+    } else {
+      return { data: null, error };
     }
-    useAuthStore.getState().setLoading(false);
+  } catch (error) {
+    return {
+      data: null,
+      error: "Network error or server unreachable",
+    };
+  }
 };
 
-// Function to refresh the access token using the refresh token
-export const getRefreshToken = async () => {
-    // Retrieving refresh token from cookies and making a POST request to refresh the access token
-    const refresh_token = Cookies.get("refresh_token");
-    const response = await axios.post("user/token/refresh/", {
-        refresh: refresh_token,
-    });
-
-    // Returning the refreshed access token
-    return response.data;
+export const logout = () => {
+  Cookies.remove("access_token");
+  Cookies.remove("refresh_token");
+  useAuthStore.getState().setUser(null);
+  console.log("User has been logged out.");
 };
 
-// Function to check if the access token is expired
-export const isAccessTokenExpired = (accessToken) => {
-    try {
-        // Decoding the access token and checking if it has expired
-        const decodedToken = jwt_decode(accessToken);
-        return decodedToken.exp < Date.now() / 1000;
-    } catch (err) {
-        // Returning true if the token is invalid or expired
-        return true;
-    }
+export const register = async (formData) => {
+  const {
+    name_lastname,
+    name_firstname,
+    date_birth,
+    gender,
+    nationality,
+    email,
+    phone_number,
+    ID_citizen,
+    password,
+    confirm_pwd,
+  } = formData;
+  console.log(formData);
+  try {
+    const { data } = await axios.post("http://127.0.0.1:8000/users/register/", {
+      email,
+      first_name: name_firstname,
+      last_name: name_lastname,
+      personal_info: {
+        tel_num: phone_number,
+        first_name: name_firstname,
+        last_name: name_lastname,
+        date_of_birth: date_birth,
+        citizen_id: ID_citizen,
+        nationality: nationality, // Add nationality field if needed
+        gender,
+      },
+      username: email,
+      password,
+    });
+
+    return { data, error: null };
+  } catch (error) {
+    return {
+      data: null,
+      error: error || "Something went wrong",
+    };
+  }
 };

@@ -10,6 +10,16 @@ import FlightSearchPage from "./views/booking/flight_search/FlightSearchPage"
 import FlightSelect from "./views/booking/flight_search/FlightSelect"
 import BookingInfo from "./views/booking/booking_info/BookingInfo";
 import CityPage from './views/dashboard/CityPage.jsx';
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "./store/auth";
+
+const PrivateRoute = ({ children }) => {
+    const loggedIn = useAuthStore((state) => state.isLoggedIn)();
+  
+    return loggedIn ? children : <Navigate to="/login/" />;
+};
+import PassengersDetail from "./views/booking/passengers_detail/PassengersDetail";
+
 function App() {
     return (
         <>
@@ -28,13 +38,27 @@ function App() {
                         <Route path="/dashboard/" element={<Dashboard />} />
 
                         {/* Flight Search */}
-                        <Route path="/flight-search/" element={<FlightSearchPage roundTrip={true} />} />
+                        <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />
 
                         {/* Search Results */}
-                        {/* <Route path="/flight-select" element={<FlightSelect />} /> */}
+                        <Route path="/flight-select" element={<FlightSelect />} />
 
                         {/* Booking Info */}
-                        <Route path="/booking-info" element={<BookingInfo />} />
+                        <Route path="/booking-info" 
+                            element={
+                            <PrivateRoute>
+                                <BookingInfo />
+                            </PrivateRoute>
+                        } 
+                        />
+                        {/* Passengers Detail */}
+                        <Route path="/passengers-detail"
+                            element={
+                            <PrivateRoute>
+                                <PassengersDetail />                            
+                            </PrivateRoute>
+                        } 
+                        />
 
                     </Routes>
                 </MainWrapper>
