@@ -49,11 +49,10 @@ function Register() {
   }
 
   const handleSubmit = async (e) => {
-    console.log(formData)
     e.preventDefault();
     setIsLoading(true);
     const response = await register(formData);
-    if (response) {
+    if (response.data === "Success") {
       navigate("/login");
     } else {
       alert(JSON.stringify(response.error));

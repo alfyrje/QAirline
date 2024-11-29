@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 
 const useAuthStore = create((set, get) => ({
