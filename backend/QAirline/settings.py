@@ -178,17 +178,17 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 # MEDIA_ROOT = "../../../frontend/public/"
-MEDIA_ROOT = r"D:\Downloads\Kì này\Web\QAirline\frontend\public"
+MEDIA_ROOT = r"..\\frontend\\public"
 MEDIA_URL = "/"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
