@@ -1,19 +1,24 @@
-import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import "./header.css";
 import "../../index.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
+import profile from '/icons/square-user.svg'
+import user from '/icons/circle-user-round.svg';
+import logout_icon from '/icons/log-out.svg';
+import React, {useState, useEffect, useRef} from "react";
+import notification_icon from '/icons/bell-ring.svg';
+
 
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/dashboard");
   };
 
 
@@ -21,6 +26,25 @@ function Header() {
   const toggleSublist = (index) => {
     setActiveMenu(activeMenu === index ? null : index); // Toggle active state
   };
+  const [open, setOpen] = useState(false);
+  let menuRef = useRef();
+  let notificationRef = useRef();
+
+
+  useEffect(() => {
+    let handler = (e)=>{
+      if(!menuRef.current.contains(e.target)){
+        setOpen(false);
+        console.log(menuRef.current);
+      }      
+
+    };
+    document.addEventListener("mousedown", handler);
+    return() =>{
+      document.removeEventListener("mousedown", handler);
+    }
+
+  });
 
   return (
     <>
@@ -47,18 +71,52 @@ function Header() {
             Thông tin hành trình
           </Link>
         </div>
-        <div className="header-authLink">
+        <div>
+        
+       
+
+
+
         {isLoggedIn ? (
-            <button onClick={handleLogout} className="header-logOut">
-              Đăng xuất
-            </button>
+            
+              <div className="header-controls">
+                <div className='header-notification' ref={notificationRef}>
+                  <div className='menu-trigger' onClick={() => setNotificationOpen(!notificationOpen)}>
+                    <img src={notification_icon} alt="notification" />
+                  </div>
+                  <div className={`dropdown-menu ${notificationOpen ? 'active' : 'inactive'}`}>
+                    <ul>
+                      <DropdownItem className='dropdownItem' text={"Notification 1"} />
+                      <DropdownItem className='dropdownItem' text={"Notification 2"} />
+                    </ul>
+                  </div>
+                </div>  
+
+
+
+                <div className='header-logOut' ref={menuRef}>
+                  <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
+                    <img src={user} alt="user" />
+                  </div>
+                  <div className={`dropdown-menu ${open? 'active' : 'inactive'}`}>
+                    <ul>
+                      <Link to='/profile'>
+                        <DropdownItem img={profile} className='dropdownItem' text={"Thông tin cá nhân"}/>
+                      </Link>
+                      <Link to='/login'>
+                        <DropdownItem img={logout_icon} className='dropdownItem' text={"Đăng xuất"}/>
+                      </Link>
+                    </ul>
+                  </div>
+                </div>
+              </div>
           ) : (
             <>
               <Link to="/login" className="header-signIn">
                 Đăng nhập
               </Link>
               <a id="header-separation"> | </a>
-              <Link to="/register" className="header-logOut">
+              <Link to="/register" className="header-register">
                 Đăng ký
               </Link>
             </>
@@ -86,7 +144,7 @@ function Header() {
               Đăng nhập
             </Link>
             <a id = 'header-separation'> | </a>
-            <Link to="/Đăng kí" className="header-logOut">
+            <Link to="/Đăng kí" className="header-register">
               Đăng ký
             </Link>
           </div>
@@ -154,6 +212,15 @@ function Header() {
         </div>
       </div>
     </>
+  );
+}
+
+function DropdownItem(props){
+  return(
+    <li className = 'dropdownItem'>
+      <img src={props.img}></img>
+      <a> {props.text} </a>
+    </li>
   );
 }
 
