@@ -15,7 +15,7 @@ import { useAuthStore } from "./store/auth";
 import SeatSelect from "./views/booking/seat_select/SeatSelect";
 
 const PrivateRoute = ({ children }) => {
-    const loggedIn = useAuthStore((state) => state.isLoggedIn)();
+    const loggedIn = useAuthStore((state) => state.isLoggedIn);
 
     return loggedIn ? children : <Navigate to="/login/" />;
 };
