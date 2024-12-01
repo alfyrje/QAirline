@@ -9,7 +9,7 @@ import { logout } from "../../utils/auth";
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleLogout = () => {
     logout();

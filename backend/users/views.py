@@ -1,7 +1,9 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.response import Response
 from rest_framework.response import Response
 
 from users import models
@@ -17,28 +19,9 @@ from rest_framework import status
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
-class MyTokenRefreshView(TokenRefreshView):
-    permission_classes = [AllowAny]
-class MyTokenObtainPairView(TokenObtainPairView):
-    permission_classes = [AllowAny]
-    serializer_class = serializers.MyTokenObtainPairSerializer
 
-    def post(self, request, *args, **kwargs):
-        print("receive login request")
-        serializer = self.get_serializer(data=request.data)
-        print("serialized")
-        try:
-            serializer.is_valid(raise_exception=True)
-        except Exception as e:
-            return Response({"message": "helppppp me"})
-        print("serializer is valid")
-        user = serializer.validated_data['user']
-        print(user)
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }, status=status.HTTP_200_OK)
+import jwt
+from django.conf import settings
 
 class PassengerView(ListAPIView):
     queryset = models.Passenger.objects.all()
@@ -46,11 +29,11 @@ class PassengerView(ListAPIView):
 
 class UserRegisterView(APIView):
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny] 
     def post(self, request):
-        print("received request")
-        print(request.data)
+        # print(request.data)
         serializer = serializers.UserSerializer(data=request.data)
+
         if serializer.is_valid():
             print("serializer is valid")
             user = serializer.save()
@@ -58,10 +41,10 @@ class UserRegisterView(APIView):
                 'message': 'Register successful!',
             }, status=201)
         else:
-            print(serializer.errors)
+            first_field = list(serializer.errors.keys())[0]
+            error_message = serializer.errors[first_field][0]
             return JsonResponse({
-                'error_message': 'This email has already exist!',
-                'errors_code': 400,
+                'error_message': error_message,
             }, status=400)
 
 # class UserLoginView(APIView):
@@ -97,5 +80,18 @@ class UserRegisterView(APIView):
     
 class UserView(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
+
+class ProfileView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+    def get(self, request, *args, **kwargs):
+        request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
+        request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
+        user_id = request_jwt_decoded['user_id']
+        user = models.User.objects.get(id=user_id)
+        serializer = serializers.UserSerializer(user)
+        print(serializer.data)
+        return Response(serializer.data, status=200)
+    

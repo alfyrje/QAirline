@@ -39,6 +39,12 @@ function App() {
                             </PrivateRoute>
                         } />
                         <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
+                        <Route path="/profile/" element={
+                            <PrivateRoute>
+                            <Profile />
+                            </PrivateRoute>
+                            } />
+
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
 
