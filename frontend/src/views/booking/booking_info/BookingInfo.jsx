@@ -4,6 +4,7 @@ import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 import FlightInfo from "../flight_search/FlightInfo";
 import "../flight_search/FlightInfo.css"
+import ProgressBar from "../ProgressBar";
 
 const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -34,24 +35,24 @@ const formatDuration = (durationInSeconds) => {
     const days = Math.floor(durationInSeconds / (24 * 3600));
     const hours = Math.floor((durationInSeconds % (24 * 3600)) / 3600);
     const minutes = Math.floor((durationInSeconds % 3600) / 60);
-  
+
     let formattedDuration = '';
     if (days > 0) {
-      formattedDuration += `${days} ngày `;
+        formattedDuration += `${days} ngày `;
     }
     if (hours > 0) {
-      formattedDuration += `${hours} giờ `;
+        formattedDuration += `${hours} giờ `;
     }
     if (minutes > 0) {
-      formattedDuration += `${minutes} phút`;
+        formattedDuration += `${minutes} phút`;
     }
-  
+
     if (formattedDuration === '') {
-      formattedDuration = `${minutes} phút`;
+        formattedDuration = `${minutes} phút`;
     }
-  
+
     return formattedDuration.trim();
-  };
+};
 
 const BookingCard = ({ flight, seatClass }) => {
     return (
@@ -89,23 +90,29 @@ const BookingInfo = () => {
     const navigate = useNavigate()
     const calculateIndividualPrice = () => {
         return selectedFlights.reduce((total, selectedFlight) => {
-            const price = selectedFlight.seatClass === 'E' 
-                ? selectedFlight.flight.economic_price 
+            const price = selectedFlight.seatClass === 'E'
+                ? selectedFlight.flight.economic_price
                 : selectedFlight.flight.business_price;
             return total + price;
         }, 0);
     };
     const totalPrice = calculateIndividualPrice() * flight.passengers_no;
     const handleNavigate = () => {
-        navigate("/passengers-detail", { state: { selectedFlights: selectedFlights, flight: flight } });
+        navigate("/seat-select", { state: { selectedFlights: selectedFlights, flight: flight } });
     };
 
     return (
         <>
             <Header />
             <div className="container">
-                <FlightInfo flight={flight}/>
-                <h1>Các chuyến bay của bạn</h1>
+                <ProgressBar currentStep="info" />
+                <div className="booking-header">
+                    <h1>Các chuyến bay của bạn</h1>
+                    <button className="btn btn-primary" onClick={() => navigate(-1)}>
+                        Quay lại
+                    </button>
+                </div>
+                <FlightInfo flight={flight} />
                 <div className="booking-cards">
                     {selectedFlights.map((flight, index) => {
                         const seatClass = flight.seatClass;
@@ -117,7 +124,7 @@ const BookingInfo = () => {
                         Tổng giá: {formatPrice(totalPrice)}
                     </p>
                     <button className="btn btn-primary" onClick={handleNavigate}>
-                        Điền thông tin hành khách
+                        Chọn chỗ ngồi
                     </button>
                 </div>
             </div>

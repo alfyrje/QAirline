@@ -8,6 +8,7 @@ const FlightSearchForm = ({ onSearch, roundTrip }) => {
     return_time: '',
     passengers_no: '',
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -28,6 +29,6 @@ const FlightSearchForm = ({ onSearch, roundTrip }) => {
       <button type="submit">Search Flights</button>
     </form>
   );
-};  
+};
 
 export default FlightSearchForm;

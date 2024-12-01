@@ -71,13 +71,13 @@ export const login = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: email,
-        password: password,
+        "username": email,
+        "password": password,
       }),
     });
     const data = await response.json();
 
-    if (response.status === 200) {
+    if (response.status == 200) {
       setAuthUser(data.access, data.refresh);
       console.log(useAuthStore.getState().allUserData.user_id);
       return { data: "Success", error: null };
@@ -85,6 +85,7 @@ export const login = async (email, password) => {
       return { data: "Failed", error };
     }
   } catch (error) {
+    console.error("Error logging in:", error);
     return {
       data: "Failed",
       error: "Network error or server unreachable",

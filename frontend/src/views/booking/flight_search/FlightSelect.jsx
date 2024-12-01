@@ -6,6 +6,7 @@ import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 import FlightList from "./FlightList";
 import FlightInfo from "./FlightInfo";
+import ProgressBar from "../ProgressBar";
 
 const FlightSelect = () => {
     const { state } = useLocation();
@@ -14,16 +15,16 @@ const FlightSelect = () => {
     const [isReturnFlight, setIsReturnFlight] = useState(false);
     const navigate = useNavigate();
     const roundTrip = state?.roundTrip;
-    const flight = state?.searchParams
+    const flight = state?.searchParams;
 
     const handleSelectSeat = (selection) => {
         setSelectedFlights((prev) => [...prev, selection]);
 
         if (roundTrip && !isReturnFlight) {
             setIsReturnFlight(true);
-          } else {
+        } else {
             navigate("/booking-info", { state: { selectedFlights: [...selectedFlights, selection], flight: flight } });
-          }
+        }
     };
 
     useEffect(() => {
@@ -50,10 +51,26 @@ const FlightSelect = () => {
         }
     }, [isReturnFlight, state]);
 
+    const handleBack = () => {
+        if (isReturnFlight) {
+            setIsReturnFlight(false);
+            setSelectedFlights([]);
+        } else {
+            navigate(-1);
+        }
+    };
+
     return (
         <>
             <Header />
             <div className="container">
+                <ProgressBar currentStep="flights" />
+                <div className="booking-header">
+                    <h1>Chọn chuyến bay</h1>
+                    <button className="btn btn-primary" onClick={handleBack}>
+                        Quay lại
+                    </button>
+                </div>
                 <FlightInfo flight={state?.searchParams} />
                 <FlightList flights={flights} onSelectSeat={handleSelectSeat} />
             </div>

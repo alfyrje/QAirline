@@ -126,7 +126,7 @@ h1 {
 .total-price {
     font-size: 2rem;
     font-weight: bold;
-    color: #4caf50; 
+    color: #4caf50;
 }
 
 .btn {
@@ -135,13 +135,4 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.btn-primary {
-    background-color: #89b751; 
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #8dbf56;
 }
