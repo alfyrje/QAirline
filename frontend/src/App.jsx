@@ -49,7 +49,7 @@ function App() {
                         <Route path="/dashboard/" element={<Dashboard />} />
 
                         {/* Flight Search */}
-                        <Route path="/flight-search/" element={<FlightSearchPage roundTrip={true} />} />
+                        <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />
 
                         {/* Search Results */}
                         <Route path="/flight-select" element={<FlightSelect />} />

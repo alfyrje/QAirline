@@ -22,6 +22,5 @@ const useAuthStore = create((set, get) => ({
     {
       name: "auth-storage",
     }
-  )
-);
+  );
 export { useAuthStore };
