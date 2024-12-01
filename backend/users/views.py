@@ -1,7 +1,9 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.response import Response
 from rest_framework.response import Response
 
 from users import models
@@ -72,8 +74,12 @@ class UserRegisterView(APIView):
 #             'error_code': 400,
 #         }, status=400)
     
+# class UserLogoutView(ListAPIView):
+#     def post(self, request):
+#         return Response({"message": "Logout successful"})
     
 class UserView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
     permission_classes = [AllowAny]  # Allow unauthenticated access
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
+import { useParams, Link, useNavigate } from "react-router-dom";
+
+import apiInstance from "../../utils/axios";
+import { useAuthStore } from "../../store/auth";
+import { register } from "../../utils/auth";
+
 import "./profile.css";
 
 function ProfileInfo() {

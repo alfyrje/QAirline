@@ -2,6 +2,7 @@ from rest_framework.generics import ListAPIView
 from .models import Flight, Ticket
 from .serializers import FlightSerializer, TicketSerializer
 from users.serializers import PassengerSerializer
+from users.serializers import PassengerSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
@@ -18,6 +19,9 @@ import json
 logger = logging.getLogger(__name__)
 
 class FlightSearchView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+    # authentication_classes = [TokenAuthentication]
+
     permission_classes = [AllowAny]  # Allow unauthenticated access
     # authentication_classes = [TokenAuthentication]
 
@@ -41,6 +45,7 @@ class FlightSearchView(ListAPIView):
 
 class CreateTicketsAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
+
     def post(self, request, *args, **kwargs):
         data = request.data
         request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
@@ -69,16 +74,19 @@ class CreateTicketsAPI(ListAPIView):
                     {"error": f"Flight with ID {flight_id} not found"},
                     status=status.HTTP_404_NOT_FOUND
                 )
+            
             for passenger_data in passengers_data:
                 passenger_serializer = PassengerSerializer(data=passenger_data)
                 passenger_serializer.is_valid(raise_exception=True)
                 passenger = passenger_serializer.save()
+                
+                seat = next((s['seat'] for s in passenger_data['seats'] if s['flight_id'] == flight_id), 'TEMP')
 
                 ticket_data = {
                     'booker': booker_id,
                     'flight': flight.id,
                     'passenger': passenger.id,
-                    'seat': 'TEMP',
+                    'seat': seat,
                     'ticket_class': seat_class,
                 }
         

@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users',
     'flights',
+    'city_introduction',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -87,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi',
+        'PASSWORD': 'denhothoi1',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }
@@ -139,6 +140,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
 ]
+AUTH_USER_MODEL = 'users.User'
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -172,18 +174,21 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(seconds=30),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(seconds=30),
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+# MEDIA_ROOT = "../../../frontend/public/"
+MEDIA_ROOT = r"..\\frontend\\public"
+MEDIA_URL = "/"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.permissions.IsAuthenticated',
     ],
 }

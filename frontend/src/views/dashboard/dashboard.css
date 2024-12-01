@@ -1,0 +1,18 @@
+dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-width: 80rem !important;
+  width: 85rem;
+}
+
+/* margin: "0 auto",
+marginTop: "10rem",
+marginBottom: "10rem",
+display: "flex",
+justifyContent: "center",
+flexDirection: "column",
+// maxWidth: "80rem",
+padding: "0px", */

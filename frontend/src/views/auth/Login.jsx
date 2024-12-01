@@ -45,6 +45,7 @@ function LogIn() {
     } else {
       alert(JSON.stringify(response.error));
     }
+    setIsLoading(false);
   };
   return (
     <>

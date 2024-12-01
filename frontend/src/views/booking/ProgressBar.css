@@ -1,0 +1,29 @@
+.arrow-progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.arrow-step {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    background-color: #cce1b1;
+    color: black;
+    font-weight: bold;
+    clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%, 5% 50%);
+}
+
+
+.arrow-step.active {
+    background-color: #76a049;
+    color: white;
+}
+
+
+.arrow-step:not(:last-child) {
+    margin-right: -5%;
+}

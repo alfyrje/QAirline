@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { setUser } from '../utils/auth';
 
@@ -15,6 +16,7 @@ const MainWrapper = ({ children }) => {
                 setLoading(false);
             }
         };
+
         handler();
     }, []);
 
