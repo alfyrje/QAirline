@@ -35,6 +35,8 @@ const useAuthStore = create(
       setLogout: () => {
         set({ allUserData: null, isLoggedIn: false });
         localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+
       },
     }),
     {
