@@ -36,3 +36,22 @@ a {
   padding: 0;
   margin: 0;
 }
+
+.btn-primary {
+  height: 3rem;
+  background-color: #89b751; 
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #8dbf56;
+}
+
+.btn-primary:disabled {
+  background-color: #7d8474;
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+}

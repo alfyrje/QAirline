@@ -5,6 +5,7 @@ import Header from "../../partials/Header";
 import Footer from "../../partials/Footer";
 import FlightInfo from "../flight_search/FlightInfo";
 import Swal from "sweetalert2";
+import ProgressBar from "../ProgressBar";
 
 const PassengersDetail = () => {
     const { state } = useLocation();
@@ -13,18 +14,23 @@ const PassengersDetail = () => {
     const selectedFlights = state?.selectedFlights || [];
     const navigate = useNavigate();
 
-    // Initialize passengers state
     const [passengers, setPassengers] = useState(
         Array.from({ length: passengersNo }, () => ({
             first_name: "",
             last_name: "",
-            // tel_num: "",
+            tel_num: "",
             date_of_birth: "",
             citizen_id: "",
             nationality: "",
             gender: "O",
+            seats: selectedFlights.map(flightObj => ({
+                flight_id: flightObj.flight.id,
+                seat: ""
+            }))
         }))
     );
+
+    console.log(passengers);
 
     const [expandedCards, setExpandedCards] = useState(
         Array.from({ length: passengersNo }, () => true)
@@ -36,14 +42,37 @@ const PassengersDetail = () => {
         setPassengers(updatedPassengers);
     };
 
+    const handleSeatChange = (passengerIndex, flight_id, seat) => {
+        const updatedPassengers = [...passengers];
+        const seatIndex = updatedPassengers[passengerIndex].seats.findIndex(s => s.flight_id === flight_id);
+        if (seatIndex !== -1) {
+            updatedPassengers[passengerIndex].seats[seatIndex].seat = seat;
+        }
+        setPassengers(updatedPassengers);
+    };
+
     const toggleCard = (index) => {
         const updatedExpandedCards = [...expandedCards];
         updatedExpandedCards[index] = !updatedExpandedCards[index];
         setExpandedCards(updatedExpandedCards);
     };
 
+    const allSeatsSelected = passengers.every(passenger =>
+        passenger.seats.every(seat => seat.seat)
+    );
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+
+        if (!allSeatsSelected) {
+            Swal.fire({
+                icon: "warning",
+                title: "Chưa chọn đủ chỗ ngồi",
+                text: "Vui lòng chọn đủ chỗ ngồi cho tất cả hành khách trước khi tiếp tục.",
+            });
+            return;
+        }
 
         const formattedFlights = selectedFlights.map((obj) => ({
             flightId: obj.flight.id,
@@ -84,149 +113,191 @@ const PassengersDetail = () => {
         }
     };
 
+    const getSelectedSeats = (flight_id) => {
+        return passengers.flatMap(passenger =>
+            passenger.seats.filter(seat => seat.flight_id === flight_id && seat.seat).map(seat => seat.seat)
+        );
+    };
+
+    const renderSeatButtons = (flight_id, passengerIndex) => {
+        const seats = selectedFlights.find(flightObj => flightObj.flight.id === flight_id).selectedSeats;
+        const selectedSeats = getSelectedSeats(flight_id);
+
+        return seats.map(seat => {
+            const isSelectedByCurrentPassenger = passengers[passengerIndex].seats.find(s => s.flight_id === flight_id)?.seat === seat;
+            return (
+                <button
+                    key={seat}
+                    type="button"
+                    className={`seat-button ${isSelectedByCurrentPassenger ? 'selected' : ''}`}
+                    disabled={selectedSeats.includes(seat) && !isSelectedByCurrentPassenger}
+                    onClick={() => handleSeatChange(passengerIndex, flight_id, isSelectedByCurrentPassenger ? '' : seat)}
+                >
+                    {seat}
+                </button>
+            );
+        });
+    };
+
     return (
         <>
             <Header />
-            <div className="container passenger-details">
-                <div className="passenger-details">
-                    <FlightInfo flight={flight} />
-                    <h1>Nhập thông tin hành khách</h1>
-                    <form onSubmit={handleSubmit}>
-                        {passengers.map((passenger, index) => (
-                            <div key={index} className="passenger-form">
-                                <div
-                                    className="passenger-header"
-                                    onClick={() => toggleCard(index)}
-                                >
-                                    <h2>Hành khách {index + 1}</h2>
-                                    <button type="button">
-                                        {expandedCards[index] ? "−" : "+"}
-                                    </button>
-                                </div>
-                                <div
-                                    className={`passenger-body ${expandedCards[index] ? "active" : ""
-                                        }`}
-                                >
-                                    <fieldset className="gender-group">
-                                        <legend>Giới tính*</legend>
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                name={`gender_${index}`}
-                                                value="M"
-                                                checked={passenger.gender === 'M'}
-                                                onChange={(e) => handleChange(index, 'gender', e.target.value)}
-                                            />
-                                            Nam
-                                        </label>
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                name={`gender_${index}`}
-                                                value="F"
-                                                checked={passenger.gender === 'F'}
-                                                onChange={(e) => handleChange(index, 'gender', e.target.value)}
-                                            />
-                                            Nữ
-                                        </label>
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                name={`gender_${index}`}
-                                                value="O"
-                                                checked={passenger.gender === 'O'}
-                                                onChange={(e) => handleChange(index, 'gender', e.target.value)}
-                                            />
-                                            Khác
-                                        </label>
-                                    </fieldset>
-                                    <div className="form-group">
-                                        <input
-                                            type="text"
-                                            id={`first_name_${index}`}
-                                            placeholder=""
-                                            value={passenger.first_name}
-                                            onChange={(e) =>
-                                                handleChange(index, "first_name", e.target.value)
-                                            }
-                                            required
-                                        />
-                                        <label htmlFor={`first_name_${index}`}>Tên*</label>
-                                    </div>
-                                    <div className="form-group">
-                                        <input
-                                            type="text"
-                                            id={`last_name_${index}`}
-                                            placeholder=""
-                                            value={passenger.last_name}
-                                            onChange={(e) =>
-                                                handleChange(index, "last_name", e.target.value)
-                                            }
-                                            required
-                                        />
-                                        <label htmlFor={`last_name_${index}`}>Họ*</label>
-                                    </div>
-                                    <div className="form-group">
-                                        <input
-                                            type="tel"
-                                            id={`tel_num_${index}`}
-                                            placeholder=""
-                                            value={passenger.tel_num}
-                                            onChange={(e) =>
-                                                handleChange(index, "tel_num", e.target.value)
-                                            }
-                                            required
-                                        />
-                                        <label htmlFor={`tel_num_${index}`}>Số điện thoại*</label>
-                                    </div>
-                                    <div className="form-group">
-                                        <input
-                                            type="date"
-                                            id={`date_of_birth_${index}`}
-                                            placeholder=""
-                                            value={passenger.date_of_birth}
-                                            onChange={(e) =>
-                                                handleChange(index, "date_of_birth", e.target.value)
-                                            }
-                                            required
-                                        />
-                                        <label htmlFor={`date_of_birth_${index}`}>Ngày sinh*</label>
-                                    </div>
-                                    <div className="form-group">
-                                        <input
-                                            type="text"
-                                            id={`citized_id_${index}`}
-                                            placeholder=""
-                                            value={passenger.citizen_id}
-                                            onChange={(e) =>
-                                                handleChange(index, "citizen_id", e.target.value)
-                                            }
-                                            required
-                                        />
-                                        <label htmlFor={`citizen_id_${index}`}>CMND/CCCD*</label>
-                                    </div>
-                                    <div className="form-group">
-                                        <input
-                                            type="text"
-                                            id={`nationality_${index}`}
-                                            placeholder=""
-                                            value={passenger.nationality}
-                                            onChange={(e) =>
-                                                handleChange(index, "nationality", e.target.value)
-                                            }
-                                            required
-                                        />
-                                        <label htmlFor={`nationality_${index}`}>Quốc tịch*</label>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                        <div className="submit-button">
-                            <button type="submit" className="btn confirm">
-                                Đặt vé
+            <div className="container">
+                <ProgressBar currentStep="passengers" />
+                <div className="container passenger-details">
+
+                    <div className="passenger-details">
+                        <div className="booking-header">
+                            <h1>Nhập thông tin hành khách</h1>
+                            <button className="btn btn-primary" onClick={() => navigate(-1)}>
+                                Quay lại
                             </button>
                         </div>
-                    </form>
+                        <FlightInfo flight={flight} />
+                        <form onSubmit={handleSubmit}>
+                            {passengers.map((passenger, index) => (
+                                <div key={index} className="passenger-form">
+                                    <div
+                                        className="passenger-header"
+                                        onClick={() => toggleCard(index)}
+                                    >
+                                        <h2>Hành khách {index + 1}</h2>
+                                        <button type="button">
+                                            {expandedCards[index] ? "−" : "+"}
+                                        </button>
+                                    </div>
+                                    <div
+                                        className={`passenger-body ${expandedCards[index] ? "active" : ""}`}
+                                    >
+                                        <fieldset className="gender-group">
+                                            <legend>Giới tính*</legend>
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name={`gender_${index}`}
+                                                    value="M"
+                                                    checked={passenger.gender === 'M'}
+                                                    onChange={(e) => handleChange(index, 'gender', e.target.value)}
+                                                />
+                                                Nam
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name={`gender_${index}`}
+                                                    value="F"
+                                                    checked={passenger.gender === 'F'}
+                                                    onChange={(e) => handleChange(index, 'gender', e.target.value)}
+                                                />
+                                                Nữ
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name={`gender_${index}`}
+                                                    value="O"
+                                                    checked={passenger.gender === 'O'}
+                                                    onChange={(e) => handleChange(index, 'gender', e.target.value)}
+                                                />
+                                                Khác
+                                            </label>
+                                        </fieldset>
+                                        <div className="form-group">
+                                            <input
+                                                type="text"
+                                                id={`first_name_${index}`}
+                                                placeholder=""
+                                                value={passenger.first_name}
+                                                onChange={(e) =>
+                                                    handleChange(index, "first_name", e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <label htmlFor={`first_name_${index}`}>Tên*</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <input
+                                                type="text"
+                                                id={`last_name_${index}`}
+                                                placeholder=""
+                                                value={passenger.last_name}
+                                                onChange={(e) =>
+                                                    handleChange(index, "last_name", e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <label htmlFor={`last_name_${index}`}>Họ*</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <input
+                                                type="tel"
+                                                id={`tel_num_${index}`}
+                                                placeholder=""
+                                                value={passenger.tel_num}
+                                                onChange={(e) =>
+                                                    handleChange(index, "tel_num", e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <label htmlFor={`tel_num_${index}`}>Số điện thoại*</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <input
+                                                type="date"
+                                                id={`date_of_birth_${index}`}
+                                                placeholder=""
+                                                value={passenger.date_of_birth}
+                                                onChange={(e) =>
+                                                    handleChange(index, "date_of_birth", e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <label htmlFor={`date_of_birth_${index}`}>Ngày sinh*</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <input
+                                                type="text"
+                                                id={`citizen_id_${index}`}
+                                                placeholder=""
+                                                value={passenger.citizen_id}
+                                                onChange={(e) =>
+                                                    handleChange(index, "citizen_id", e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <label htmlFor={`citizen_id_${index}`}>CMND/CCCD*</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <input
+                                                type="text"
+                                                id={`nationality_${index}`}
+                                                placeholder=""
+                                                value={passenger.nationality}
+                                                onChange={(e) =>
+                                                    handleChange(index, "nationality", e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <label htmlFor={`nationality_${index}`}>Quốc tịch*</label>
+                                        </div>
+                                        {selectedFlights.map(({ flight }) => (
+                                            <div key={flight.id} className="seat-selection">
+                                                Chọn chỗ ngồi cho chuyến bay <b>{flight.code}</b>
+                                                <div className="seat-buttons">
+                                                    {renderSeatButtons(flight.id, index)}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="submit-button">
+                                <button type="submit" className="btn confirm">
+                                    Đặt vé
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <Footer />

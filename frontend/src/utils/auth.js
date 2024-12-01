@@ -69,19 +69,20 @@ export const login = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: email,
-        password: password,
+        "username": email,
+        "password": password,
       }),
     });
     const data = await response.json();
 
-    if (response.status === 200) {
+    if (response.status == 200) {
       setAuthUser(data.access, data.refresh);
       return { data: "Success", error: null };
     } else {
       return { data: null, error };
     }
   } catch (error) {
+    console.error("Error logging in:", error);
     return {
       data: null,
       error: "Network error or server unreachable",

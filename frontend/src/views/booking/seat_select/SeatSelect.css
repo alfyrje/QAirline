@@ -1,0 +1,69 @@
+.container.seat-select .seat-map-list {
+    width: 40rem;
+    margin: auto;
+    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.seat-map {
+    width: 50%;
+    margin: auto;
+}
+
+.seat-map-card {
+    border: 2px solid #f5bcc3;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.flight-info-wrapper {
+    border-bottom: 2px solid #f5bcc3;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.seat-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.seat-row button {
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid #f5bcc3;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.seat-row button:hover {
+    background-color: #ddd;
+}
+
+.seat-row button.selected {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+}
+
+.seat-row button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+.passengers-detail-navigation {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
