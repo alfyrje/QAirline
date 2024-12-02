@@ -1,11 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../partials/Header';
 import Footer from '../../partials/Footer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './SeatSelect.css';
 import FlightInfo from '../flight_search/FlightInfo';
 import SeatMap from './SeatMap';
 import ProgressBar from '../ProgressBar';
+import axios from 'axios';
 
 const SeatSelect = () => {
     const { state } = useLocation();
@@ -15,6 +16,21 @@ const SeatSelect = () => {
     const navigate = useNavigate();
 
     const [selectedSeats, setSelectedSeats] = useState({});
+    const [bookedSeats, setBookedSeats] = useState({});
+
+    useEffect(() => {
+        const fetchBookedSeats = async () => {
+            try {
+                const flightIds = selectedFlights.map(flightObj => flightObj.flight.id);
+                const response = await axios.post('http://localhost:8000/flights/booked-seats/', { flight_ids: flightIds });
+                setBookedSeats(response.data);
+            } catch (error) {
+                console.error('Error fetching booked seats:', error);
+            }
+        };
+
+        fetchBookedSeats();
+    }, [selectedFlights]);
 
     const handleSeatSelection = (flightId, seat) => {
         setSelectedSeats((prev) => {
@@ -26,7 +42,7 @@ const SeatSelect = () => {
                     [flightId]: currentFlightSeats.filter((s) => s !== seat),
                 };
             }
-            if (currentFlightSeats.length < passengersNo) {
+            if (currentFlightSeats.length < passengersNo && !bookedSeats[flightId]?.includes(seat)) {
                 console.log('selecting seat', seat, flightId);
                 return {
                     ...prev,
@@ -73,6 +89,7 @@ const SeatSelect = () => {
                                     passengersNo={passengersNo}
                                     onSeatSelect={handleSeatSelection}
                                     selectedSeats={selectedSeats[flight.id] || []}
+                                    bookedSeats={bookedSeats[flight.id] || []}
                                 />
                             </div>
                         </div>

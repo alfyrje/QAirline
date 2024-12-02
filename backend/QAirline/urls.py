@@ -10,5 +10,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('flights/', include('flights.urls')),
-    path('city_introduction/', include('city_introduction.urls'))
+    path('city_introduction/', include('city_introduction.urls')),
+    path('dynapi/', include('django_dyn_api.urls')),
 ]
