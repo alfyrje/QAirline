@@ -6,6 +6,7 @@
 #root, html, body {
   width: 100%;
   height: 100%;
+  font-size: 16px; /* Default for desktop */
 }
 
 .login-container {
@@ -125,7 +126,6 @@
 /* Input field styling */
 .login-form .login-input_box input {
     width: 100%;
-    height: 57px;
     border: 1px solid #DADAF2;
     border-radius: 5px;
     outline: none;
@@ -149,27 +149,49 @@
     text-decoration: none;
     color: #626cd6;
     font-weight: 500;
+    margin-top: 0.5rem;
 }
 .login-a:hover {
     text-decoration: underline;
 }
 
 #login-password_remember {
-  width: 16px; /* Set your desired width */
-  height: 16px; /* Set your desired height */
   cursor: pointer;
+  width: 100;
 }
 
 /* Additional styling to align with the label */
 .login-password_remember {
   display: flex;
   align-items: center;
-  gap: 8px; /* Space between label and checkbox */
 }
 
-@media screen and (max-width: 768px) {
-  .login-form {
-    width: 100%;
+@media (max-width: 768px) {
+  html {
+    font-size: 14px; /* Slightly smaller for tablets */
   }
-  
+
+  .login-form {
+    width: 50%; /* Adjust form width */
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+  }
+
+  .login-input_box label {
+    font-size: 1rem; /* Slightly smaller for tablets */
+    margin: 1rem 0rem 0rem 0rem;
+  }
+
+  .login-form h3 {
+    font-size: 1.2rem; /* Slightly smaller font */
+  }
+
+  .login-form input {
+    height: 45px; /* Adjust input height */
+    font-size: 0.9rem; /* Smaller text */
+  }
+
+  .login-form button {
+    height: 50px; /* Adjust button height */
+    font-size: 1rem; /* Smaller button text */
+  }
 }

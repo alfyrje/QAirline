@@ -20,11 +20,6 @@ logger = logging.getLogger(__name__)
 
 class FlightSearchView(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
-    # authentication_classes = [TokenAuthentication]
-
-    permission_classes = [AllowAny]  # Allow unauthenticated access
-    # authentication_classes = [TokenAuthentication]
-
     serializer_class = FlightSerializer
 
     def get_queryset(self):
@@ -45,24 +40,26 @@ class FlightSearchView(ListAPIView):
 
 class CreateTicketsAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
-
     def post(self, request, *args, **kwargs):
         data = request.data
-        request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
-        request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
-        user_id = request_jwt_decoded['user_id']
         flights = data.get('flights', [])
         passengers_data = data.get('passengers', [])
-       
+        request_token = data.get('token')
         if not flights or not passengers_data:
             return Response(
                 {"error": "Missing required fields: flights or passengers"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        if request_token is None:
+            booker_id = None
+        else: 
+            request_jwt = request_token
+            request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = request_jwt_decoded['user_id']
+            booker_id = user_id
+        
         tickets = []
-        # booker = request.user if not isinstance(request.user, AnonymousUser) else None
-        booker_id = user_id
         for flight_info in flights:
             flight_id = flight_info.get('flightId')
             seat_class = flight_info.get('seatClass')
@@ -88,6 +85,7 @@ class CreateTicketsAPI(ListAPIView):
                     'passenger': passenger.id,
                     'seat': seat,
                     'ticket_class': seat_class,
+                    'cancelled': False,
                 }
         
                 ticket_serializer = TicketSerializer(data=ticket_data)
@@ -151,5 +149,6 @@ class TicketsFlightsHistoryAPI(ListAPIView):
                     {"error": f"Ticket with ID {ticket_id} not found"},
                     status=status.HTTP_404_NOT_FOUND
                 )
-            ticket.delete()
+            ticket.cancelled = True
+            ticket.save()
             return Response({"message": "Ticket canceled successfully"}, status=status.HTTP_200_OK)

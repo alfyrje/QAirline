@@ -108,52 +108,48 @@ function ProfileFlights() {
               </div>
             </div>
             <div className="profile-flights-list-body">
-              {flights.map((flight, index) => (
+              {flights.map((ticket, index) => (
                 <div key={index} className="profile-flights-list-row">
-                  <div className="column ticket-id">{flight.ticket_id}</div>
                   <div className="column departure-time">
-                    {flight.flight.start_time}
+                    {ticket.flight.start_time}
                   </div>
                   <div className="column arrival-time">
-                    {flight.flight.end_time}
+                    {ticket.flight.end_time}
                   </div>
                   <div className="column departure-location">
-                    {flight.flight.start_location}
+                    {ticket.flight.start_location}
                   </div>
                   <div className="column arrival-location">
-                    {flight.flight.end_location}
+                    {ticket.flight.end_location}
                   </div>
                   <div className="column passenger-info">
                     <p>
-                      <strong>Name:</strong> {flight.passenger_info.first_name}{" "}
-                      {flight.passenger_info.last_name}
+                      <strong>Name:</strong> {ticket.passenger_info.first_name}{" "}
+                      {ticket.passenger_info.last_name}
                     </p>
                     <p>
-                      <strong>Phone:</strong> {flight.passenger_info.tel_num}
+                      <strong>Phone:</strong> {ticket.passenger_info.tel_num}
                     </p>
                     <p>
                       <strong>Date of Birth:</strong>{" "}
-                      {flight.passenger_info.date_of_birth}
+                      {ticket.passenger_info.date_of_birth}
                     </p>
                     <p>
                       <strong>Citizen ID:</strong>{" "}
-                      {flight.passenger_info.citizen_id}
+                      {ticket.passenger_info.citizen_id}
                     </p>
                     <p>
                       <strong>Nationality:</strong>{" "}
-                      {flight.passenger_info.nationality}
+                      {ticket.passenger_info.nationality}
                     </p>
                   </div>
-                  <div className="column ticket-info">{`Ghế ${flight.seat}, ${flight.ticket_class}`}</div>
-                  <div className="column status">
-                    <button
-                      onClick={() =>
-                        handleCancel(flight.ticket_id, flight.flight.start_time)
-                      }
-                    >
+                  <div className="column ticket-info">{`Ghế ${ticket.seat}, ${ticket.ticket_class}`}</div>
+                  <div className="column cancel">
+                    <button onClick={() => handleCancel(ticket.ticket_id, ticket.flight.start_time)}>
                       Hủy vé
                     </button>
                   </div>
+                  <div className="column status">{ticket.flight.delay_status}</div>
                 </div>
               ))}
             </div>

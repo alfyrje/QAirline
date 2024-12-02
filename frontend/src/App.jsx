@@ -13,6 +13,7 @@ import CityPage from './views/dashboard/CityPage.jsx';
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/auth";
 import SeatSelect from "./views/booking/seat_select/SeatSelect";
+import './index.css'
 
 const PrivateRoute = ({ children }) => {
     const loggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -39,12 +40,6 @@ function App() {
                             </PrivateRoute>
                         } />
                         <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
-                        <Route path="/profile/" element={
-                            <PrivateRoute>
-                            <Profile />
-                            </PrivateRoute>
-                            } />
-
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
 
@@ -58,22 +53,9 @@ function App() {
                         <Route path="/seat-select" element={<SeatSelect />} />
 
                         {/* Booking Info */}
-                        <Route path="/booking-info"
-                            element={
-                                <PrivateRoute>
-                                    <BookingInfo />
-                                </PrivateRoute>
-                            }
-                        />
+                        <Route path="/booking-info" element={<BookingInfo />}/>
                         {/* Passengers Detail */}
-                        <Route path="/passengers-detail"
-                            element={
-                                <PrivateRoute>
-                                    <PassengersDetail />
-                                </PrivateRoute>
-                            }
-                        />
-
+                        <Route path="/passengers-detail"element={<PassengersDetail />}/>
                     </Routes>
                 </MainWrapper>
             </BrowserRouter>

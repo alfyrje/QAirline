@@ -1,26 +1,34 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { mountStoreDevtool } from "simple-zustand-devtools";
+import { isAccessTokenExpired } from "../utils/auth";
 
-const useAuthStore = create((set, get) => ({
-  allUserData: null,
-  loading: false,
-
-  user: () => ({
-    user_id: get().allUserData?.user_id || null,
-    username: get().allUserData?.username || null,
-  }),
-
-      setUser: (user) => set({ allUserData: user }),
-      setLoading: (loading) => set({ loading }),
-      isLoggedIn: () => get().allUserData !== null,
-      setLogout: () => {
-        set({ allUserData: null, isLoggedIn: false });
-        localStorage.removeItem("access_token");
-      },
+const useAuthStore = create(
+  (set, get) => ({
+    allUserData: null,
+    loading: false,
+    user: () => ({
+      user_id: get().allUserData?.user_id || null,
+      username: get().allUserData?.username || null,
     }),
-    {
-      name: "auth-storage",
-    }
-  );
+    setUser: (user) => set({ allUserData: user }),
+    setLoading: (loading) => set({ loading }),
+    isLoggedIn: () => {
+      const allUserData = get().allUserData;
+      const refreshToken = localStorage.getItem("refresh_token");
+      return (
+        allUserData !== null &&
+        refreshToken &&
+        !isAccessTokenExpired(refreshToken)
+      );
+    },
+    setLogout: () => {
+      set({ allUserData: null, isLoggedIn: false });
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("auth-storage"); // Xóa thông tin người dùng trong localStorage
+    },
+  }),
+  {
+    name: "auth-storage",
+  }
+);
 export { useAuthStore };

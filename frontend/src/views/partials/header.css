@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@200;300;400;500;600;700&display=swap");
 a, .header-sideBar{
-  font-family: "Funnel Sans", sans-serif;
+  font-family: "Maven Pro", sans-serif;
   font-weight: 500;
 }
 .header-otherInformation {
@@ -48,6 +48,7 @@ text-decoration: none;
   display: flex;
   gap: 1rem;
   color:#736660;
+  font-size: 1.25rem;
 }
 
 
@@ -72,18 +73,19 @@ text-decoration: none;
 #header-khamPha, #header-datVe, #header-thongTinHanhTrinh {
   color: #736660;
   text-decoration: none;
+  margin: 0rem 0.25rem 0rem 0.25rem;
 }
 
 #header-khamPha:hover {
-  color: #3f7308;
+  color: #e687a5;
 }
 
 #header-datVe:hover {
-  color: #3f7308;
+  color: #e687a5;
 }
 
 #header-thongTinHanhTrinh:hover {
-  color: #3f7308;
+  color: #e687a5;
 }
 .header-sideBar {
   display: none;
@@ -152,10 +154,11 @@ text-decoration: none;
 color: #f2f4f7;
 }
 #header-separation {
-  font-family: "Funnel Sans", sans-serif;
+  font-family: "Maven Pro", sans-serif;
   color:black;
   font-weight: 100;
 }
+
 
 .menu-trigger img{
   /* position: absolute; */
@@ -167,7 +170,7 @@ color: #f2f4f7;
   overflow: hidden;
   cursor: pointer;
   background-color: #fff;
-
+  margin: 0 1rem;
 }
 
 .dropdown-menu{
@@ -180,6 +183,7 @@ color: #f2f4f7;
   z-index: 1000;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
 }
 .dropdown-menu.inactive{
   opacity: 0;
@@ -292,7 +296,7 @@ a {
     width: 100%;
     max-width: 90%;
     background: #f2f4f7;
-    font-family: "Funnel Sans", sans-serif;
+    font-family: "Maven Pro", sans-serif;
     font-weight: 500;
     z-index: 9999px;
     float:right;
