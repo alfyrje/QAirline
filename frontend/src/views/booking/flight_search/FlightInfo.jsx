@@ -26,10 +26,11 @@ const FlightInfo = ({ flight }) => {
         <span className="airport">{flight.end_location}</span>
       </div>
       <div className="details">
-        <div>
+        {flight.start_time &&
+        (<div>
           <span className="label">Khởi hành</span>
           <span>{formatDate(flight.start_time)}</span>
-        </div>
+        </div>)}
         {flight.return_time &&
           (<div>
             <span className="label">Trở về</span>
