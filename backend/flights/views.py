@@ -18,6 +18,21 @@ import json
 
 logger = logging.getLogger(__name__)
 
+class BookedSeatsView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        flight_ids = request.data.get('flight_ids', [])
+        if not flight_ids:
+            return Response({"error": "Flight IDs are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        booked_seats = {}
+        for flight_id in flight_ids:
+            tickets = Ticket.objects.filter(flight_id=flight_id)
+            booked_seats[flight_id] = [ticket.seat for ticket in tickets]
+
+        return Response(booked_seats, status=status.HTTP_200_OK)
+
 class FlightSearchView(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     serializer_class = FlightSerializer

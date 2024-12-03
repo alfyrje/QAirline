@@ -1,6 +1,6 @@
 import './SeatSelect.css';
 
-const SeatMap = ({ flightId, seatClass, passengersNo, onSeatSelect, selectedSeats }) => {
+const SeatMap = ({ flightId, seatClass, passengersNo, onSeatSelect, selectedSeats, bookedSeats }) => {
     const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     const seatsPerRow = 4;
     const isEconomy = seatClass === 'E';
@@ -17,7 +17,8 @@ const SeatMap = ({ flightId, seatClass, passengersNo, onSeatSelect, selectedSeat
                                 onClick={() => onSeatSelect(flightId, seat)}
                                 disabled={
                                     (isEconomy && row <= 'D') || (!isEconomy && row > 'D') ||
-                                    (selectedSeats.length >= passengersNo && !selectedSeats.includes(seat))
+                                    (selectedSeats.length >= passengersNo && !selectedSeats.includes(seat)) ||
+                                    bookedSeats.includes(seat)
                                 }
                                 className={selectedSeats.includes(seat) ? 'selected' : ''}
                             >

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'django_dyn_api',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
@@ -191,4 +192,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+}
+
+
+DYNAMIC_API = {
+    'flights': "QAirline.models.Flight",
+    'planes': "QAirline.models.Plane",
+    'tickets': "QAirline.models.Ticket",
 }
