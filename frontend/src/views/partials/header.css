@@ -276,7 +276,7 @@ a {
 
 
 /* @media (max-width: 991px) */
-@media (max-width: 991px ) {
+@media (max-width: 91px ) {
   .header-navLink {
     display: none;
   }
@@ -287,7 +287,6 @@ a {
   .first-item {
     max-width: 30px;
   }
-  
 
   .header-sideBar {
     /* padding: 1rem; */

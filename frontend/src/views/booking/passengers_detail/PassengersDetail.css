@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     gap: 4%;
     justify-content: space-between;
+    padding: 2% 2% 2% 2%;
 }
 
 .passenger-details .passenger-form {
@@ -48,6 +49,7 @@
 
 .passenger-details .passenger-body.active {
     display: block;
+    /* flex-direction: column; */
     max-height: 50rem;
     opacity: 1;
 }
@@ -194,4 +196,31 @@
 .seat-button:disabled {
     background-color: #e0e0e0;
     cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .passenger-details .passenger-body.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .passenger-details .form-group {
+        position: relative;
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+    .container.passenger-details {
+        padding: 2% 2% 2% 2%;  
+        justify-content: center;
+    }
+    .passenger-details{
+        width: 90%;
+    }
+
+}
+
+@media (max-width: 280px) {
+    .passenger-details{
+        width: 100%;
+    }
 }

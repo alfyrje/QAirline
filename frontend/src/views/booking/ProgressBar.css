@@ -4,6 +4,7 @@
     justify-content: space-between;
     margin-bottom: 1rem;
     margin-top: 1rem;
+    padding: 2% 2% 2% 2%;
 }
 
 .arrow-step {
@@ -26,4 +27,17 @@
 
 .arrow-step:not(:last-child) {
     margin-right: -5%;
+}
+
+@media (max-width: 768px) {
+    .arrow-step {
+        display: none;
+    }
+
+    .arrow-step.active {
+        display: block;
+        flex: none; /* Prevent stretching */
+        margin: 0 auto; /* Center the active step */
+        width: 100%; /* Adjust size for better visibility */
+    }
 }

@@ -1,5 +1,6 @@
 .flight-list {
     gap: 2rem;
+    margin: 2% 2% 2% 2%;
 }
 
 .flight-list .flight-card {
@@ -16,7 +17,8 @@
 .flight-list .flight-details {
     flex: 2;
     display: flex;
-    padding: 1rem 0 1rem 1rem;
+    padding: 1rem 1rem 1rem 1rem;
+    width: 70%;
 }
 
 .flight-list .flight-info span {
@@ -87,6 +89,7 @@
     padding: 0;
     margin: 0;
     height: 100%;
+    width: 30%;
 }
 
 .flight-list .price {
@@ -123,4 +126,11 @@
 .flight-list .price p {
     margin: 0.2rem 0;
     font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .flight-list .flight-details {
+        display: flex;
+        flex-direction: column;
+    }
 }

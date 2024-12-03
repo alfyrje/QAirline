@@ -88,41 +88,48 @@ function ProfileFlights() {
               <label htmlFor="date">Đến ngày</label>
               <input type="date"></input>
             </div>
-            <div className="profile-flights-search-button">
-              <button>Tìm kiếm</button>
+            <div className="profile-flights-search-date">
+              <label htmlFor="date">Đến ngày</label>
+              <input type="date"></input>
             </div>
+            <div className="profile-flights-search-date">
+              <label htmlFor="date">Đến ngày</label>
+              <input type="date"></input>
+            </div>
+            <button className="profile-flights-search-button"></button>
           </div>
           <div className="profile-flights-list">
             <div className="profile-flights-list-header">
               <div className="profile-flights-list-row">
-                <div className="column ticket-id">Mã vé</div>
-                <div className="column departure-time">Thời gian xuất phát</div>
-                <div className="column arrival-time">Thời gian đến</div>
-                <div className="column departure-location">
+                <div className="profile-flights-column departure-time">Thời gian xuất phát</div>
+                <div className="profile-flights-column arrival-time">Thời gian đến</div>
+                <div className="profile-flights-column departure-location">
                   Địa điểm xuất phát
                 </div>
-                <div className="column arrival-location">Địa điểm đến</div>
-                <div className="column passenger-info">Thông tin người bay</div>
-                <div className="column ticket-info">Thông tin vé</div>
-                <div className="column status">Trạng thái</div>
+                <div className="profile-flights-column arrival-location">Địa điểm đến</div>
+                <div className="profile-flights-column passenger-info">Thông tin người bay</div>
+                <div className="profile-flights-column ticket-info">Thông tin vé</div>
+                <div className="profile-flights-column status">Trạng thái</div>
+                <div className="profile-flights-column cancel">Hủy vé</div>
+
               </div>
             </div>
             <div className="profile-flights-list-body">
               {flights.map((ticket, index) => (
                 <div key={index} className="profile-flights-list-row">
-                  <div className="column departure-time">
+                  <div className="profile-flights-column departure-time">
                     {ticket.flight.start_time}
                   </div>
-                  <div className="column arrival-time">
+                  <div className="profile-flights-column arrival-time">
                     {ticket.flight.end_time}
                   </div>
-                  <div className="column departure-location">
+                  <div className="profile-flights-column departure-location">
                     {ticket.flight.start_location}
                   </div>
-                  <div className="column arrival-location">
+                  <div className="profile-flights-column arrival-location">
                     {ticket.flight.end_location}
                   </div>
-                  <div className="column passenger-info">
+                  <div className="profile-flights-column passenger-info">
                     <p>
                       <strong>Name:</strong> {ticket.passenger_info.first_name}{" "}
                       {ticket.passenger_info.last_name}
@@ -143,13 +150,12 @@ function ProfileFlights() {
                       {ticket.passenger_info.nationality}
                     </p>
                   </div>
-                  <div className="column ticket-info">{`Ghế ${ticket.seat}, ${ticket.ticket_class}`}</div>
-                  <div className="column cancel">
-                    <button onClick={() => handleCancel(ticket.ticket_id, ticket.flight.start_time)}>
-                      Hủy vé
+                  <div className="profile-flights-column ticket-info">{`Ghế ${ticket.seat}, ${ticket.ticket_class}`}</div>
+                  <div className="profile-flights-column status">{ticket.flight.delay_status}</div>
+                  <div className="profile-flights-column cancel">
+                    <button className="profile-flights-cancel-ticket-button"onClick={() => handleCancel(ticket.ticket_id, ticket.flight.start_time)}>
                     </button>
                   </div>
-                  <div className="column status">{ticket.flight.delay_status}</div>
                 </div>
               ))}
             </div>

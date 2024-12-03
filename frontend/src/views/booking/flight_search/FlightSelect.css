@@ -1,0 +1,50 @@
+.flight-select-container {
+    background: #edefee;
+    margin: auto;
+    padding: 2% 5% 2% 5%;
+}
+
+.flight-list-wrapper {
+    background-color: #fff;
+}
+
+.flight-select-button-bar {
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.flight-select-button-bar {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .flight-select-btn {
+    flex: 1;
+    background-color: #f0f0f0;
+    padding: 2% 2% 2% 2%;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .flight-select-btn:hover {
+    background-color: #d3d3d3;
+  }
+  
+  .flight-select-btn.active {
+    background-color: #e687a5;
+    color: white;
+    border-color: #e687a5;
+  }
+
+@media (max-width: 768px) {
+    .flight-select-button-bar {
+        display: flex;
+    }
+}

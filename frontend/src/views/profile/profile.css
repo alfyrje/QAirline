@@ -3,15 +3,7 @@
   box-sizing: border-box;
   font-family: "Maven Pro", sans-serif;
 }
-.colorcode {
-  color:#c7d5d6;
-  color:#edefee;
-  color:#daef8a;
-  color:#ffe7e3;
-  color:#f5bcc3;
-  color:#e687a5;
-}
-/* top right bottom left */
+
 #root,
 html {
   width: 100%;
@@ -31,7 +23,6 @@ body {
 .profile-container {
   position: relative;
   width: 100%;
-  /* background: #f2f4f7; */
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   align-items: center;
@@ -39,15 +30,13 @@ body {
 }
 
 .profile-content-container {
-  /* margin: 5% 10% 5% 10%; */
-  /* border-radius: 10px; */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: row;
   background: #f2f4f7;
-  background-size: cover; /* Makes the background image cover the entire div */
-  background-position: center; /* Centers the image within the div */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
 }
 
 .profile-sidemenu {
@@ -56,9 +45,12 @@ body {
   padding: 0.25rem 0.25rem 0.25rem 0.25rem;
   background: #fff;
   border-radius: 0 10px 0 10px;
-  height: auto; /* Make the height adjust based on the content */
-  display: flex; /* Ensure it takes the height of the children */
+  height: auto; 
+  display: flex; 
   flex-direction: column;
+  height: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
 }
 .profile-content {
   margin: 1rem 1rem 1rem 0rem;
@@ -66,12 +58,13 @@ body {
   background: #fff;
   color: #344054;
   border-radius: 0px 10px 0px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
 }
 
 .profile-info-header {
-  background-color: antiquewhite;
+  background-color: #cce1b1;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-  background-color:#c5e0fd;
   font-weight: 900;
   border-radius: 0 10px 0 0;
 }
@@ -79,10 +72,6 @@ body {
   border-radius: 0 10px 0 0;
 }
 .profile-sidemenu-list {
-  /* display: flex; */
-  /* padding: 1rem 1rem 1rem 1rem; */
-  /* max-height: 800px; */
-  /* transition: all 0.4s ease-in-out; */
   list-style-type: none;
   color: #fff;
   font-size: 15px;
@@ -90,16 +79,16 @@ body {
   margin: 0 0 0 0;
 }
 .profile-sidemenu-item {
-  /* margin: 0.5rem 0 0.5rem 0; */
   background: #fff;
   font-size: 15px;
   transition: all 0.3s ease;
-  border-bottom: 0.5px solid #f2f4f7;
   padding: 0.25rem 0.25rem 0.25rem 0.25rem;
+}
+.profile-sidemenu-item:not(:first-child) {
+  border-top: 0.5px solid #f2f4f7;
 }
 .profile-a {
   text-decoration: none;
-  /* color: #344054; */
   color: #76a049;
   font-weight: 500;
 }
@@ -108,7 +97,6 @@ body {
   text-decoration: underline;
 }
 .profile-a:active {
-  /* color: #76a049; */
   color: #344054;
   text-decoration: underline;
 }
@@ -157,9 +145,8 @@ body {
   border-radius: 5px 5px 5px 5px;
 }
 .profile-flights-header {
-  background-color: antiquewhite;
+  background-color:  #a1cf67;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-  background-color:#c5e0fd;
   font-weight: 900;
   border-radius: 0 10px 0 0;
 }
@@ -187,59 +174,72 @@ body {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 }
 
-.profile-flights-search-button > button {
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-  background: #e687a5;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 5px 5px 5px 5px;
+.profile-flights-search-button {
+  padding: 0.5rem; 
+  background: transparent url('/icons/profile-flight-search.png') no-repeat center center;
+  background-size: contain;
+  border: none; 
+  cursor: pointer; 
+  transition: all 0.2s ease; 
+  border-radius: 5px;
+  width: 2.5rem; 
+  height: 2.5rem;
 }
+.profile-flights-search-button:hover {
+  transform: scale(1.1); 
+  opacity: 0.8; 
+}
+.profile-flights-cancel-ticket-button {
+  padding: 0.5rem; 
+  background: transparent url('/icons/profile-flight-cancel.png') no-repeat center center;
+  background-size: contain; 
+  border: none; 
+  cursor: pointer;
+  transition: all 0.2s ease; 
+  border-radius: 5px; 
+  width: 2.5rem;
+  height: 2.5rem; 
+}
+
+.profile-flights-cancel-ticket-button:hover {
+  transform: scale(1.1); 
+  opacity: 0.8; 
+}
+
+
 .profile-flights-list {
   margin: 1rem 1rem 1rem 1rem;
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   font-size: 0.9rem;
-}
-.profile-flights-list-header > ul {
-  background-color: #c5e0fd; /* Màu nền */
-  padding: 0.5rem; /* Khoảng cách bên trong */
-  font-weight: 500; /* Tăng độ đậm của font */
-  border-radius: 10px 10px 0 0; /* Bo góc trên cùng bên phải */
-  display: flex; /* Để các mục hiển thị theo hàng ngang */
-  flex-direction: row; /* Đảm bảo các mục ngang hàng */
-  list-style-type: none; /* Bỏ dấu chấm đầu dòng */
-  margin: 0; /* Loại bỏ khoảng cách ngoài */
-  text-align: center; /* Căn giữa nội dung */
-}
-
-.profile-flights-list-header > ul > li {
-  flex: 1; /* Chia đều không gian giữa các mục */
-  text-align: center; /* Căn giữa văn bản */
-  padding: 0.5rem; /* Khoảng cách nội dung bên trong */
-  border-right: 1px solid #ccc; /* Đường kẻ chia cột */
-}
-
-.profile-flights-list-header > ul > li:last-child {
-  border-right: none; /* Xóa đường kẻ cuối cùng */
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch; 
 }
 
 .profile-flights-list-header {
-  background-color: #c5e0fd;
+  display: grid;
+  grid-template-columns: minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(200px, 6fr) minmax(150px, 3fr) minmax(100px, 2fr) minmax(50px, 1fr);
+  /* grid-template-columns: 2fr 2fr 2fr 2fr 6fr 3fr 2fr 1fr; */
+  background-color: #cce1b1;
   font-weight: 700;
+  text-align: center;
+  align-items: center;
+  width: 100%;
 }
 
 .profile-flights-list-row {
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr 2fr 3fr 3fr 1fr; /* Định nghĩa độ rộng từng cột */
+  grid-template-columns: minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(200px, 6fr) minmax(150px, 3fr) minmax(100px, 2fr) minmax(50px, 1fr);
+  /* grid-template-columns: 2fr 2fr 2fr 2fr 6fr 3fr 2fr 1fr; */
   align-items: center;
   border-bottom: 1px solid #ccc;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .profile-flights-list-row:last-child {
-  border-bottom: none; /* Xóa đường kẻ cuối cùng */
+  border-bottom: none;
 }
 
 .column {
@@ -258,21 +258,79 @@ body {
 }
 
 .column.passenger-info {
-  text-align: left; /* Align text to the left */
-  padding-left: 1rem; /* Add some left padding */
-  font-size: 0.9rem; /* Slightly smaller font size for details */
-  line-height: 1.5; /* Improve readability with proper line spacing */
+  text-align: left; 
+  padding-left: 1rem; 
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .column.passenger-info p {
-  margin: 0.25rem 0; /* Add spacing between each line */
+  margin: 0.25rem 0;
 }
 
 .column.passenger-info strong {
-  color: #344054; /* Highlight labels for better readability */
-  font-weight: 600; /* Make labels bold */
+  color: #344054; 
+  font-weight: 600;
+}
+.profile-flights-list-body{
+  display: flex;
+  flex-direction: column; /* Make children align horizontally */
+  white-space: nowrap; /* Prevent text from wrapping */
+  width: 100%;
 }
 
 .profile-flights-list-body .profile-flights-list-row:hover {
-  background-color: #f5f5f5; /* Hiệu ứng hover cho hàng dữ liệu */
+  background-color: #f5f5f5;
+}
+.profile-flights-column.passenger-info,
+.profile-flights-column.ticket-info {
+  text-align: left; 
+  padding-left: 1rem;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.profile-flights-column {
+  padding: 0.5rem;
+  word-wrap: break-word; 
+  white-space: normal; 
+  text-align: center;
+}
+@media (max-width: 1000px) {
+  .profile-content-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-sidemenu {
+    width: 98%;
+    margin: 1% 1% 1% 1%;
+    padding: 0 0 0 0;
+
+  }
+  .profile-sidemenu-list {
+    width: 100%;
+    border-radius: 0;
+    display: flex;
+    flex-direction: row;
+  }
+  .profile-sidemenu-item {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+  }
+  .profile-sidemenu-item:not(:first-child) {
+    border-left: 0.5px solid #c7d5d6;
+  }
+  .profile-a {
+    /* align-items: center;  */
+    text-align: center;
+  }
+  .profile-content {
+    width: 98%;
+    margin: 1% 1% 1% 1%;
+  }
+  /* .profile-flights-list-row,
+  .profile-flights-list-header {
+    grid-template-columns: 2fr 2fr 2fr 2fr 4fr 3fr 2fr 1fr;
+  } */
 }
