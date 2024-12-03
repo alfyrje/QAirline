@@ -220,97 +220,104 @@ color: #f2f4f7;
   display: flex;
   align-items: center;
 }
-/* 
-a {
-  text-decoration: none;
-}
 
-.dropdown-menu{
+
+/* --------------------------------------------------------------------CSS STYLE FOR NAV SIDE BAR-------------------------------------------- */
+
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  display: none;
+  z-index: 9999;
   position: absolute;
-  top: 5rem;
-  right: 20px;
-  background-color: #fff;
-  border-radius: var(--border-radius);
-  padding: 10px 20px;
-  width: 200px;
+  width: 2.5rem;
+  height: 1.5rem;
+  top: 1rem; 
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #76a049;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #e687a5;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  display: none;
+}
+
+/* Color/shape of close button cross */
+
+
+
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+
+
+/* General sidebar styles */
+.bm-menu {
+  position: absolute;
+  top: 3.5rem;
+  border-radius: 2rem 0 0 2rem;
+  background-color: #f7ffd9;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+  box-shadow: -2px 0 8px rgba(14, 56, 42, 0.1); 
+}
+.bm-menu-wrap {
+  z-index: -10;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+.menu-item {
+  padding: 1rem;
+  color:#e687a5;
+  text-decoration: underline;
+
+}
+.menu-item:hover {
+  color: #76a049;
+}
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  display: none;
 }
 
 
-.dropdown-menu ul li{
-  padding: 10px  0;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.dropdown-menu ul li:hover a{
-  color: rgb(212, 33, 9);
-  cursor: pointer;
-}
-
-.dropdown-menu ul li:hover img{
-  opacity: 1;
-  cursor: pointer;
-}
-
-.dropdownItem{
-  display: flex;
-  margin: 10px auto;
-}
-
-.dropdownItem img{
-  max-width: 3rem;
-  margin-right: 2rem;
-  opacity: 0.5;
-  transition: var(--speed);
-
-}
-
-.dropdownItem a{
-  max-width: 100px;
-  margin-left: 10px;
-  transition: var(--speed);
-} */
 
 
-/* @media (max-width: 991px) */
-@media (max-width: 991px ) {
-  .header-navLink {
+
+@media (max-width: 830px) {
+  .bm-burger-button {
+    display: flex; /* Show on mobile */
+    align-items: center;
+    position: absolute;
+    right: 1rem;
+    top: 2rem;
+  }
+  .header-navLink, .header-controls, .header-logOut, .header-signIn, .header-register {
     display: none;
   }
-  .header-authLink {
-    display: none;
-  }
 
-  .first-item {
-    max-width: 30px;
-  }
-  
-
-  .header-sideBar {
-    /* padding: 1rem; */
-    
-    display:block;
-    width: 100%;
-    max-width: 90%;
-    background: #f2f4f7;
-    font-family: "Funnel Sans", sans-serif;
-    font-weight: 500;
-    z-index: 9999px;
-    float:right;
-    padding-right: 1rem;
-  }
-  .header-sub-title {
-    background-color:#516076;
-  }
-
-  #header-authLinkSideBar {
-    display:block;
-  }
-  #header-authLinkSideBar:hover {
-    color: #f2f4f7;
-  }
-  /* .menu-item > .title {
-    background-color: #516076;
-
-  } */
 }
-
