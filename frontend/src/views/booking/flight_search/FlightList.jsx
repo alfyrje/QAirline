@@ -52,13 +52,22 @@ const formatDuration = (durationInSeconds) => {
   return formattedDuration.trim();
 };
 
-const FlightCard = ({ flight, onSelectSeat }) => {
+const FlightCard = ({ flight, onSelectSeat, passengersNo }) => {
   const handleSelectSeat = (seatClass) => {
+    if (seatClass === 'E' && flight.economic_seats_left < passengersNo) {
+      alert('Not enough economy seats available');
+      return;
+    }
+    if (seatClass === 'B' && flight.business_seats_left < passengersNo) {
+      alert('Not enough business seats available');
+      return;
+    }
     onSelectSeat({
       flight: flight,
       seatClass,
     });
   };
+
   return (
     <div className="flight-card">
       <div className="flight-details">
@@ -96,7 +105,7 @@ const FlightCard = ({ flight, onSelectSeat }) => {
   );
 };
 
-const FlightList = ({ flights, onSelectSeat }) => {
+const FlightList = ({ flights, onSelectSeat, passengersNo }) => {
   if (flights.length === 0) {
     return (
       <p>
@@ -107,7 +116,7 @@ const FlightList = ({ flights, onSelectSeat }) => {
   return (
     <div className="flight-list">
       {flights.map((flight) => (
-        <FlightCard key={flight.id} flight={flight} onSelectSeat={onSelectSeat} />
+        <FlightCard key={flight.id} flight={flight} onSelectSeat={onSelectSeat} passengersNo={passengersNo} />
       ))}
     </div>
   );

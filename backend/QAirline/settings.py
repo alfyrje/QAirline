@@ -196,7 +196,7 @@ REST_FRAMEWORK = {
 
 
 DYNAMIC_API = {
-    'flights': "QAirline.models.Flight",
-    'planes': "QAirline.models.Plane",
-    'tickets': "QAirline.models.Ticket",
+    'flights': "flights.models.Flight",
+    'planes': "flights.models.Plane",
+    'tickets': "flights.models.Ticket",
 }

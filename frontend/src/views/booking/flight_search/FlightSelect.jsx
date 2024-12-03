@@ -40,6 +40,7 @@ const FlightSelect = () => {
                 start_location: state.searchParams.end_location,
                 end_location: state.searchParams.start_location,
                 start_time: state.searchParams.return_time,
+                passengers_no: state.searchParams.passengers_no,
             };
 
             axios
@@ -72,7 +73,7 @@ const FlightSelect = () => {
                     </button>
                 </div>
                 <FlightInfo flight={state?.searchParams} />
-                <FlightList flights={flights} onSelectSeat={handleSelectSeat} />
+                <FlightList flights={flights} onSelectSeat={handleSelectSeat} passengersNo={state?.searchParams.passengers_no} />
             </div>
             <Footer />
         </>
