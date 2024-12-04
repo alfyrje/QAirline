@@ -9,6 +9,7 @@ import user from '/icons/circle-user-round.svg';
 import logout_icon from '/icons/log-out.svg';
 import React, {useState, useEffect, useRef} from "react";
 import notification_icon from '/icons/bell-ring.svg';
+import { stack as Menu } from 'react-burger-menu'
 
 
 function Header() {
@@ -70,15 +71,21 @@ function Header() {
             Thông tin hành trình
           </Link>
         </div>
-        <div>
-        
-       
-
-
+        <div>        
+        <Menu right className ='navSideBar'>
+          <a className = 'menu-item' href='/login'>Đăng nhập</a>
+          <a className = 'menu-item' href='/register'>Đăng Kí</a>
+          <a id="home" className="menu-item" href="/">Khám phá</a>
+          <a id="about" className="menu-item" href="/about">Đặt vé</a>
+          <a id="contact" className="menu-item" href="/contact">Thông tin hành trình</a>
+        {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
+        </Menu>
 
         {isLoggedIn ? (
+          <>
             
               <div className="header-controls">
+
                 <div className='header-notification' ref={notificationRef}>
                   <div className='menu-trigger' onClick={() => setNotificationOpen(!notificationOpen)}>
                     <img src={notification_icon} alt="notification" />
@@ -109,6 +116,16 @@ function Header() {
                   </div>
                 </div>
               </div>
+              <Menu right className ='navSideBar'>
+              <a className = 'menu-item' href='/login'>Đăng xuất</a>
+              <a className = 'menu-item' href='/register'>Thông tin cá nhân</a>
+              <a id="home" className="menu-item" href="/">Khám phá</a>
+              <a id="about" className="menu-item" href="/about">Đặt vé</a>
+              <a id="contact" className="menu-item" href="/contact">Thông tin hành trình</a>
+            {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
+            </Menu>
+
+            </>
           ) : (
             <>
               <Link to="/login" className="header-signIn">
@@ -118,6 +135,15 @@ function Header() {
               <Link to="/register" className="header-register">
                 Đăng ký
               </Link>
+
+              <Menu right className ='navSideBar'>
+              <a className = 'menu-item' href='/login'>Đăng nhập</a>
+              <a className = 'menu-item' href='/register'>Đăng Kí</a>
+              <a id="home" className="menu-item" href="/">Khám phá</a>
+              <a id="about" className="menu-item" href="/about">Đặt vé</a>
+              <a id="contact" className="menu-item" href="/contact">Thông tin hành trình</a>
+            {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
+            </Menu>
             </>
           )}
         </div>
