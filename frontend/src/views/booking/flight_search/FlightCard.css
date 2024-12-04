@@ -12,8 +12,13 @@
     border-radius: 10px;
     overflow: hidden;
     height: 8rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-
+.flight-list .flight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 .flight-list .flight-details {
     flex: 2;
     display: flex;
@@ -51,6 +56,7 @@
 
 .flight-list .location-time .location {
     font-size: 0.8rem;
+    color: #555;
 }
 
 .flight-list .flight-info {
@@ -117,7 +123,9 @@
     cursor: pointer;
     background-color: #f7c6cc;
     color: #934960;
+    text-wrap: wrap;
 }
+
 
 .flight-list .price.business:hover {
     background-color: #c38e94;
