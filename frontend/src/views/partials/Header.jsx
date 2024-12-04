@@ -91,6 +91,7 @@ function Header() {
                   <div className='menu-trigger' onClick={() => setNotificationOpen(!notificationOpen)}>
                     <img src={notification_icon} alt="notification" />
                   </div>
+                  
                   <div className={`dropdown-menu ${notificationOpen ? 'active' : 'inactive'}`}>
                     <ul>
                       <DropdownItem className='dropdownItem' text={"Notification 1"} />
