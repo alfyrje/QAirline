@@ -52,7 +52,7 @@ const formatDuration = (durationInSeconds) => {
   return formattedDuration.trim();
 };
 
-const FlightCard = ({ flight, onSelectSeat }) => {
+const FlightCard = ({ flight, onSelectSeat, showEconomy, showBusiness }) => {
   const handleSelectSeat = (seatClass) => {
     onSelectSeat({
       flight: flight,
@@ -81,22 +81,26 @@ const FlightCard = ({ flight, onSelectSeat }) => {
       </div>
 
       <div className="prices">
-        <div className="price economy" onClick={() => handleSelectSeat('E')}>
-          <span>{flight.economic_seats_left} chỗ còn lại</span>
-          <p>Economy</p>
-          <p>từ {formatPrice(flight.economic_price)}</p>
-        </div>
-        <div className="price business" onClick={() => handleSelectSeat('B')}>
-          <span>{flight.business_seats_left} chỗ còn lại</span>
-          <p>Business</p>
-          <p>từ {formatPrice(flight.business_price)}</p>
-        </div>
+        {showEconomy && (
+          <div className="price economy" onClick={() => handleSelectSeat("E")}>
+            <span>{flight.economic_seats_left} chỗ còn lại</span>
+            <p>Economy</p>
+            <p>từ {formatPrice(flight.economic_price)}</p>
+          </div>
+        )}
+        {showBusiness && (
+          <div className="price business" onClick={() => handleSelectSeat("B")}>
+            <span>{flight.business_seats_left} chỗ còn lại</span>
+            <p>Business</p>
+            <p>từ {formatPrice(flight.business_price)}</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-const FlightList = ({ flights, onSelectSeat }) => {
+const FlightList = ({ flights, onSelectSeat, economyView, businessView }) => {
   if (flights.length === 0) {
     return (
       <p>
@@ -107,7 +111,13 @@ const FlightList = ({ flights, onSelectSeat }) => {
   return (
     <div className="flight-list">
       {flights.map((flight) => (
-        <FlightCard key={flight.id} flight={flight} onSelectSeat={onSelectSeat} />
+        <FlightCard 
+          key={flight.id} 
+          flight={flight} 
+          onSelectSeat={onSelectSeat} 
+          showEconomy={economyView || (!economyView && !businessView)}
+          showBusiness={businessView || (!economyView && !businessView)}
+        />
       ))}
     </div>
   );

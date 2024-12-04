@@ -4,26 +4,48 @@
     justify-content: space-between;
     margin-bottom: 1rem;
     margin-top: 1rem;
+    padding: 2% 2%;
 }
 
 .arrow-step {
     position: relative;
     flex: 1;
     text-align: center;
-    padding: 0.5rem 1rem;
+    padding: 0.7rem 1rem; /* Slightly larger padding for better readability */
     background-color: #cce1b1;
     color: black;
     font-weight: bold;
+    font-size: 0.9rem; /* Adjust font size for better proportions */
     clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%, 5% 50%);
+    border: 2px solid #b5d09b; /* Add a soft border */
+    border-radius: 5px; /* Smooth the sharp edges slightly */
 }
-
 
 .arrow-step.active {
     background-color: #76a049;
     color: white;
+    border-color: #6a933c; /* Slightly darker border for the active step */
 }
-
 
 .arrow-step:not(:last-child) {
     margin-right: -5%;
+}
+
+/* Optional: Style the text for better readability */
+.arrow-step span {
+    display: inline-block;
+    line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+    .arrow-step {
+        display: none;
+    }
+
+    .arrow-step.active {
+        display: block;
+        flex: none; /* Prevent stretching */
+        margin: 0 auto; /* Center the active step */
+        width: 100%; /* Adjust size for better visibility */
+    }
 }

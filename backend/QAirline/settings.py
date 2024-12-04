@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'django_dyn_api',
+    # 'django_dyn_api',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi1',
+        'PASSWORD': 'denhothoi',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }
@@ -155,8 +155,8 @@ PASSWORD_HASHERS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,

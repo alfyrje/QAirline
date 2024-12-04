@@ -70,7 +70,6 @@ function LogIn() {
             <div className="login-input_box">
               <div className="login-password_title">
                 <label htmlFor="password">Mật khẩu</label>
-                <a className="login-a"href="#">Quên mật khẩu?</a>
               </div>
               <input
                 type="password"
@@ -80,6 +79,8 @@ function LogIn() {
                 required
               />
             </div>
+            <a className="login-a"href="#">Quên mật khẩu?</a>
+
             {/* <div className="login-input_box">
               <div className="login-password_remember">
                 <label for="password">Ghi nhớ lần đăng nhập sau</label>
@@ -94,7 +95,10 @@ function LogIn() {
             </div> */}
             <button type="submit">Log In</button>
             <p>
-              Don't have an account? <a className="login-a" href="#">Sign up</a>
+              Don't have an account?              
+              <Link className="login-a" to="/register">
+                Sign up
+              </Link>
             </p>
           </form>
         </div>
