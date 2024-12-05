@@ -30,7 +30,6 @@ class UserRegisterView(APIView):
     queryset = models.User.objects.all()
     permission_classes = [AllowAny] 
     def post(self, request):
-        # print(request.data)
         serializer = serializers.UserSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -45,46 +44,14 @@ class UserRegisterView(APIView):
             return JsonResponse({
                 'error_message': error_message,
             }, status=400)
-
-# class UserLoginView(APIView):
-#     permission_classes = [AllowAny]  # Allow unauthenticated access
-#     def post(self, request):
-#         serializer = serializers.UserLoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data['email']
-#             password = serializer.validated_data['password']
-
-#             user = authenticate(request, username=email, password=password)
-#             print(user)
-#             if user is not None:
-#                 # User authenticated, generate tokens
-#                 refresh = RefreshToken.for_user(user)
-#                 data = {
-#                     'refresh_token': str(refresh),
-#                     'access_token': str(refresh.access_token),
-#                 }
-#                 return Response(data, status=200)
-#             else:
-#                 # Authentication failed
-#                 return Response({'error': 'Invalid credentials'}, status=401)
-
-#         return Response({
-#             'error_message': serializer.errors,
-#             'error_code': 400,
-#         }, status=400)
-    
-# class UserLogoutView(ListAPIView):
-#     def post(self, request):
-#         return Response({"message": "Logout successful"})
-    
+ 
 class UserView(ListAPIView):
-    permission_classes = [AllowAny]  # Allow unauthenticated access
-    permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny] 
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
 
 class ProfileView(ListAPIView):
-    permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny] 
     def get(self, request, *args, **kwargs):
         request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
         request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])

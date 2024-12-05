@@ -12,7 +12,7 @@
 .login-container {
   position: relative;
   width: 100%;
-  background: #fff;
+  background: #edefee;
   align-items: center;
   justify-content: center;
 }
@@ -98,8 +98,6 @@
   background: #e687a5;
   width: 100%;
   height: 56px;
-  border-radius: 5px;
-  border: none;
   outline: none;
   color: #fff;
   font-size: 18px;
@@ -108,13 +106,15 @@
   cursor: pointer;
   margin-bottom: 1rem;
   transition: 0.3s ease;
-}
-.login-form button:hover {
-  background: #e687a5;
+  border-radius: 5px; /* Optional: rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+  transition: box-shadow 0.3s ease, transform 0.3s ease; 
 }
 
 .login-form button:hover {
   background: #dc235e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow */
+  transform: translateY(-2px); /* Lift the button */
 }
 .login-checkbox-container{
   padding: 5%;
@@ -135,7 +135,7 @@
     transition: 0.2s ease;
 }
 .login-form .login-input_box input:focus {
-    border-color: #626cd6;
+    border-color: #e687a5;
 }
 .login-form .login-input_box .login-password_title {
     display: flex;
@@ -147,12 +147,13 @@
 }
 .login-a {
     text-decoration: none;
-    color: #626cd6;
+    color: #00558f;
     font-weight: 500;
     margin-top: 0.5rem;
 }
 .login-a:hover {
     text-decoration: underline;
+    color: #303030;
 }
 
 #login-password_remember {

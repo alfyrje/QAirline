@@ -45,11 +45,10 @@
 }
 
 .flight-select-btn.active {
-  background-color: #e687a5;
+  background-color: #c5e0fd;
   color: white;
-  border-color: #e687a5;
-  border-color: #e687a5;
-  box-shadow: 0px 4px 8px rgba(230, 135, 165, 0.4);
+  /* border-color: #e7f4fd; */
+  box-shadow: 0px 4px 8px #f7dae8;
 }
 
 @media (max-width: 768px) {

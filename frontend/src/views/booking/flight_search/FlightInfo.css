@@ -2,8 +2,9 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem;
-    width: 100%;
+    width: 90%;
     background-color: white;
+    margin: 0% 5% 0% 5%
 }
 
 .flight-info-card .route {
