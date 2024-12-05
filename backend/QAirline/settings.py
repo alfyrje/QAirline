@@ -36,7 +36,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users',
     'flights',
-    'admin',
+    'adminapp',
     'city_introduction',
     'django.contrib.admin',
     'django.contrib.auth',
