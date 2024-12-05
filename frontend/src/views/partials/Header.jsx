@@ -96,9 +96,8 @@ function Header() {
                   >
                     <img src={notification_icon} alt="notification" />
                   </div>
-                  <div
-                    className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
-                  >
+                  
+                  <div className={`dropdown-menu ${notificationOpen ? 'active' : 'inactive'}`}>
                     <ul>
                       <DropdownItem
                         className="dropdownItem"

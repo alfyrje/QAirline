@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users',
     'flights',
+    'adminapp',
     'city_introduction',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    # 'django_dyn_api',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi',
+        'PASSWORD': 'denhothoi1',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }
@@ -191,6 +191,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
     ],
 }
 

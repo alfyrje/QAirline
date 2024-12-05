@@ -52,13 +52,22 @@ const formatDuration = (durationInSeconds) => {
   return formattedDuration.trim();
 };
 
-const FlightCard = ({ flight, onSelectSeat, showEconomy, showBusiness }) => {
+const FlightCard = ({ flight, onSelectSeat, showEconomy, showBusiness, passengersNo }) => {
   const handleSelectSeat = (seatClass) => {
+    if (seatClass === 'E' && flight.economic_seats_left < passengersNo) {
+      alert('Not enough economy seats available');
+      return;
+    }
+    if (seatClass === 'B' && flight.business_seats_left < passengersNo) {
+      alert('Not enough business seats available');
+      return;
+    }
     onSelectSeat({
       flight: flight,
       seatClass,
     });
   };
+
   return (
     <div className="flight-card">
       <div className="flight-details">
@@ -100,7 +109,7 @@ const FlightCard = ({ flight, onSelectSeat, showEconomy, showBusiness }) => {
   );
 };
 
-const FlightList = ({ flights, onSelectSeat, economyView, businessView }) => {
+const FlightList = ({ flights, onSelectSeat, economyView, businessView, passengersNo }) => {
   if (flights.length === 0) {
     return (
       <p>
@@ -117,6 +126,7 @@ const FlightList = ({ flights, onSelectSeat, economyView, businessView }) => {
           onSelectSeat={onSelectSeat} 
           showEconomy={economyView || (!economyView && !businessView)}
           showBusiness={businessView || (!economyView && !businessView)}
+          passengersNo={passengersNo}
         />
       ))}
     </div>

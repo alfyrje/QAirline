@@ -43,6 +43,13 @@ class FlightSearchView(ListAPIView):
         start_location = self.request.query_params.get('start_location')
         end_location = self.request.query_params.get('end_location')
         start_time = self.request.query_params.get('start_time')
+        passengers_no = self.request.query_params.get('passengers_no', '1')
+
+        # Ensure passengers_no is a valid integer
+        try:
+            passengers_no = int(passengers_no)
+        except ValueError:
+            passengers_no = 1
 
         flights = Flight.objects.all()
 
@@ -51,8 +58,22 @@ class FlightSearchView(ListAPIView):
         if end_location:
             flights = flights.filter(end_location__icontains=end_location)
         if start_time:
+            start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d')
+            start_time = timezone.make_aware(start_time, timezone.get_current_timezone())
             flights = flights.filter(start_time__gte=start_time)
-        
+        else:
+            flights = flights.filter(start_time__gte=timezone.now())
+            print('STARTTIME', start_time)
+            print('TIMEZONE', timezone.now())
+        # Annotate the number of booked seats for each class
+        flights = flights.annotate(
+            economy_seats=Count('ticket', filter=Q(ticket__ticket_class='E')),
+            business_seats=Count('ticket', filter=Q(ticket__ticket_class='B'))
+        ).filter(
+            Q(plane__economic_seats__gte=F('economy_seats') + passengers_no) &
+            Q(plane__business_seats__gte=F('business_seats') + passengers_no)
+        )
+
         return flights
 
 class CreateTicketsAPI(ListAPIView):
@@ -187,3 +208,18 @@ class TicketsFlightsHistoryAPI(ListAPIView):
             ticket.cancelled = True
             ticket.save()
             return Response({"message": "Ticket canceled successfully"}, status=status.HTTP_200_OK)
+        
+class FlightLocationsView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        start_locations = Flight.objects.values_list('start_location', flat=True).distinct()
+        end_locations = Flight.objects.values_list('end_location', flat=True).distinct()
+        
+        unique_locations = set(start_locations).union(set(end_locations))
+        
+        locations = {
+            "locations": list(unique_locations)
+        }
+        
+        return Response(locations, status=status.HTTP_200_OK)
