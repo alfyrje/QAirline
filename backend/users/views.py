@@ -8,8 +8,7 @@ from rest_framework.response import Response
 
 from users import models
 from users import serializers
-from .utils import *
-
+from .models import User
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from rest_framework.exceptions import AuthenticationFailed

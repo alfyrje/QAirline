@@ -84,11 +84,11 @@ const PassengersDetail = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
                 },
                 body: JSON.stringify({
                     passengers: passengers,
                     flights: formattedFlights,
+                    token: localStorage.getItem("access_token"),
                 }),
             });
 

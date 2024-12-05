@@ -28,27 +28,22 @@ function Profile() {
         <Header />
         <div className="profile-content-container">
           <div className="profile-sidemenu">
-            <ul className="profile-sidemenu-list">
-              <li className='profile-sidemenu-item'>
+            <div className="profile-sidemenu-list">
+              <div className='profile-sidemenu-item'>
                 <a className="profile-a"href="#info"
                 onClick={()=>setCurrentView("info")}
                 >
                   <span className="text">Thông tin tài khoản</span>
                 </a>
-              </li>
-              <li className='profile-sidemenu-item'>
+              </div>
+              <div className='profile-sidemenu-item'>
                 <a className="profile-a"href="#flights"
                 onClick={()=>setCurrentView("flights")}
                 >
                   <span className="text">Lịch sử chuyến bay</span>
                 </a>
-              </li>
-              {/* <li className='profile-sidemenu-item'>
-                <a className="profile-a"href="#">
-                  <span className="text">Đổi mật khẩu</span>
-                </a>
-              </li> */}
-            </ul>
+              </div>
+            </div>
           </div>
           {renderContent()}
         </div>

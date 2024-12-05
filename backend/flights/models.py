@@ -45,6 +45,7 @@ class Ticket(models.Model):
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
     seat = models.CharField(max_length=10)
+    cancelled = models.BooleanField(default=False, blank=True)
     CLASS_CHOICES = [
         ('E', 'Economic'),
         ('B', 'Business'),

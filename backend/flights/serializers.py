@@ -36,7 +36,7 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = [
-            'booker', 'passenger', 'flight', 'seat', 'ticket_class'
+            'booker', 'passenger', 'flight', 'seat', 'ticket_class', 'cancelled'
         ]
 
 class PlaneSerializer(serializers.ModelSerializer):

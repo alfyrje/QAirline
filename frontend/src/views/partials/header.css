@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@200;300;400;500;600;700&display=swap");
 a, .header-sideBar{
-  font-family: "Funnel Sans", sans-serif;
+  font-family: "Maven Pro", sans-serif;
   font-weight: 500;
 }
 .header-otherInformation {
@@ -21,9 +21,7 @@ nav {
   color:#76a049;
 
 }
-img.header-logo {
-  align-items: flex-end;
-}
+
 
 .header-logoContainer {
   display: flex;
@@ -34,22 +32,23 @@ img.header-logo {
 color: #76a049;
 text-decoration: none;
 }
-.header-logOut{
+.header-register{
 color: #e687a5;
 text-decoration: none;
 
 }
 
-.header-authLink {
+/* .header-authLink {
   display: flex;
   gap: 1rem;
-}
+} */
 
 
 .header-navLink {
   display: flex;
   gap: 1rem;
   color:#736660;
+  font-size: 1.25rem;
 }
 
 
@@ -74,18 +73,19 @@ text-decoration: none;
 #header-khamPha, #header-datVe, #header-thongTinHanhTrinh {
   color: #736660;
   text-decoration: none;
+  margin: 0rem 0.25rem 0rem 0.25rem;
 }
 
 #header-khamPha:hover {
-  color: #3f7308;
+  color: #e687a5;
 }
 
 #header-datVe:hover {
-  color: #3f7308;
+  color: #e687a5;
 }
 
 #header-thongTinHanhTrinh:hover {
-  color: #3f7308;
+  color: #e687a5;
 }
 .header-sideBar {
   display: none;
@@ -154,44 +154,174 @@ text-decoration: none;
 color: #f2f4f7;
 }
 #header-separation {
-  font-family: "Funnel Sans", sans-serif;
+  font-family: "Maven Pro", sans-serif;
   color:black;
   font-weight: 100;
 }
 
-/* @media (max-width: 991px) */
-@media (max-width: 991px ) {
-  .header-navLink {
+
+.menu-trigger img{
+  /* position: absolute; */
+  /* top: 20px; */
+  /* right: 20px; */
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #fff;
+  margin: 0 1rem;
+}
+
+.dropdown-menu{
+  position: absolute;
+  top: 4rem;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  padding: 1rem 2rem;
+  /* width: 200px; */
+  z-index: 1000;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
+}
+.dropdown-menu.inactive{
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-2rem);
+  transition: var(--speed) ease;
+}
+
+.dropdown-menu.active{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: var(--speed) ease;
+}
+
+.dropdownItem img{
+  padding-right: 0.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  opacity: 0.5;
+  transition: var(--speed);
+
+}
+
+.dropdownItem {
+ display: flex;
+}
+
+.dropdownItem a {
+  color:#76a049;
+}
+
+.header-controls{
+  display: inline;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+}
+
+
+/* --------------------------------------------------------------------CSS STYLE FOR NAV SIDE BAR-------------------------------------------- */
+
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  display: none;
+  z-index: 9999;
+  position: absolute;
+  width: 2.5rem;
+  height: 1.5rem;
+  top: 1rem; 
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #76a049;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #e687a5;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  display: none;
+}
+
+/* Color/shape of close button cross */
+
+
+
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+
+
+/* General sidebar styles */
+.bm-menu {
+  position: absolute;
+  top: 3.5rem;
+  border-radius: 2rem 0 0 2rem;
+  background-color: #f7ffd9;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+  box-shadow: -2px 0 8px rgba(14, 56, 42, 0.1); 
+}
+.bm-menu-wrap {
+  z-index: -10;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+.menu-item {
+  padding: 1rem;
+  color:#e687a5;
+  text-decoration: underline;
+
+}
+.menu-item:hover {
+  color: #76a049;
+}
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  display: none;
+}
+
+
+
+
+
+@media (max-width: 830px) {
+  .bm-burger-button {
+    display: flex; /* Show on mobile */
+    align-items: center;
+    position: absolute;
+    right: 1rem;
+    top: 2rem;
+  }
+  .header-navLink, .header-controls, .header-logOut, .header-signIn, .header-register {
     display: none;
   }
-  .header-authLink {
-    display: none;
-  }
-  .header-sideBar {
-    /* padding: 1rem; */
-    
-    display:block;
-    width: 100%;
-    max-width: 90%;
-    background: #f2f4f7;
-    font-family: "Funnel Sans", sans-serif;
-    font-weight: 500;
-    z-index: 9999px;
-    float:right;
-    padding-right: 1rem;
-  }
-  .header-sub-title {
-    background-color:#516076;
-  }
 
-  #header-authLinkSideBar {
-    display:block;
-  }
-  #header-authLinkSideBar:hover {
-    color: #f2f4f7;
-  }
-  /* .menu-item > .title {
-    background-color: #516076;
-
-  } */
 }
