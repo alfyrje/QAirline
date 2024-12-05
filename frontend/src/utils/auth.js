@@ -30,15 +30,22 @@ export const getRefreshToken = async (refresh_token) => {
 };
 
 export const setAuthUser = (access_token, refresh_token) => {
+  console.error("Access token is expired.");
+  if (isAccessTokenExpired(access_token)) {
+    useAuthStore.getState().setLogout();
+    return;
+  }
+
   localStorage.setItem("access_token", access_token);
   localStorage.setItem("refresh_token", refresh_token);
 
   const user = jwt_decode(access_token) ?? null;
+
   if (user) {
     useAuthStore.getState().setUser(user);
     useAuthStore.setState({ isLoggedIn: true });
   } else {
-    useAuthStore.setState({ isLoggedIn: false });
+    useAuthStore.getState().setLogout();
   }
   useAuthStore.getState().setLoading(false);
 };
@@ -52,7 +59,7 @@ export const setUser = async () => {
       return;
     }
 
-    if (isAccessTokenExpired(accessToken)) {
+    if (isAccessTokenExpired(refreshToken)) {
       console.log("Access token expired. Attempting to refresh token...");
       const response = await getRefreshToken(refreshToken);
       setAuthUser(response.access, response.refresh);
@@ -63,6 +70,7 @@ export const setUser = async () => {
     console.error("Error setting user:", error);
   }
 };
+
 export const login = async (email, password) => {
   try {
     const response = await fetch("http://127.0.0.1:8000/users/token/", {
@@ -71,13 +79,12 @@ export const login = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "username": email,
-        "password": password,
+        username: email,
+        password: password,
       }),
     });
     const data = await response.json();
-
-    if (response.status == 200) {
+    if (response.status === 200) {
       setAuthUser(data.access, data.refresh);
       console.log(useAuthStore.getState().allUserData.user_id);
       return { data: "Success", error: null };
