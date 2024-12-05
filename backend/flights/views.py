@@ -167,3 +167,18 @@ class TicketsFlightsHistoryAPI(ListAPIView):
             ticket.cancelled = True
             ticket.save()
             return Response({"message": "Ticket canceled successfully"}, status=status.HTTP_200_OK)
+        
+class FlightLocationsView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        start_locations = Flight.objects.values_list('start_location', flat=True).distinct()
+        end_locations = Flight.objects.values_list('end_location', flat=True).distinct()
+        
+        unique_locations = set(start_locations).union(set(end_locations))
+        
+        locations = {
+            "locations": list(unique_locations)
+        }
+        
+        return Response(locations, status=status.HTTP_200_OK)
