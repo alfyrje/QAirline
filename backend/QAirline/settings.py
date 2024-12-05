@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users',
     'flights',
+    'adminapp',
     'city_introduction',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    # 'django_dyn_api',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
@@ -191,12 +191,13 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
     ],
 }
 
 
 DYNAMIC_API = {
-    'flights': "QAirline.models.Flight",
-    'planes': "QAirline.models.Plane",
-    'tickets': "QAirline.models.Ticket",
+    'flights': "flights.models.Flight",
+    'planes': "flights.models.Plane",
+    'tickets': "flights.models.Ticket",
 }

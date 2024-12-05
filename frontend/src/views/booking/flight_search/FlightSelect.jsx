@@ -35,7 +35,7 @@ const FlightSelect = () => {
       });
     }
   };
-
+  
   useEffect(() => {
     if (!isReturnFlight && state?.searchParams) {
       axios
@@ -61,7 +61,7 @@ const FlightSelect = () => {
         );
     }
   }, [isReturnFlight, state]);
-
+  
   const handleBack = () => {
     if (isReturnFlight) {
       setIsReturnFlight(false);
@@ -123,7 +123,7 @@ const FlightSelect = () => {
         </div>)}
         <div className="flight-list-wrapper">
           <FlightInfo flight={state?.searchParams} />
-          <FlightList flights={flights} onSelectSeat={handleSelectSeat} economyView={economyView} businessView={businessView} />
+          <FlightList flights={flights} onSelectSeat={handleSelectSeat} economyView={economyView} businessView={businessView} passengersNo={state?.searchParams.passengers_no} />
         </div>
       </div>
       <Footer />
