@@ -115,6 +115,8 @@ text-decoration: none;
   align-items: center;
 }
 
+
+
 .header-menu-item:hover {
   background-color: #daef8a;
 }
@@ -164,6 +166,7 @@ color: #f2f4f7;
   /* position: absolute; */
   /* top: 20px; */
   /* right: 20px; */
+  position: relative;
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 1rem;
@@ -172,19 +175,32 @@ color: #f2f4f7;
   background-color: #fff;
   margin: 0 1rem;
 }
+.header-logOut {
+  position: relative;
+}
+.header-controls {
+  position: relative;
+}
 
 .dropdown-menu{
   position: absolute;
-  top: 4rem;
+  /* bottom: 1rem; */
+  right: 0.1rem;
+  width: 14rem;
+  /* top: 10rem; */
+  /* right: calc(20rem); */
+  /* right: 10%; */
+  top: 3rem;
   background-color: #fff;
   border-radius: var(--border-radius);
   padding: 1rem 2rem;
   /* width: 200px; */
-  z-index: 1000;
+  z-index: 10000;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: 0 1rem;
 }
+
 .dropdown-menu.inactive{
   opacity: 0;
   visibility: hidden;
