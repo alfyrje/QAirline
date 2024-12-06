@@ -84,7 +84,7 @@ export const login = async (email, password) => {
       }),
     });
     const data = await response.json();
-    if (data.status === "200") {
+    if (data.status === 200) {
       setAuthUser(data.access, data.refresh);
       return data;
     } else {

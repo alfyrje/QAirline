@@ -33,7 +33,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
             # Xác thực mật khẩu
             if not user.check_password(request.data['password']):
-                print("hehe")
                 return Response({"detail": "Mật khẩu không đúng.", "status": 401}, status=401)
             refresh = RefreshToken.for_user(user)
             return Response({
