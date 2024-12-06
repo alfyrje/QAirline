@@ -1,11 +1,8 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
-from rest_framework.response import Response
-
 from users import models
 from users import serializers
 from .models import User
@@ -21,6 +18,32 @@ from rest_framework_simplejwt.views import (
 
 import jwt
 from django.conf import settings
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    queryset = User.objects.all()
+    def post(self, request, *args, **kwargs):        
+        serializer = serializers.UserLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            # Kiểm tra xem người dùng có tồn tại không
+            user = User.objects.filter(email=request.data['email']).first()
+            if not user:
+                return Response(
+                    {"detail": "Người dùng không tồn tại.", "status": 404}, status=404)
+
+            # Xác thực mật khẩu
+            if not user.check_password(request.data['password']):
+                print("hehe")
+                return Response({"detail": "Mật khẩu không đúng.", "status": 401}, status=401)
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user_id': user.id,
+                'status': 200,
+            })
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PassengerView(ListAPIView):
     queryset = models.Passenger.objects.all()

@@ -18,6 +18,7 @@ function Header() {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const handleLogout = () => {
     logout();
+    console.log("Logged out HEHEEEEEE");
     navigate("/dashboard");
   };
 
@@ -40,8 +41,8 @@ function Header() {
       document.removeEventListener("mousedown", handler);
     };
   });
-  const isUserLoggedIn =
-    isLoggedIn || localStorage.getItem("isLoggedIn") === "true";
+  const isUserLoggedIn = isLoggedIn;
+  console.log("Is user logged in:", isUserLoggedIn);
   return (
     <>
       <nav className="header-navbar">
@@ -96,8 +97,10 @@ function Header() {
                   >
                     <img src={notification_icon} alt="notification" />
                   </div>
-                  
-                  <div className={`dropdown-menu ${notificationOpen ? 'active' : 'inactive'}`}>
+
+                  <div
+                    className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
+                  >
                     <ul>
                       <DropdownItem
                         className="dropdownItem"
@@ -132,11 +135,13 @@ function Header() {
                         />
                       </Link>
                       <Link to="/login">
-                        <DropdownItem
-                          img={logout_icon}
-                          className="dropdownItem"
-                          text={"Đăng xuất"}
-                        />
+                        <button className="header-button-dropdownItem" onClick={handleLogout}>
+                          <DropdownItem
+                            img={logout_icon}
+                            className="dropdownItem"
+                            text={"Đăng xuất"}
+                          />
+                        </button>
                       </Link>
                     </ul>
                   </div>

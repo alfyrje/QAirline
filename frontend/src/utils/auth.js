@@ -79,24 +79,24 @@ export const login = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: email,
+        email: email,
         password: password,
       }),
     });
     const data = await response.json();
-    console.log(data);
-    if (response.status === 200) {
+    if (data.status === "200") {
       setAuthUser(data.access, data.refresh);
-      console.log(useAuthStore.getState().allUserData.user_id);
-      return { data: "Success", error: null };
+      return data;
     } else {
-      return { data: "Failed", error };
+      console.log("Failed to login:", data);
+      return data;
     }
   } catch (error) {
     console.error("Error logging in:", error);
     return {
       data: "Failed",
       error: "Network error or server unreachable",
+      status: null, // Always include the 'status' property
     };
   }
 };
