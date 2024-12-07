@@ -111,6 +111,7 @@ class CreateTicketsAPI(ListAPIView):
                 )
             
             for passenger_data in passengers_data:
+                print('PASSENGER DATA', passenger_data)
                 passenger_serializer = PassengerSerializer(data=passenger_data)
                 passenger_serializer.is_valid(raise_exception=True)
                 passenger = passenger_serializer.save()
@@ -142,11 +143,15 @@ class CreateTicketsAPI(ListAPIView):
                 qr_file = File(qr_image, name=f"ticket_{ticket.id}_qr.png")
 
                 # Send the email with the QR code attached
-                subject = f"Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
+                subject = f"QAirline: Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
                 message = "Vui lòng giữ mã QR này để kiểm tra vé của bạn tại quầy check-in hoặc cổng lên máy bay."
                 email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
                 email.attach('ticket_qr.png', qr_file.read(), 'image/png')
-                email.send()
+                try:
+                    email.send()
+                    print(f"Email sent successfully to {passenger.qr_email}")
+                except Exception as e:
+                    print(f"Failed to send email to {passenger.qr_email}: {e}")
 
         return Response(
             {"message": "Passengers and tickets created successfully", "tickets": [TicketSerializer(t).data for t in tickets]},
