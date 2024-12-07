@@ -1,3 +1,9 @@
+.booking-info-container {
+    background: #ffffff;
+    margin: auto;
+    padding: 2% 5% 2% 5%;
+}
+
 .booking-cards {
     height: auto;
     padding: 0% 5% 0% 5%;

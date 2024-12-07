@@ -1,3 +1,9 @@
+.passenger-details-container {
+    background: #ffffff;
+    margin: auto;
+    padding: 2% 5% 2% 5%;
+}
+
 .container.passenger-details {
     display: flex;
     flex-wrap: wrap;

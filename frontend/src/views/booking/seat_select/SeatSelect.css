@@ -1,3 +1,8 @@
+.seat-select-container {
+    background: #ffffff;
+    margin: auto;
+    padding: 2% 5% 2% 5%;
+}
 .container.seat-select .seat-map-list {
     width: 40rem;
     margin: auto;

@@ -42,7 +42,6 @@ function Header() {
     };
   });
   const isUserLoggedIn = isLoggedIn;
-  console.log("Is user logged in:", isUserLoggedIn);
   return (
     <>
       <nav className="header-navbar">

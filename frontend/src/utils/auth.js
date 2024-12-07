@@ -124,23 +124,7 @@ export const register = async (formData) => {
   } = formData;
   console.log(formData);
   try {
-    // const { data } = await axios.post("http://127.0.0.1:8000/users/register/", {
-    //   email,
-    //   first_name: name_firstname,
-    //   last_name: name_lastname,
-    //   personal_info: {
-    //     tel_num: phone_number,
-    //     first_name: name_firstname,
-    //     last_name: name_lastname,
-    //     date_of_birth: date_birth,
-    //     citizen_id: ID_citizen,
-    //     nationality: nationality,
-    //     gender,
-    //   },
-    //   username: email,
-    //   password,
-    // });
-    const data = await fetch("http://127.0.0.1:8000/users/register/", {   
+    const data = await fetch("http://127.0.0.1:8000/users/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -152,18 +136,20 @@ export const register = async (formData) => {
         personal_info: {
           first_name: name_firstname,
           last_name: name_lastname,
-          date_of_birth: date_birth,
           qr_email: email,
+          date_of_birth: date_birth,
           citizen_id: ID_citizen,
           nationality: nationality,
           gender,
         },
         username: email,
-        password,
+        password: password,
       }),
     });
-
-    return { data: "Success", error: null };
+    if (!data.ok) {
+      const errorData = await data.json(); // Đọc nội dung response
+      return { data, error: errorData };
+    }
   } catch (error) {
     return {
       data: "Failed",

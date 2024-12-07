@@ -207,5 +207,5 @@ EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
 EMAIL_PORT = 587  # or the appropriate port for your server
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tangha2005@gmail.com'
-EMAIL_HOST_PASSWORD = 'denhothoi'
+EMAIL_HOST_PASSWORD = 'nwss fljc cjtm bevt'
 DEFAULT_FROM_EMAIL = 'tangha2005@gmail.com'

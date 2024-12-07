@@ -16,9 +16,9 @@ from io import BytesIO
 from django.core.mail import send_mail
 from django.core.files import File
 from django.core.mail import EmailMessage
-
-
-
+from django.utils import timezone
+from django.db.models import Count, Q, F
+import datetime
 logger = logging.getLogger(__name__)
 
 class BookedSeatsView(APIView):
@@ -142,11 +142,11 @@ class CreateTicketsAPI(ListAPIView):
                 qr_file = File(qr_image, name=f"ticket_{ticket.id}_qr.png")
 
                 # Send the email with the QR code attached
-                subject = "Your Ticket QR Code"
-                message = "Please find your QR code for the flight ticket attached."
-                # email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
-                # email.attach('ticket_qr.png', qr_file.read(), 'image/png')
-                # email.send()
+                subject = f"Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
+                message = "Vui lòng giữ mã QR này để kiểm tra vé của bạn tại quầy check-in hoặc cổng lên máy bay."
+                email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
+                email.attach('ticket_qr.png', qr_file.read(), 'image/png')
+                email.send()
 
         return Response(
             {"message": "Passengers and tickets created successfully", "tickets": [TicketSerializer(t).data for t in tickets]},

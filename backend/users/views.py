@@ -5,7 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
 from users import models
 from users import serializers
-from .models import User
+from .models import User, Passenger
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from rest_framework.exceptions import AuthenticationFailed
@@ -50,21 +50,35 @@ class PassengerView(ListAPIView):
 
 class UserRegisterView(APIView):
     queryset = models.User.objects.all()
+
     permission_classes = [AllowAny] 
     def post(self, request):
         serializer = serializers.UserSerializer(data=request.data)
 
         if serializer.is_valid():
             print("serializer is valid")
+            if Passenger.objects.filter(citizen_id=request.data['personal_info'].get('citizen_id')).exists():
+                print("passenger exists with citizen id")
+                return JsonResponse({
+                    'error_message': 'Số CMND đã tồn tại.',
+                }, status=400)
             user = serializer.save()
             return JsonResponse({
                 'message': 'Register successful!',
-            }, status=201)
+            }, status=200)
         else:
-            first_field = list(serializer.errors.keys())[0]
-            error_message = serializer.errors[first_field][0]
+            username_errors = serializer.errors.get('username', [])
+            for error in username_errors:
+                print(error)
+                if error == 'A user with that username already exists.':
+                    return JsonResponse({
+                        'error_message': 'Tài khoản email đã được đăng ký.',
+                    }, status=400)
+
+            # Trả về lỗi khác nếu không khớp điều kiện trên
             return JsonResponse({
-                'error_message': error_message,
+                'error_message': 'Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.',
+                'details': serializer.errors
             }, status=400)
  
 class UserView(ListAPIView):

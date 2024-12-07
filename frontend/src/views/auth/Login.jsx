@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react"; 
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";

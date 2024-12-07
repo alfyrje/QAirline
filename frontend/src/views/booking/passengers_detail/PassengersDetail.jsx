@@ -143,13 +143,14 @@ const PassengersDetail = () => {
     return (
         <>
             <Header />
-            <div className="container">
+            <div className="passenger-details-container">
                 <ProgressBar currentStep="passengers" />
                 <div className="container passenger-details">
 
                     <div className="passenger-details">
                         <div className="booking-header">
                             <h1>Nhập thông tin hành khách</h1>
+                            
                             <button className="btn btn-primary" onClick={() => navigate(-1)}>
                                 Quay lại
                             </button>

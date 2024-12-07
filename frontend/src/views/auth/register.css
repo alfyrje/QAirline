@@ -61,10 +61,11 @@
 .register-input-box label {
   color: #333;
 }
-.register-form :where(.register-input-box input, .select-box) {
+/* General styles */
+.register-form :where(.register-input-box input, .select-box) { 
   position: relative;
   height: 50px;
-  width: 100%;
+  width: 100%; /* Maintain full width for container */
   outline: none;
   font-size: 1rem;
   color: #707070;
@@ -73,6 +74,57 @@
   border-radius: 6px;
   padding: 0 15px;
 }
+.register-input-box input {
+  color: black; /* Text color after typing */
+  font-size: 1rem; /* Optional: Ensure font styling consistency */
+}
+
+.register-input-box input::placeholder {
+  color: #707070; /* Placeholder color */
+}
+
+.select-box select::placeholder {
+  color: #707070; /* Placeholder color */
+}
+
+.select-box select {
+  height: 100%; /* Match the parent container height */
+  width: 100%; /* Full width for alignment */
+  outline: none;
+  border: none;
+  color: black;
+  font-size: 1rem; /* Base font size */
+  background: transparent; /* Maintain a clean design */
+  padding: 0; /* Remove inner padding as parent has it */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1000px) {
+  .register-form :where(.register-input-box input, .select-box) {
+    height: 45px; /* Reduce height slightly for tablets */
+    font-size: 0.9rem; /* Adjust font size */
+  }
+  
+  .select-box select {
+    font-size: 0.9rem; /* Slightly smaller font */
+    height: 100%; /* Maintain alignment */
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form :where(.register-input-box input, .select-box) {
+    height: 40px; /* Smaller height for mobile */
+    font-size: 0.8rem; /* Smaller font for readability */
+    padding: 0 10px; /* Reduce padding for compactness */
+  }
+
+  .select-box select {
+    font-size: 0.8rem; /* Smaller font size */
+    height: 100%; /* Match the parent height */
+  }
+}
+
 .register-input-box input:focus {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
   border-color: #e687a5;
@@ -86,14 +138,6 @@
   column-gap: 5px;
 }
 
-.select-box select {
-  height: 100%;
-  width: 100%;
-  outline: none;
-  border: none;
-  color: #333;
-  font-size: 1rem;
-}
 .register-form button {
   height: 55px;
   width: 100%;
