@@ -143,6 +143,16 @@ img {
   gap: 1rem;
 }
 
+.booking__container form.one-way {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.booking__container form.round-trip {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
 .booking__container .input__group {
   width: 100%;
   position: relative;
@@ -303,6 +313,36 @@ img {
 .dropdown-item {
   color: #6a9839;            /* Text color */
 
+}
+
+/* --------------------------haiz DCM cai nay la CSS cho datepicker--------------------------------- */
+.react-datepicker-popper {
+  background-color: white;
+  color: #6a9839 ;
+}
+
+.react-datepicker__current-month {
+  color: #6a9839 !important;
+}
+
+.react-datepicker__header {
+  background-color: rgb(241, 248, 243) !important;
+  color:#49651c !important;
+}
+
+.react-datepicker__day-name {
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 600;
+  color: #709b43 !important;
+}
+.react-datepicker__day {
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 500;
+  color: #e687a5 !important;
+}
+.react-datepicker__day--selected {
+  background-color: #6a9839 !important;
+  color: white !important;
 }
 
 

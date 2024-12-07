@@ -4,13 +4,19 @@ import "./bookingPart.css";
 import { FaLightbulb } from "react-icons/fa";
 import React, { useMemo } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
-// import "react-bootstrap-typeahead/css/Typeahead.css";
 import Form from "react-bootstrap/Form";
+import DatePicker from "react-datepicker"; // Change import
+import "react-datepicker/dist/react-datepicker.css"; // Important!
 
 function BookingPart() {
-  // Separate states for origin and destination
   const [originSelection, setOriginSelection] = useState([]);
   const [destinationSelection, setDestinationSelection] = useState([]);
+  const [departDate, setDepartDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
+  const [tripType, setTripType] = useState("oneWay"); // Add this state
+  const handleTripTypeChange = (e) => {
+    setTripType(e.target.value);
+  };
 
   const options = [
     { id: 1, name: "Ha Noi" },
@@ -47,6 +53,7 @@ function BookingPart() {
             <p>Book Hotels, Flights and stay packages at lowest price.</p>
           </div>
           <div className="booking__container">
+
             <div className="first_row">
               <div className="radio_container">
                 <div className="radio_item">
@@ -55,6 +62,8 @@ function BookingPart() {
                     type="radio"
                     name="tripType"
                     value="oneWay"
+                    checked={tripType === "oneWay"}
+                    onChange={handleTripTypeChange}
                   />
                   <div className="radioText">Một Chiều</div>
                 </div>
@@ -64,77 +73,84 @@ function BookingPart() {
                     type="radio"
                     name="tripType"
                     value="roundTrip"
+                    checked={tripType === "roundTrip"}
+                    onChange={handleTripTypeChange}
                   />
                   <div className="radioText">Khứ Hồi</div>
                 </div>
               </div>
             </div>
             <div className="second_row">
-              <form>
-                <div className="form__group">
-                  
+            <form className={tripType === "oneWay" ? "one-way" : "round-trip"}>
+            <div className="form__group">
                   <div className="input__group">
                     <div className="input_container">
-                      <div>
-                        Từ
-                      </div>
-                    <Typeahead
-                      id="origin"
-                      labelKey="name"
-                      onChange={setOriginSelection}     // Different handler
-                      options={options}
-                      selected={originSelection}        // Different state
-                      style={{ marginBottom: "10px" }}
-                      filterBy={filterByStartsWith}
-                      renderMenuItemChildren={(option) => (
-                        <div style={{ padding: "5px" }}>{option.name}</div>
-                      )}
-                    />
+                      <div>Từ</div>
+                      <Typeahead
+                        id="origin"
+                        labelKey="name"
+                        onChange={setOriginSelection} // Different handler
+                        options={options}
+                        selected={originSelection} // Different state
+                        style={{ marginBottom: "10px" }}
+                        filterBy={filterByStartsWith}
+                        renderMenuItemChildren={(option) => (
+                          <div style={{ padding: "5px" }}>{option.name}</div>
+                        )}
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="form__group">
                   <div className="input__group">
                     <div className="input_container">
-                    <div>
-                        Tới
-                      </div>
-                    <Typeahead
-                      id="destination"
-                      labelKey="name"
-                      onChange={setDestinationSelection}  // Different handler
-                      options={options}
-                      selected={destinationSelection}     // Different state
-                      style={{ marginBottom: "10px" }}
-                      filterBy={filterByStartsWith}
-                      renderMenuItemChildren={(option) => (
-                        <div style={{ padding: "5px" }}>{option.name}</div>
-                      )}
-                    />
+                      <div>Tới</div>
+                      <Typeahead
+                        id="destination"
+                        labelKey="name"
+                        onChange={setDestinationSelection} // Different handler
+                        options={options}
+                        selected={destinationSelection} // Different state
+                        style={{ marginBottom: "10px" }}
+                        filterBy={filterByStartsWith}
+                        renderMenuItemChildren={(option) => (
+                          <div style={{ padding: "5px" }}>{option.name}</div>
+                        )}
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="form__group">
+                  <div className="input__group">
+                    <div>Ngày đi</div>
+                    <DatePicker
+                      selected={departDate}
+                      onChange={(date) => setDepartDate(date)}
+                      dateFormat="dd/MM/yyyy"
+                      minDate={new Date()}
+                      placeholderText="Chọn ngày đi"
+                      className="date-picker-input"
+                    />
+                  </div>
+                </div>
+                {tripType === "roundTrip" && (
+                  <div className="form__group">
+                    <div>Ngày về</div>
+                    <div className="input__group">
+                      <DatePicker
+                        selected={returnDate}
+                        onChange={(date) => setReturnDate(date)}
+                        dateFormat="dd/MM/yyyy"
+                        minDate={departDate}
+                        placeholderText="Chọn ngày về"
+                        className="date-picker-input"
+                      />
+                    </div>
+                  </div>
+                )}
 
-                  <div className="input__group">
-                   <div>
-                        Ngày đi
-                      </div>
-                    <input type="text" />
-                  </div>
-                </div>
                 <div className="form__group">
-                <div>
-                        Ngày về
-                      </div>
-                  <div className="input__group">
-                    <input type="text" />
-                  </div>
-                </div>
-                <div className="form__group">
-                <div>
-                        Hành khách
-                      </div>
+                  <div>Hành khách</div>
                   <div className="input__group">
                     <input type="text" />
                   </div>
@@ -162,3 +178,5 @@ function BookingPart() {
 }
 
 export default BookingPart;
+
+// Add this CSS
