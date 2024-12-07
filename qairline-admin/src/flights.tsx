@@ -14,7 +14,7 @@ export const FlightList = (props: any) => {
         />
       ) : (
         <Datagrid rowClick="show">
-          <NumberField source="id" />
+          <TextField source="id" />
           <TextField source="code" />
           <TextField source="start_location" />
           <TextField source="end_location" />
@@ -51,7 +51,7 @@ export const FlightEdit = (props: any) => (
 export const FlightShow = (props: any) => (
   <Show {...props}>
     <SimpleShowLayout>
-      <NumberField source="id" />
+      <TextField source="id" />
       <TextField source="code" />
       <TextField source="start_location" />
       <TextField source="end_location" />

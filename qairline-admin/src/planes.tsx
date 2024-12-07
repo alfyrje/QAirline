@@ -13,7 +13,7 @@ export const PlaneList = (props: any) => {
         />
       ) : (
         <Datagrid rowClick="show">
-          <NumberField source="id" />
+          <TextField source="id" />
           <TextField source="name" />
           <TextField source="manufacturer" />
           <NumberField source="economic_seats" />
