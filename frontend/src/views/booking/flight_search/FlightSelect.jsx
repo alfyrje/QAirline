@@ -42,7 +42,7 @@ const FlightSelect = () => {
         .get("http://localhost:8000/flights/search-flights", {
           params: state.searchParams,
         })
-        .then((response) => setFlights(response.data))
+        .then((response) => setFlights(response.data.results))
         .catch((error) => console.error("Error fetching flights", error));
     } else if (isReturnFlight) {
       const returnParams = {
@@ -55,7 +55,7 @@ const FlightSelect = () => {
         .get("http://localhost:8000/flights/search-flights", {
           params: returnParams,
         })
-        .then((response) => setFlights(response.data))
+        .then((response) => setFlights(response.data.results))
         .catch((error) =>
           console.error("Error fetching return flights", error)
         );
