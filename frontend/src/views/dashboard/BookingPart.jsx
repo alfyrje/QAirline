@@ -75,6 +75,9 @@ function BookingPart() {
                   
                   <div className="input__group">
                     <div className="input_container">
+                      <div>
+                        Từ
+                      </div>
                     <Typeahead
                       id="origin"
                       labelKey="name"
@@ -93,6 +96,9 @@ function BookingPart() {
                 <div className="form__group">
                   <div className="input__group">
                     <div className="input_container">
+                    <div>
+                        Tới
+                      </div>
                     <Typeahead
                       id="destination"
                       labelKey="name"
@@ -109,16 +115,26 @@ function BookingPart() {
                   </div>
                 </div>
                 <div className="form__group">
+
+                  <div className="input__group">
+                   <div>
+                        Ngày đi
+                      </div>
+                    <input type="text" />
+                  </div>
+                </div>
+                <div className="form__group">
+                <div>
+                        Ngày về
+                      </div>
                   <div className="input__group">
                     <input type="text" />
                   </div>
                 </div>
                 <div className="form__group">
-                  <div className="input__group">
-                    <input type="text" />
-                  </div>
-                </div>
-                <div className="form__group">
+                <div>
+                        Hành khách
+                      </div>
                   <div className="input__group">
                     <input type="text" />
                   </div>

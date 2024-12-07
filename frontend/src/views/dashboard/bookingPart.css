@@ -148,7 +148,7 @@ img {
   position: relative;
 }
 
-.booking__container label {
+/* .booking__container label {
   margin-bottom: 2rem;
   position: absolute;
   top: 50%;
@@ -177,6 +177,16 @@ img {
   font-size: 0.8rem;
   top: 0;
   transform: translateY(0);
+} */
+
+.booking__container .input__group input {
+  width: 100%;
+  font-size: 1.2rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--primary-color);
+  color: var(--text-dark);
 }
 
 .booking__container .form__group p {
@@ -260,7 +270,7 @@ img {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   /* overflow: hidden !important; */
   z-index: 1000;
-  padding: 1rem 1.5rem;
+  /* padding: 1rem 1.5rem; */
   cursor: pointer;
 }
 
