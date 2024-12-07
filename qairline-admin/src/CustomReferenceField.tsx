@@ -1,11 +1,10 @@
 import { useRecordContext } from 'react-admin';
 
-const CustomReferenceField = ({ source, reference }: { source: string, reference: string }) => {
+const CustomReferenceField = ({ source }: { source: string }) => {
   const record = useRecordContext();
   if (!record) return null;
 
-  const relatedRecord = record[reference];
-  return <span>{relatedRecord ? relatedRecord[source] : ''}</span>;
+  return <span>{record[source] ? record[source] : ''}</span>;
 };
 
 export default CustomReferenceField;

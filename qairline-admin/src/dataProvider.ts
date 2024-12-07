@@ -53,10 +53,10 @@ const dataProvider: DataProvider = {
 
     getMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids }),
+            id__in: params.ids.join(','),
         };
         const url = `${apiUrl}/${resource}/?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        return httpClient(url).then(({ json }) => ({ data: json.results }));
     },
 
     getManyReference: (resource, params) => {

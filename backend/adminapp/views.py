@@ -1,6 +1,8 @@
 from rest_framework import viewsets, filters
 from flights.models import Plane, Flight, Ticket
+from users.models import User, Passenger
 from flights.serializers import PlaneSerializer, FlightSerializer, TicketSerializer
+from .serializers import PassengerSerializer, UserSerializer
 from rest_framework.permissions import IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 
@@ -29,6 +31,22 @@ class TicketViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
+    pagination_class = StandardResultsSetPagination
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
+    pagination_class = StandardResultsSetPagination
+
+class PassengerViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = Passenger.objects.all()
+    serializer_class = PassengerSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = '__all__'
     pagination_class = StandardResultsSetPagination

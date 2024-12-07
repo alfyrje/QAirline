@@ -1,6 +1,7 @@
 
-import { List, Datagrid, TextField, DateField, NumberField, Edit, SimpleForm, TextInput, DateInput, NumberInput, Create, Show, SimpleShowLayout, SimpleList } from 'react-admin';
+import { DateTimeInput, ReferenceField, List, Datagrid, TextField, DateField, NumberField, Edit, SimpleForm, TextInput, DateInput, NumberInput, Create, Show, SimpleShowLayout, SimpleList } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
+import CustomReferenceField from './CustomReferenceField';
 
 export const FlightList = (props: any) => {
   const isSmall = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
@@ -18,8 +19,8 @@ export const FlightList = (props: any) => {
           <TextField source="code" />
           <TextField source="start_location" />
           <TextField source="end_location" />
-          <DateField source="start_time" />
-          <DateField source="end_time" />
+          <DateField source="start_time" showTime />
+          <DateField source="end_time" showTime />
           <NumberField source="delay_status" />
           <NumberField source="duration" />
           <NumberField source="economic_seats_left" />
@@ -38,8 +39,8 @@ export const FlightEdit = (props: any) => (
       <TextInput source="code" />
       <TextInput source="start_location" />
       <TextInput source="end_location" />
-      <DateInput source="start_time" />
-      <DateInput source="end_time" />
+      <DateTimeInput source="start_time" />
+      <DateTimeInput source="end_time" />
       <NumberInput source="plane" />
       <NumberInput source="delay_status" />
       <NumberInput source="economic_price" />
@@ -55,9 +56,11 @@ export const FlightShow = (props: any) => (
       <TextField source="code" />
       <TextField source="start_location" />
       <TextField source="end_location" />
-      <DateField source="start_time" />
-      <DateField source="end_time" />
-      <NumberField source="plane" />
+      <DateField source="start_time" showTime />
+      <DateField source="end_time" showTime />
+      <ReferenceField source="plane" reference="planes">
+        <CustomReferenceField source="name" />
+      </ReferenceField>
       <NumberField source="delay_status" />
       <NumberField source="duration" />
       <NumberField source="economic_seats_left" />
@@ -74,8 +77,8 @@ export const FlightCreate = (props: any) => (
       <TextInput source="code" />
       <TextInput source="start_location" />
       <TextInput source="end_location" />
-      <DateInput source="start_time" />
-      <DateInput source="end_time" />
+      <DateTimeInput source="start_time" />
+      <DateTimeInput source="end_time" />
       <NumberInput source="plane" />
       <NumberInput source="delay_status" />
       <NumberInput source="economic_price" />
