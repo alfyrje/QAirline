@@ -1,15 +1,17 @@
 .flight-info-card {
     display: flex;
     justify-content: space-between;
-    padding: 1rem;
-    width: 100%;
+    padding: 0.5rem;
+    width: 90%;
     background-color: white;
+    margin: 0% 5% 0% 5%;
+    gap: 0.25rem;
 }
 
-.flight-info-card .route {
+.flight-info-card > .route {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.5rem;
     font-size: 1.2rem;
 }
 

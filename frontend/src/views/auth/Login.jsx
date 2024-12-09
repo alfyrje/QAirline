@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react"; 
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
@@ -9,10 +9,8 @@ import {login} from "../../utils/auth";
 import "./login.css";
 
 function LogIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -27,6 +25,8 @@ function LogIn() {
       ...formData,
       [e.target.id]: e.target.value,
     });
+    if (e.target.id === "email") setEmailError("");
+    if (e.target.id === "password") setPasswordError("");
   };
 
   const resetForm = () => {
@@ -40,10 +40,15 @@ function LogIn() {
     e.preventDefault(); // Prevent the default form submission behavior
     setIsLoading(true);
     const response = await login(formData.email, formData.password);
-    if (response.data==="Success") {
+    if (response.status===200) {
+      console.log("hehehehe")
       navigate("/profile");
+    } else if (response.status===404) {
+      setEmailError(response.detail || "Người dùng không tồn tại.");
+    } else if (response.status===401) {
+      setPasswordError(response.detail || "Mật khẩu không đúng.");
     } else {
-      alert(JSON.stringify(response.error));
+      alert("An unexpected error occurred.");
     }
     setIsLoading(false);
   };
@@ -63,9 +68,11 @@ function LogIn() {
                 type="email"
                 id="email"
                 placeholder="Email của bạn"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
+              {emailError && <span className="error-message">{emailError}</span>}
             </div>
             <div className="login-input_box">
               <div className="login-password_title">
@@ -75,24 +82,13 @@ function LogIn() {
                 type="password"
                 id="password"
                 placeholder="Nhập mật khẩu của bạn"
+                value={formData.password}
                 onChange={handleChange}
                 required
               />
+              {passwordError && <span className="error-message">{passwordError}</span>}
             </div>
             <a className="login-a"href="#">Quên mật khẩu?</a>
-
-            {/* <div className="login-input_box">
-              <div className="login-password_remember">
-                <label for="password">Ghi nhớ lần đăng nhập sau</label>
-                <div className="login-checkbox-container">
-                <input
-                type="checkbox"
-                id="password_remember"
-                required
-              />
-                </div>
-              </div>
-            </div> */}
             <button type="submit">Log In</button>
             <p>
               Don't have an account?              

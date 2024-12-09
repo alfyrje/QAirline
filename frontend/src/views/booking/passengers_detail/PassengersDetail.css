@@ -1,3 +1,9 @@
+.passenger-details-container {
+    background: #ffffff;
+    margin: auto;
+    padding: 2% 5% 2% 5%;
+}
+
 .container.passenger-details {
     display: flex;
     flex-wrap: wrap;
@@ -79,12 +85,19 @@
     cursor: pointer;
     margin-bottom: 1rem;
     margin-left: auto;
-
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; 
 }
 
 .passenger-details button.btn.confirm:hover {
     background-color: #197caa;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow */
+    transform: translateY(-2px); /* Lift the button */
 }
+.passenger-details button.btn.confirm:focus {
+box-shadow: 0 0 0 3px rgba(137, 183, 81, 0.5); /* Highlight border on focus */
+}
+
 
 .passenger-details input[type="text"],
 .passenger-details input[type="date"],

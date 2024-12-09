@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi1',
+        'PASSWORD': 'denhothoi',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }
@@ -155,7 +155,7 @@ PASSWORD_HASHERS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=3),
     'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -175,7 +175,7 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=50),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 # MEDIA_ROOT = "../../../frontend/public/"
@@ -197,7 +197,15 @@ REST_FRAMEWORK = {
 
 
 DYNAMIC_API = {
-    'flights': "flights.models.Flight",
-    'planes': "flights.models.Plane",
-    'tickets': "flights.models.Ticket",
+    'flights': "QAirline.models.Flight",
+    'planes': "QAirline.models.Plane",
+    'tickets': "QAirline.models.Ticket",
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
+EMAIL_PORT = 587  # or the appropriate port for your server
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tangha2005@gmail.com'
+EMAIL_HOST_PASSWORD = 'nwss fljc cjtm bevt'
+DEFAULT_FROM_EMAIL = 'tangha2005@gmail.com'

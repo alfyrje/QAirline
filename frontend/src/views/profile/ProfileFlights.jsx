@@ -79,7 +79,7 @@ function ProfileFlights() {
       <div className="profile-content">
         <div className="profile-flights-header">Lịch sử chuyến bay</div>
         <div className="profile-flights-content">
-          <div className="profile-flights-search">
+          {/* <div className="profile-flights-search">
             <div className="profile-flights-search-date">
               <label htmlFor="date">Từ ngày</label>
               <input type="date"></input>
@@ -97,9 +97,8 @@ function ProfileFlights() {
               <input type="date"></input>
             </div>
             <button className="profile-flights-search-button"></button>
-          </div>
+          </div> */}
           <div className="profile-flights-list">
-            <div className="profile-flights-list-header">
               <div className="profile-flights-list-row">
                 <div className="profile-flights-column departure-time">Thời gian xuất phát</div>
                 <div className="profile-flights-column arrival-time">Thời gian đến</div>
@@ -111,9 +110,7 @@ function ProfileFlights() {
                 <div className="profile-flights-column ticket-info">Thông tin vé</div>
                 <div className="profile-flights-column status">Trạng thái</div>
                 <div className="profile-flights-column cancel">Hủy vé</div>
-
               </div>
-            </div>
             <div className="profile-flights-list-body">
               {flights.map((ticket, index) => (
                 <div key={index} className="profile-flights-list-row">

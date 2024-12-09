@@ -1,14 +1,11 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
-from rest_framework.response import Response
-
 from users import models
 from users import serializers
-from .models import User
+from .models import User, Passenger
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from rest_framework.exceptions import AuthenticationFailed
@@ -22,69 +19,75 @@ from rest_framework_simplejwt.views import (
 import jwt
 from django.conf import settings
 
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    queryset = User.objects.all()
+    def post(self, request, *args, **kwargs):        
+        serializer = serializers.UserLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            # Kiểm tra xem người dùng có tồn tại không
+            user = User.objects.filter(email=request.data['email']).first()
+            if not user:
+                return Response(
+                    {"detail": "Người dùng không tồn tại.", "status": 404}, status=404)
+
+            # Xác thực mật khẩu
+            if not user.check_password(request.data['password']):
+                return Response({"detail": "Mật khẩu không đúng.", "status": 401}, status=401)
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user_id': user.id,
+                'status': 200,
+            })
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class PassengerView(ListAPIView):
     queryset = models.Passenger.objects.all()
     serializer_class = serializers.PassengerSerializer
 
 class UserRegisterView(APIView):
     queryset = models.User.objects.all()
+
     permission_classes = [AllowAny] 
     def post(self, request):
-        # print(request.data)
         serializer = serializers.UserSerializer(data=request.data)
 
         if serializer.is_valid():
             print("serializer is valid")
+            if Passenger.objects.filter(citizen_id=request.data['personal_info'].get('citizen_id')).exists():
+                print("passenger exists with citizen id")
+                return JsonResponse({
+                    'error_message': 'Số CMND đã tồn tại.',
+                }, status=400)
             user = serializer.save()
             return JsonResponse({
                 'message': 'Register successful!',
-            }, status=201)
+            }, status=200)
         else:
-            first_field = list(serializer.errors.keys())[0]
-            error_message = serializer.errors[first_field][0]
+            username_errors = serializer.errors.get('username', [])
+            for error in username_errors:
+                print(error)
+                if error == 'A user with that username already exists.':
+                    return JsonResponse({
+                        'error_message': 'Tài khoản email đã được đăng ký.',
+                    }, status=400)
+
+            # Trả về lỗi khác nếu không khớp điều kiện trên
             return JsonResponse({
-                'error_message': error_message,
+                'error_message': 'Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.',
+                'details': serializer.errors
             }, status=400)
-
-# class UserLoginView(APIView):
-#     permission_classes = [AllowAny]  # Allow unauthenticated access
-#     def post(self, request):
-#         serializer = serializers.UserLoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data['email']
-#             password = serializer.validated_data['password']
-
-#             user = authenticate(request, username=email, password=password)
-#             print(user)
-#             if user is not None:
-#                 # User authenticated, generate tokens
-#                 refresh = RefreshToken.for_user(user)
-#                 data = {
-#                     'refresh_token': str(refresh),
-#                     'access_token': str(refresh.access_token),
-#                 }
-#                 return Response(data, status=200)
-#             else:
-#                 # Authentication failed
-#                 return Response({'error': 'Invalid credentials'}, status=401)
-
-#         return Response({
-#             'error_message': serializer.errors,
-#             'error_code': 400,
-#         }, status=400)
-    
-# class UserLogoutView(ListAPIView):
-#     def post(self, request):
-#         return Response({"message": "Logout successful"})
-    
+ 
 class UserView(ListAPIView):
-    permission_classes = [AllowAny]  # Allow unauthenticated access
-    permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny] 
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
 
 class ProfileView(ListAPIView):
-    permission_classes = [AllowAny]  # Allow unauthenticated access
+    permission_classes = [AllowAny] 
     def get(self, request, *args, **kwargs):
         request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
         request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
