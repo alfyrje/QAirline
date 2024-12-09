@@ -30,7 +30,7 @@ class BookedSeatsView(APIView):
 
         booked_seats = {}
         for flight_id in flight_ids:
-            tickets = Ticket.objects.filter(flight_id=flight_id)
+            tickets = Ticket.objects.filter(flight_id=flight_id, cancelled=False)
             booked_seats[flight_id] = [ticket.seat for ticket in tickets]
 
         return Response(booked_seats, status=status.HTTP_200_OK)
@@ -63,12 +63,10 @@ class FlightSearchView(ListAPIView):
             flights = flights.filter(start_time__gte=start_time)
         else:
             flights = flights.filter(start_time__gte=timezone.now())
-            print('STARTTIME', start_time)
-            print('TIMEZONE', timezone.now())
-        # Annotate the number of booked seats for each class
+
         flights = flights.annotate(
-            economy_seats=Count('ticket', filter=Q(ticket__ticket_class='E')),
-            business_seats=Count('ticket', filter=Q(ticket__ticket_class='B'))
+            economy_seats=Count('ticket', filter=Q(ticket__ticket_class='E', ticket__cancelled=False)),
+            business_seats=Count('ticket', filter=Q(ticket__ticket_class='B', ticket__cancelled=False))
         ).filter(
             Q(plane__economic_seats__gte=F('economy_seats') + passengers_no) &
             Q(plane__business_seats__gte=F('business_seats') + passengers_no)
