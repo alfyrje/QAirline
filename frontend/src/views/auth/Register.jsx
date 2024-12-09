@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setAuthUser } from "../../utils/auth";
 import { register } from "../../utils/auth";
 import "./register.css";
-
+import nationalities from "./nationalities.json";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
@@ -26,36 +26,94 @@ function Register() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
+    const { id, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [id]: id.includes("name") ? value.toUpperCase() : value, // Capitalize names
+    }));
+
+    // Clear the error message when the user starts typing
+    setErrors({
+      ...errors,
+      [e.target.id]: "",
     });
   };
-  const resetForm = () => {
-    setFormData({
-      name_lastname: "",
-      name_firstname: "",
-      date_birth: "",
-      gender: "M",
-      nationality: "",
-      email: "",
-      phone_number: "",
-      ID_citizen: "",
-      password: "",
-      confirm_pwd: "",
-    }); 
-  }
+  const handleBlur = (e) => {
+    const { id, value } = e.target;
+    const newErrors = { ...errors };
+
+    // Validate fields on blur
+    if (id === "name_lastname" || id === "name_firstname") {
+      const nameRegex = /^[a-zA-ZÀ-ỹà-ỹ\s'-]+$/;
+      if (!nameRegex.test(value)) {
+        newErrors[id] =
+          "Tên chỉ có thể chứa chữ cái, khoảng trắng, dấu gạch nối và dấu nháy đơn.";
+      }
+    } else if (id === "email") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        newErrors.email = "Định dạng email không hợp lệ.";
+      }
+    } else if (id === "phone_number") {
+      if (!/^0\d{9}$/.test(value)) {
+        newErrors.phone_number =
+          "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số.";
+      }
+    } else if (id === "ID_citizen") {
+      if (!/^0\d{11}$/.test(value)) {
+        newErrors.ID_citizen =
+          "Số hộ chiếu/CCCD phải bắt đầu bằng số 0 và có 12 chữ số.";
+      }
+    } else if (id === "confirm_pwd") {
+      if (value !== formData.password) {
+        newErrors.confirm_pwd = "Mật khẩu không khớp.";
+      }
+    }
+
+    setErrors(newErrors);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const newErrors = {};
+  
+    // Gọi lại handleBlur cho mỗi trường để kiểm tra lỗi
+    Object.keys(formData).forEach((id) => {
+      const value = formData[id];
+      const fakeEvent = { target: { id, value } };
+      handleBlur(fakeEvent);
+  
+      if (errors[id]) {
+        newErrors[id] = errors[id];
+      }
+    });
+  
+    // Nếu có lỗi, ngăn không cho gửi form
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+  
+    // Không có lỗi, gửi dữ liệu
     setIsLoading(true);
-    const response = await register(formData);
-    if (response.data === "Success") {
-      navigate("/login");
-    } else {
-      alert(JSON.stringify(response.error));
+    try {
+      const response = await register(formData);
+      console.log(response);      
+      if (response.data.status === 200) { // Kiểm tra status từ response.data
+        alert("Đăng ký thành công!");
+        navigate("/login");
+      } else if (response.data.status === 400) { // Truy cập status từ response.data
+        const errorMessage = response.error.error_message || "Đã xảy ra lỗi!";
+        alert(errorMessage); // Hiển thị error_message
+      }
+    } catch (error) {
+      alert("Đã xảy ra lỗi không mong muốn.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,30 +125,37 @@ function Register() {
           <form className="register-form" onSubmit={handleSubmit}>
             <h1>Bạn đã sẵn sàng tham gia qAirline club? Hãy bắt đầu ngay!</h1>
             <h2>
-              Vui lòng điền đầy đủ thông tin cá nhân giống trên CMND/CCCD của bạn.
+              Vui lòng điền đầy đủ thông tin cá nhân giống trên CMND/CCCD của
+              bạn.
             </h2>
-            <div className="register-input-box">
-              <label htmlFor="name_lastname">HỌ</label>
-              <input
-                type="text"
-                id="name_lastname"
-                autoComplete="off"
-                onChange={handleChange}
-                required
-                placeholder="Họ, ví dụ: Phạm"
-              />
-            </div>
-            <div className="register-input-box">
-              <label htmlFor="name_firstname">TÊN ĐỆM & TÊN</label>
-              <input
-                type="text"
-                id="name_firstname"
-                autoComplete="off"
-                onChange={handleChange}
-                required
-                placeholder="Tên đệm & tên"
-              />
-            </div>
+            {[
+              {
+                id: "name_lastname",
+                label: "HỌ",
+                placeholder: "Họ, ví dụ: Phạm",
+              },
+              {
+                id: "name_firstname",
+                label: "TÊN ĐỆM & TÊN",
+                placeholder: "Tên đệm & tên",
+              },
+            ].map(({ id, label, placeholder, type = "text" }) => (
+              <div className="register-input-box" key={id}>
+                <label htmlFor={id}>{label}</label>
+                <input
+                  type={type}
+                  id={id}
+                  placeholder={placeholder}
+                  value={formData[id]}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  required
+                />
+                {errors[id] && (
+                  <span className="error-message">{errors[id]}</span>
+                )}
+              </div>
+            ))}
             <div className="register-column">
               <div className="register-input-box">
                 <label htmlFor="date_birth">NGÀY, THÁNG, NĂM SINH</label>
@@ -99,6 +164,7 @@ function Register() {
                   id="date_birth"
                   autoComplete="off"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                   placeholder="Ngày sinh"
                 />
@@ -106,7 +172,13 @@ function Register() {
               <div className="register-input-box">
                 <label htmlFor="gender">GIỚI TÍNH</label>
                 <div className="select-box">
-                  <select id="gender" onChange={handleChange} required placeholder="Giới tính">
+                  <select
+                    id="gender"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    placeholder="Giới tính"
+                  >
                     <option value="M">Nam</option>
                     <option value="F">Nữ</option>
                     <option value="O">Không xác định</option>
@@ -117,14 +189,22 @@ function Register() {
 
             <div className="register-input-box">
               <label htmlFor="nationality">QUỐC TỊCH</label>
-              <input
-                type="text"
-                id="nationality"
-                autoComplete="off"
-                onChange={handleChange}
-                required
-                placeholder="Quốc tịch"
-              />
+              <div className="select-box">
+                <select
+                  id="nationality"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  required
+                  placeholder="Quốc tịch"
+                >
+                  <option value="">Chọn quốc tịch</option>
+                  {nationalities.map((nationality, index) => (
+                    <option key={index} value={nationality}>
+                      {nationality}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="register-input-box">
@@ -135,9 +215,13 @@ function Register() {
                 ref={userRef}
                 autoComplete="off"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Email của bạn"
               />
+              {errors.email && (
+                <span className="error-message">{errors.email}</span>
+              )}
             </div>
             <div className="register-input-box">
               <label htmlFor="phone_number">SỐ ĐIỆN THOẠI</label>
@@ -146,9 +230,13 @@ function Register() {
                 id="phone_number"
                 autoComplete="off"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Số điện thoại"
               />
+              {errors.phone_number && (
+                <span className="error-message">{errors.phone_number}</span>
+              )}
             </div>
             <div className="register-input-box">
               <label htmlFor="ID_citizen">SỐ HỘ CHIẾU/ CCCD</label>
@@ -157,9 +245,13 @@ function Register() {
                 id="ID_citizen"
                 autoComplete="off"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Số hộ chiếu/ CCCD"
               />
+              {errors.ID_citizen && (
+                <span className="error-message">{errors.ID_citizen}</span>
+              )}
             </div>
             <div className="register-input-box">
               <label htmlFor="password">TẠO MẬT KHẨU</label>
@@ -167,6 +259,7 @@ function Register() {
                 type="password"
                 id="password"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Tạo mật khẩu"
               />
@@ -177,11 +270,15 @@ function Register() {
                 type="password"
                 id="confirm_pwd"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Nhập lại mật khẩu"
               />
+              {errors.confirm_pwd && (
+                <span className="error-message">{errors.confirm_pwd}</span>
+              )}
             </div>
-            <button id="signup" type="submit">
+            <button id="signup" type="submit" onClick={handleSubmit}>
               Sign Up
             </button>
           </form>

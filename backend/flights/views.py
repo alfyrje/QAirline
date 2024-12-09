@@ -2,28 +2,27 @@ from rest_framework.generics import ListAPIView
 from .models import Flight, Ticket
 from .serializers import FlightSerializer, TicketSerializer
 from users.serializers import PassengerSerializer
-from users.serializers import PassengerSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView
 from .serializers import TicketSerializer
 from rest_framework.views import APIView
 import logging
-from django.contrib.auth.models import AnonymousUser
 from rest_framework.permissions import AllowAny
 import jwt
 from django.conf import settings
 import json
+import qrcode
+from io import BytesIO
+from django.core.mail import send_mail
+from django.core.files import File
+from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.db.models import Count, Q, F
 import datetime
-
-
 logger = logging.getLogger(__name__)
 
 class BookedSeatsView(APIView):
     permission_classes = [AllowAny]
-
     def post(self, request, *args, **kwargs):
         flight_ids = request.data.get('flight_ids', [])
         if not flight_ids:
@@ -110,6 +109,7 @@ class CreateTicketsAPI(ListAPIView):
                 )
             
             for passenger_data in passengers_data:
+                print('PASSENGER DATA', passenger_data)
                 passenger_serializer = PassengerSerializer(data=passenger_data)
                 passenger_serializer.is_valid(raise_exception=True)
                 passenger = passenger_serializer.save()
@@ -127,7 +127,29 @@ class CreateTicketsAPI(ListAPIView):
         
                 ticket_serializer = TicketSerializer(data=ticket_data)
                 ticket_serializer.is_valid(raise_exception=True)
-                tickets.append(ticket_serializer.save())
+                ticket = ticket_serializer.save()
+                tickets.append(ticket)
+
+                qr_data = f"Ticket ID: {ticket.id}, Flight ID: {flight_id}, Seat: {seat}, Passenger: {passenger.id}"
+                qr = qrcode.make(qr_data)
+
+                qr_image = BytesIO()
+                qr.save(qr_image, format='PNG')
+                qr_image.seek(0)
+
+                # Create a Django file-like object from the BytesIO object
+                qr_file = File(qr_image, name=f"ticket_{ticket.id}_qr.png")
+
+                # Send the email with the QR code attached
+                subject = f"QAirline: Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
+                message = "Vui lòng giữ mã QR này để kiểm tra vé của bạn tại quầy check-in hoặc cổng lên máy bay."
+                email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
+                email.attach('ticket_qr.png', qr_file.read(), 'image/png')
+                try:
+                    email.send()
+                    print(f"Email sent successfully to {passenger.qr_email}")
+                except Exception as e:
+                    print(f"Failed to send email to {passenger.qr_email}: {e}")
 
         return Response(
             {"message": "Passengers and tickets created successfully", "tickets": [TicketSerializer(t).data for t in tickets]},
@@ -161,7 +183,7 @@ class TicketsFlightsHistoryAPI(ListAPIView):
                 "passenger_info": {
                     "first_name": passenger.first_name,
                     "last_name": passenger.last_name,
-                    "tel_num": passenger.tel_num,
+                    "qr_mail": passenger.qr_email,
                     "date_of_birth": passenger.date_of_birth,
                     "citizen_id": passenger.citizen_id,
                     "nationality": passenger.nationality,

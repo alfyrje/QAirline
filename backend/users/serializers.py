@@ -1,28 +1,10 @@
-# users/serializers.py
 from rest_framework import serializers
 from .models import User, Passenger
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['email'] = user.email
-        return token
-from .models import User, Passenger
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['email'] = user.email
-        return token
 
 class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passenger
-        fields = ['first_name', 'last_name', 'tel_num', 'date_of_birth', 'citizen_id', 'nationality', 'gender']
+        fields = ['first_name', 'last_name', 'qr_email', 'date_of_birth', 'citizen_id', 'nationality', 'gender']
     def create(self, validated_data):
         citizen_id = validated_data.get("citizen_id")
         if citizen_id:
@@ -30,7 +12,6 @@ class PassengerSerializer(serializers.ModelSerializer):
             if existing_passenger:
                 return existing_passenger
         return super().create(validated_data)
-        fields = ['first_name', 'last_name', 'tel_num', 'date_of_birth', 'citizen_id', 'nationality', 'gender']
     def create(self, validated_data):
         citizen_id = validated_data.get("citizen_id")
         if citizen_id:
@@ -44,8 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'personal_info', 'username','password', 'first_name', 'last_name']
-        fields = ['email', 'personal_info', 'username','password', 'first_name', 'last_name']
+        fields = ['email', 'first_name', 'last_name', 'personal_info', 'username','password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -62,5 +42,5 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
+    email = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
