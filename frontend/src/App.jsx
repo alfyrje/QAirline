@@ -12,6 +12,7 @@ import BookingInfo from "./views/booking/booking_info/BookingInfo";
 import CityPage from './views/dashboard/CityPage.jsx';
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/auth";
+import TravelInfo from './views/travel_info/TravelInfo.jsx';
 import SeatSelect from "./views/booking/seat_select/SeatSelect";
 import './index.css'
 
@@ -42,6 +43,8 @@ function App() {
                         <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
+                        <Route path="/travel-info/" element={<TravelInfo />} />
+
 
                         {/* Flight Search */}
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />

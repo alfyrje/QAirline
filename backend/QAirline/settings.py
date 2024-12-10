@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'flights',
     'adminapp',
     'city_introduction',
+    'voucher',
+    'flight_info',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

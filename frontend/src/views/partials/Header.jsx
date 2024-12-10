@@ -4,13 +4,12 @@ import "../../index.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
-import profile from '/icons/square-user.svg'
-import user from '/icons/circle-user-round.svg';
-import logout_icon from '/icons/log-out.svg';
-import React, {useState, useEffect, useRef} from "react";
-import notification_icon from '/icons/bell-ring.svg';
-import { stack as Menu } from 'react-burger-menu'
-
+import profile from "/icons/square-user.svg";
+import user from "/icons/circle-user-round.svg";
+import logout_icon from "/icons/log-out.svg";
+import React, { useState, useEffect, useRef } from "react";
+import notification_icon from "/icons/bell-ring.svg";
+import { stack as Menu } from "react-burger-menu";
 
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
@@ -22,7 +21,6 @@ function Header() {
     navigate("/dashboard");
   };
 
-
   // Function to toggle the 'active' class
   const toggleSublist = (index) => {
     setActiveMenu(activeMenu === index ? null : index); // Toggle active state
@@ -31,26 +29,23 @@ function Header() {
   let menuRef = useRef();
   let notificationRef = useRef();
 
-
   useEffect(() => {
-    let handler = (e)=>{
-      if(!menuRef.current.contains(e.target)){
+    let handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
         setOpen(false);
-      }      
-
+      }
     };
     document.addEventListener("mousedown", handler);
-    return() =>{
+    return () => {
       document.removeEventListener("mousedown", handler);
-    }
-
+    };
   });
 
   return (
     <>
       <nav className="header-navbar">
         <div className="header-logoContainer">
-          <Link to="/">
+          <Link to="/dashboard">
             <img
               src="/images/0.svg"
               alt="Logo"
@@ -61,71 +56,112 @@ function Header() {
           </Link>
         </div>
         <div className="header-navLink">
-          <Link to="/" id="header-khamPha">
+          <Link to="/explore" id="header-khamPha">
             Khám phá
           </Link>
           <Link to="/bookings" id="header-datVe">
             Đặt vé
           </Link>
-          <Link to="/contact" id="header-thongTinHanhTrinh">
+          <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
           </Link>
         </div>
-        <div>        
-        <Menu right className ='navSideBar'>
-          <a className = 'menu-item' href='/login'>Đăng nhập</a>
-          <a className = 'menu-item' href='/register'>Đăng Kí</a>
-          <a id="home" className="menu-item" href="/">Khám phá</a>
-          <a id="about" className="menu-item" href="/about">Đặt vé</a>
-          <a id="contact" className="menu-item" href="/contact">Thông tin hành trình</a>
-        {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
-        </Menu>
+        <div>
+          <Menu right className="navSideBar">
+            <a className="menu-item" href="/login">
+              Đăng nhập
+            </a>
+            <a className="menu-item" href="/register">
+              Đăng Kí
+            </a>
+            <a id="home" className="menu-item" href="/explore">
+              Khám phá
+            </a>
+            <a id="about" className="menu-item" href="/about">
+              Đặt vé
+            </a>
+            <a id="contact" className="menu-item" href="/travel-info">
+              Thông tin hành trình
+            </a>
+            {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
+          </Menu>
 
-        {isLoggedIn ? (
-          <>
-            
+          {isLoggedIn ? (
+            <>
               <div className="header-controls">
-
-                <div className='header-notification' ref={notificationRef}>
-                  <div className='menu-trigger' onClick={() => setNotificationOpen(!notificationOpen)}>
+                <div className="header-notification" ref={notificationRef}>
+                  <div
+                    className="menu-trigger"
+                    onClick={() => setNotificationOpen(!notificationOpen)}
+                  >
                     <img src={notification_icon} alt="notification" />
                   </div>
-                  
-                  <div className={`dropdown-menu ${notificationOpen ? 'active' : 'inactive'}`}>
+
+                  <div
+                    className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
+                  >
                     <ul>
-                      <DropdownItem className='dropdownItem' text={"Notification 1"} />
-                      <DropdownItem className='dropdownItem' text={"Notification 2"} />
+                      <DropdownItem
+                        className="dropdownItem"
+                        text={"Notification 1"}
+                      />
+                      <DropdownItem
+                        className="dropdownItem"
+                        text={"Notification 2"}
+                      />
                     </ul>
                   </div>
-                </div>  
+                </div>
 
-
-
-                <div className='header-logOut' ref={menuRef}>
-                  <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
+                <div className="header-logOut" ref={menuRef}>
+                  <div
+                    className="menu-trigger"
+                    onClick={() => {
+                      setOpen(!open);
+                    }}
+                  >
                     <img src={user} alt="user" />
                   </div>
-                  <div className={`dropdown-menu ${open? 'active' : 'inactive'}`}>
+                  <div
+                    className={`dropdown-menu ${open ? "active" : "inactive"}`}
+                  >
                     <ul>
-                      <Link to='/profile'>
-                        <DropdownItem img={profile} className='dropdownItem' text={"Thông tin cá nhân"}/>
+                      <Link to="/profile">
+                        <DropdownItem
+                          img={profile}
+                          className="dropdownItem"
+                          text={"Thông tin cá nhân"}
+                        />
                       </Link>
-                      <Link to='/login'>
-                        <DropdownItem img={logout_icon} className='dropdownItem' text={"Đăng xuất"}/>
+                      <Link to="/login">
+                        <DropdownItem
+                          img={logout_icon}
+                          className="dropdownItem"
+                          text={"Đăng xuất"}
+                        />
                       </Link>
                     </ul>
                   </div>
                 </div>
               </div>
-              <Menu right className ='navSideBar'>
-              <a className = 'menu-item' href='/login'>Đăng xuất</a>
-              <a className = 'menu-item' href='/register'>Thông tin cá nhân</a>
-              <a id="home" className="menu-item" href="/">Khám phá</a>
-              <a id="about" className="menu-item" href="/about">Đặt vé</a>
-              <a id="contact" className="menu-item" href="/contact">Thông tin hành trình</a>
-            {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
-            </Menu>
-
+              <Menu right className="navSideBar">
+                <a className="menu-item" href="/login">
+                  Đăng xuất
+                </a>
+                <a className="menu-item" href="/register">
+                  Thông tin cá nhân
+                </a>
+                <a id="home" className="menu-item" href="/explore">
+                  Khám phá
+                </a>
+                <a id="about" className="menu-item" href="/about">
+                  Đặt vé
+                </a>
+                <a id="contact" className="menu-item" href="/travel-info">
+                  Thông tin hành trình
+                </a>
+                {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
+              </Menu>
             </>
           ) : (
             <>
@@ -137,39 +173,46 @@ function Header() {
                 Đăng ký
               </Link>
 
-              <Menu right className ='navSideBar'>
-              <a className = 'menu-item' href='/login'>Đăng nhập</a>
-              <a className = 'menu-item' href='/register'>Đăng Kí</a>
-              <a id="home" className="menu-item" href="/">Khám phá</a>
-              <a id="about" className="menu-item" href="/about">Đặt vé</a>
-              <a id="contact" className="menu-item" href="/contact">Thông tin hành trình</a>
-            {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
-            </Menu>
+              <Menu right className="navSideBar">
+                <a className="menu-item" href="/login">
+                  Đăng nhập
+                </a>
+                <a className="menu-item" href="/register">
+                  Đăng Kí
+                </a>
+                <a id="home" className="menu-item" href="/explore">
+                  Khám phá
+                </a>
+                <a id="about" className="menu-item" href="/about">
+                  Đặt vé
+                </a>
+                <a id="contact" className="menu-item" href="/travel-info">
+                  Thông tin hành trình
+                </a>
+                {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
+              </Menu>
             </>
           )}
         </div>
       </nav>
 
-    {/* sidebar
+      {/* sidebar
       menu-item
         title 
         Sublist
           list-item */}
 
-
-
       <div className="header-sideBar">
-      <div
-          className={`menu-item ${activeMenu === 0 ? "active" : ""}`
-        }
+        <div
+          className={`menu-item ${activeMenu === 0 ? "active" : ""}`}
           onClick={() => toggleSublist(-1)} // Pass index to toggle
-          id = "logInLogOutMedia"
+          id="logInLogOutMedia"
         >
           <div id="header-authLinkSideBar">
             <Link to="/Đăng nhập" className="header-signIn">
               Đăng nhập
             </Link>
-            <a id = 'header-separation'> | </a>
+            <a id="header-separation"> | </a>
             <Link to="/Đăng kí" className="header-register">
               Đăng ký
             </Link>
@@ -180,7 +223,6 @@ function Header() {
           className={`header-menu-item ${activeMenu === 0 ? "active" : ""}`}
           onClick={() => toggleSublist(0)} // Pass index to toggle
         >
-          
           <div className="header-title">Khám phá</div>
           <div className="header-sub-list">
             <div className="header-sub-title">Sublist 1</div>
@@ -241,9 +283,9 @@ function Header() {
   );
 }
 
-function DropdownItem(props){
-  return(
-    <li className = 'dropdownItem'>
+function DropdownItem(props) {
+  return (
+    <li className="dropdownItem">
       <img src={props.img}></img>
       <a> {props.text} </a>
     </li>
