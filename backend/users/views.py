@@ -26,7 +26,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         serializer = serializers.UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             # Kiểm tra xem người dùng có tồn tại không
-            user = User.objects.filter(email=request.data['email']).first()
+            user = User.objects.filter(email=request.data['username']).first()
             if not user:
                 return Response(
                     {"detail": "Người dùng không tồn tại.", "status": 404}, status=404)
