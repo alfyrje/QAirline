@@ -294,7 +294,7 @@ const PassengersDetail = () => {
                             ))}
                             <div className="submit-button">
                                 <button type="submit" className="btn confirm">
-                                    Đặt vé
+                                    Khám phá 
                                 </button>
                             </div>
                         </form>

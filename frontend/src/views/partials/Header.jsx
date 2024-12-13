@@ -57,10 +57,10 @@ function Header() {
         </div>
         <div className="header-navLink">
           <Link to="/explore" id="header-khamPha">
-            Khám phá
+          Khám phá 
           </Link>
           <Link to="/bookings" id="header-datVe">
-            Đặt vé
+            Khuyến mãi 
           </Link>
           <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
@@ -75,10 +75,10 @@ function Header() {
               Đăng Kí
             </a>
             <a id="home" className="menu-item" href="/explore">
-              Khám phá
+              Khám phá 
             </a>
             <a id="about" className="menu-item" href="/about">
-              Đặt vé
+              Khuyến mãi 
             </a>
             <a id="contact" className="menu-item" href="/travel-info">
               Thông tin hành trình
@@ -152,10 +152,10 @@ function Header() {
                   Thông tin cá nhân
                 </a>
                 <a id="home" className="menu-item" href="/explore">
-                  Khám phá
+                  Khám phá 
                 </a>
                 <a id="about" className="menu-item" href="/about">
-                  Đặt vé
+                    Khuyến mãi 
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
@@ -181,10 +181,10 @@ function Header() {
                   Đăng Kí
                 </a>
                 <a id="home" className="menu-item" href="/explore">
-                  Khám phá
+                  Khám phá 
                 </a>
                 <a id="about" className="menu-item" href="/about">
-                  Đặt vé
+                  Khuyến mãi 
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình

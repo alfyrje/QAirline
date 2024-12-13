@@ -8,7 +8,6 @@ const PromoteCard = ({ image, title, subtitle, buttonText }) => {
       <div className="promo-card-content">
         <h2 className="promo-title">{title}</h2>
         <p className="promo-subtitle">{subtitle}</p>
-        <button className="promo-button">{buttonText}</button>
       </div>
     </div>
   );
