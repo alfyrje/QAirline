@@ -102,15 +102,17 @@ function Register() {
     setIsLoading(true);
     try {
       const response = await register(formData);
-      console.log(response);      
-      if (response.data.status === 200) { // Kiểm tra status từ response.data
-        alert("Đăng ký thành công!");
+      console.log(response); 
+      const test = JSON.stringify(response);
+      console.log(test);     
+      if (response['message'] === 'Đăng ký tài khoản thành công.') { // Kiểm tra status từ response.data
+        alert(response['message']);
         navigate("/login");
-      } else if (response.data.status === 400) { // Truy cập status từ response.data
-        const errorMessage = response.error.error_message || "Đã xảy ra lỗi!";
-        alert(errorMessage); // Hiển thị error_message
+      } else { // Truy cập status từ response.data
+        alert(response['message']); // Hiển thị error_message
       }
     } catch (error) {
+      console.error("Đã xảy ra lỗi:", error);
       alert("Đã xảy ra lỗi không mong muốn.");
     } finally {
       setIsLoading(false);

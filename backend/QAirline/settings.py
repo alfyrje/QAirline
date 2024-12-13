@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi1',
+        'PASSWORD': 'denhothoi',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }
@@ -138,10 +138,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-]
 AUTH_USER_MODEL = 'users.User'
 
 AUTH_USER_MODEL = 'users.User'

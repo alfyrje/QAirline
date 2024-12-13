@@ -26,7 +26,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         serializer = serializers.UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             # Kiểm tra xem người dùng có tồn tại không
-            user = User.objects.filter(email=request.data['username']).first()
+            user = User.objects.filter(username=request.data['username']).first()
             if not user:
                 return Response(
                     {"detail": "Người dùng không tồn tại.", "status": 404}, status=404)
@@ -59,25 +59,25 @@ class UserRegisterView(APIView):
             print("serializer is valid")
             if Passenger.objects.filter(citizen_id=request.data['personal_info'].get('citizen_id')).exists():
                 print("passenger exists with citizen id")
-                return JsonResponse({
-                    'error_message': 'Số CMND đã tồn tại.',
+                return Response({
+                    'message': 'Số CMND đã tồn tại.',
                 }, status=400)
             user = serializer.save()
-            return JsonResponse({
-                'message': 'Register successful!',
+            return Response({
+                'message': 'Đăng ký tài khoản thành công.',
             }, status=200)
         else:
             username_errors = serializer.errors.get('username', [])
             for error in username_errors:
                 print(error)
                 if error == 'A user with that username already exists.':
-                    return JsonResponse({
-                        'error_message': 'Tài khoản email đã được đăng ký.',
+                    return Response({
+                        'message': 'Tài khoản email đã được đăng ký.',
                     }, status=400)
 
             # Trả về lỗi khác nếu không khớp điều kiện trên
-            return JsonResponse({
-                'error_message': 'Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.',
+            return Response({
+                'message': 'Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.',
                 'details': serializer.errors
             }, status=400)
  

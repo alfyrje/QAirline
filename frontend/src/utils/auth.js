@@ -79,7 +79,7 @@ export const login = async (email, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        username: email,
         password: password,
       }),
     });
@@ -124,7 +124,7 @@ export const register = async (formData) => {
   } = formData;
   console.log(formData);
   try {
-    const data = await fetch("http://127.0.0.1:8000/users/register/", {
+    const response = await fetch("http://127.0.0.1:8000/users/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -146,10 +146,8 @@ export const register = async (formData) => {
         password: password,
       }),
     });
-    if (!data.ok) {
-      const errorData = await data.json(); // Đọc nội dung response
-      return { data, error: errorData };
-    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     return {
       data: "Failed",
