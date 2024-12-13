@@ -96,8 +96,6 @@ class TicketSearchView(ListAPIView):
 
         return Ticket.objects.filter(query)
     
-    def 
-
 class CreateTicketsAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     def post(self, request, *args, **kwargs):
