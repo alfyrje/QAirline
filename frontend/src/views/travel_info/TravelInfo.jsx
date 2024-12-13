@@ -4,11 +4,13 @@ import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import ImageSeparator from "../partials/ImageSeparator";
 
+
 const TravelInfo = () => {
   const navigate = useNavigate();
-  const handleInfoClick = (title) => {
+  const handleInfoClick = (title) => () =>{
     navigate(`/travel-info/${title}`);
-    console.log(title);
+    console.log("clicked");
+    console.log(title)
   };
   return (
     <>
@@ -22,10 +24,10 @@ const TravelInfo = () => {
               src="/images_info/hanhli.jpg"
               alt="Hành lý"
               className="travel-card-image"
+              onClick={handleInfoClick("Hành Lý")}
             />
             <div
               className="travel-card-title"
-              onClick={handleInfoClick("Hành lý")}
             >
               Hành lý
             </div>

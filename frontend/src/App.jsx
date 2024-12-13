@@ -17,6 +17,7 @@ import SeatSelect from "./views/booking/seat_select/SeatSelect";
 import './index.css'
 import Sale from "./views/sales/Sale.jsx"
 import InfoPost from "./views/travel_info/InfoPost";
+import CityLayout from './views/cityLayout/CityLayout.jsx';
 const PrivateRoute = ({ children }) => {
     const loggedIn = useAuthStore((state) => state.isLoggedIn);
 
@@ -47,7 +48,8 @@ function App() {
                         <Route path="/dashboard/" element={<Dashboard />} />
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/travel-info/" element={<TravelInfo />} />
-                        <Route path="/explore" element={<Sale />} />
+                        <Route path="/voucher" element={<Sale />} />
+                        <Route path="/explore" element={<CityLayout />} />
 
                         {/* Flight Search */}
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />

@@ -47,10 +47,12 @@ const CityPage = () => {
                     <div className="artificial_padding"></div>
                     <h1 className='city_name'> {city_name}</h1>
                     {cityData && (
-                        <div className='city_introduction_container'>
-                            {cityData.city_introduction}
-                        </div>
-                    )}
+            <div className='city_introduction_container'>
+                <div dangerouslySetInnerHTML={{
+                    __html: cityData.city_introduction.replace(/\n/g, '<br>')
+                }} />
+            </div>
+        )}
                 </div>
                 
             </div>
