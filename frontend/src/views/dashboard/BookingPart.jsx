@@ -47,13 +47,74 @@ function BookingPart() {
     <>
       <header className="section__container header__container">
         <div className="header__image__container">
-          {/* <img src = "/images/bg3.jpg"/> */}
           <div className="header__content">
-            <h1>Enjoy Your Dream Vacation</h1>
-            <p>Book Hotels, Flights and stay packages at lowest price.</p>
+            <h1>Enjoy Your Dream Flight</h1>
           </div>
-          <div className="booking__container">
 
+          <div className="booking__container_responsive">
+            <div className="booking-row">
+              <div className="radio-group">
+                <label>
+                  <input type="radio" name="trip-type" value="one-way" /> Một
+                  chiều
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="trip-type"
+                    value="round-trip"
+                    checked
+                  />
+                  Khứ hồi
+                </label>
+              </div>
+            </div>
+            <div className="booking-row">
+              <div className="flight-element">
+                <label for="input-field">Từ</label>
+                <input type="text" id="from-control" />
+              </div>
+            </div>
+            <div className="booking-row">
+              <div className="flight-element">
+                <label for="input-field">Tới</label>
+                <input type="text" id="to" />
+              </div>
+            </div>
+
+            <div className="booking-row">
+              <div className="flight-element-date">
+                <div className="date-container">
+                  <label for="depart-date">Ngày đi</label>
+                  <input type="date" id="depart-date" value="2025-01-02" />
+                </div>
+                <div className="date-container">
+                  <label for="return-date">Ngày về</label>
+                  <input type="date" id="return-date" value="2024-12-25" />
+                </div>
+              </div>
+            </div>
+
+            <div className="booking-row">
+              <div className="flight-element">
+                <label for="passengers">Hành khách</label>
+                <input type="number" id="passengers" min="1" value="1" />
+              </div>
+            </div>
+
+            <div className="booking-row">
+              <div className="flight-element">
+                <label for="voucher">Mã giảm giá</label>
+
+                <input className="upper_case input_voucher"></input>
+              </div>
+            </div>
+            <div className="booking-row">
+              <button className="search-button">Tìm Chuyến Bay</button>
+            </div>
+          </div>
+
+          <div className="booking__container">
             <div className="first_row">
               <div className="radio_container">
                 <div className="radio_item">
@@ -81,8 +142,10 @@ function BookingPart() {
               </div>
             </div>
             <div className="second_row">
-            <form className={tripType === "oneWay" ? "one-way" : "round-trip"}>
-            <div className="form__group">
+              <form
+                className={tripType === "oneWay" ? "one-way" : "round-trip"}
+              >
+                <div className="form__group">
                   <div className="input__group">
                     <div className="input_container">
                       <div>Từ</div>
@@ -159,11 +222,10 @@ function BookingPart() {
               <div className="header_third_row">
                 <div className="header_sale_container">
                   <input
-                    className="upper_case"
+                    className="upper_case input_voucher"
                     placeholder="Mã giảm giá"
                   ></input>
                 </div>
-
                 <div className="header_button_container">
                   <button className="flight_search_btn">Tìm chuyến bay</button>
                 </div>
