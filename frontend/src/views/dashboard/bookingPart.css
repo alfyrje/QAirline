@@ -23,6 +23,8 @@
   padding: 5rem 1rem;
 }
 
+
+
 .section__header {
   font-size: 2rem;
   font-weight: 600;
@@ -416,7 +418,7 @@ img {
 
 @media (width < 600px) {
   .header__container {
-    padding-bottom: 25rem;
+    padding-bottom: 10oke rem;
   }
 
   .booking__container {
