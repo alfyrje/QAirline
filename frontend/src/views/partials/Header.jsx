@@ -10,12 +10,24 @@ import logout_icon from "/icons/log-out.svg";
 import React, { useState, useEffect, useRef } from "react";
 import notification_icon from "/icons/bell-ring.svg";
 import { stack as Menu } from "react-burger-menu";
+import useWebSocket from 'react-use-websocket';
 
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const { sendMessage, lastMessage, readyState } = useWebSocket('ws://localhost:8000/ws/notifications/', {
+    onOpen: () => console.log('WebSocket connection established.'),
+    onMessage: (event) => {
+      const data = JSON.parse(event.data);
+      console.log('WebSocket message received:', data);
+      setNotifications((prev) => [...prev, data.message]);
+    },
+    onClose: () => console.log('WebSocket connection closed.'),
+    onError: (error) => console.log('WebSocket error:', error),
+  });
   const handleLogout = () => {
     logout();
     console.log("Logged out HEHEEEEEE");
@@ -101,14 +113,13 @@ function Header() {
                     className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
                   >
                     <ul>
-                      <DropdownItem
-                        className="dropdownItem"
-                        text={"Notification 1"}
-                      />
-                      <DropdownItem
-                        className="dropdownItem"
-                        text={"Notification 2"}
-                      />
+                      {notifications.map((notification, index) => (
+                        <DropdownItem
+                          key={index}
+                          className="dropdownItem"
+                          text={notification}
+                        />
+                      ))}
                     </ul>
                   </div>
                 </div>
