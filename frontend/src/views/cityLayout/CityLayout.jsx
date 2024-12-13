@@ -44,7 +44,7 @@ const CityLayout = () => {
           <div className="areaContainer dongnama">
             <div className ="area-element">
               <div className="area-text ">Đông Nam Á</div>
-              <div className="city-grid-container">
+              <div className="dongnama-city-grid-container">
                 <div className="smaller-city-card city-card">
                   <img
                     src="/images_info/hanhli.jpg"
@@ -61,6 +61,14 @@ const CityLayout = () => {
                   />
                   <div className="city-title">Singapore</div>
                 </div>
+                <div className="biggest-city-card city-card">
+                  <img
+                    src="/images_info/booking.jpg"
+                    alt="Làm thủ tục"
+                    className="citycard-image"
+                  />
+                  <div className="city-title">Singapore</div>
+                </div>
               </div>
             </div>
           </div>
@@ -69,7 +77,16 @@ const CityLayout = () => {
           <div className="areaContainer chauau">
             <div className ="area-element">
               <div className="area-text ">Châu Âu</div>
+
               <div className="city-grid-container">
+              <div className="biggest-city-card city-card">
+                  <img
+                    src="/images_info/hanhli.jpg"
+                    alt="Hành lý"
+                    className="citycard-image"
+                  />
+                  <div className="city-title">London</div>
+                </div>
                 <div className="bigger-city-card city-card">
                   <img
                     src="/images_info/hanhli.jpg"

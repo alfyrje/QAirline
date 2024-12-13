@@ -55,6 +55,15 @@
   margin: 0 auto;
 }
 
+.dongnama-city-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 21rem);
+    gap: 2rem;
+    margin: 0 auto;
+  }
+
+
 .bigger-city-card {
   grid-column: span 2;
   position: relative;
@@ -65,9 +74,20 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
 }
+.biggest-city-card {
+    grid-column: span 3;
+    position: relative;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 0 2rem 0 2rem;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
 
 .bigger-city-card,
-.smaller-city-card {
+.smaller-city-card,
+.biggest-city-card {
   position: relative;
   border: 1px solid #ddd;
   border-radius: 0 2rem 0 2rem;
