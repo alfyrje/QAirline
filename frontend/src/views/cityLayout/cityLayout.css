@@ -12,6 +12,15 @@
   align-items: center;
   background-color: #f8f0f0;
 }
+.areaContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.vietnam, .chauau{
+    background-color:#faf3f3;
+}
 
 
 
@@ -25,9 +34,13 @@
 .travel-container {
   padding: 4rem;
 }
+.area-element {
+    max-width: 70rem;
+    padding-bottom: 8rem;
+}
 
 .travel-title {
-  background-color: #transparent;
+  background-color: transparent;
   text-align: center;
   margin-bottom: 4rem;
   font-family: "Funnel Sans", sans-serif;
@@ -37,9 +50,8 @@
 .city-grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 21rem);
+  grid-template-rows: repeat(1, 21rem);
   gap: 2rem;
-  max-width: 70rem;
   margin: 0 auto;
 }
 
