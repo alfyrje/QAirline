@@ -42,7 +42,7 @@ function App() {
                         <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
                         {/* Dashboard */}
                         <Route path="/dashboard/" element={<Dashboard />} />
-
+                        <Route path="/" element={<Dashboard />} />
                         {/* Flight Search */}
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />
 

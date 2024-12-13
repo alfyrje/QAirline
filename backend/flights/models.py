@@ -25,18 +25,14 @@ class Flight(models.Model):
         return self.end_time - self.start_time
     @property
     def economic_seats_left(self):
-        booked_economic = Ticket.objects.filter(flight=self, ticket_class='E').count()
+        booked_economic = Ticket.objects.filter(flight=self, ticket_class='E', cancelled=False).count()
         return self.plane.economic_seats - booked_economic
     @property
     def business_seats_left(self):
-        booked_business = Ticket.objects.filter(flight=self, ticket_class='B').count()
+        booked_business = Ticket.objects.filter(flight=self, ticket_class='B', cancelled=False).count()
         return self.plane.business_seats - booked_business
-    @property
-    def economic_price(self):
-        return 5000000  # Placeholder price
-    @property
-    def business_price(self):
-        return 10000000  # Placeholder price
+    economic_price = models.IntegerField(default=5000000)
+    business_price = models.IntegerField(default=10000000)
     def __str__(self):
         return f"{self.code}"
 
