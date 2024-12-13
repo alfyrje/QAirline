@@ -81,6 +81,7 @@ export const login = async (email, password) => {
       body: JSON.stringify({
         username: email,
         password: password,
+        email: email,
       }),
     });
     const data = await response.json();

@@ -48,6 +48,7 @@ function LogIn() {
     } else if (response.status===401) {
       setPasswordError(response.detail || "Mật khẩu không đúng.");
     } else {
+      console.log(response);
       alert("An unexpected error occurred.");
     }
     setIsLoading(false);
