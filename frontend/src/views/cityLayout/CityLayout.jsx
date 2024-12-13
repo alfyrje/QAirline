@@ -15,7 +15,7 @@ const CityLayout = () => {
             navigate(`/dashboard/cityIntroduction/${cityName}`);
           }
         };
-    
+
         document.addEventListener('click', handleCityClick);
         
         return () => {
