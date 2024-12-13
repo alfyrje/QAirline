@@ -3,8 +3,25 @@ import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import ImageSeparator from "../partials/ImageSeparator";
 import "./cityLayout.css";
+import { useEffect } from 'react';
 
 const CityLayout = () => {
+  const navigate = useNavigate();
+    useEffect(() => {
+        const handleCityClick = (e) => {
+          if (e.target.className === 'city-title') {
+            const cityName = e.target.textContent; 
+            console.log(`Clicked city: ${cityName}`);
+            navigate(`/dashboard/cityIntroduction/${cityName}`);
+          }
+        };
+    
+        document.addEventListener('click', handleCityClick);
+        
+        return () => {
+          document.removeEventListener('click', handleCityClick);
+        };
+      }, []);
 
   return (
     <>
@@ -22,7 +39,7 @@ const CityLayout = () => {
                     alt="Hành lý"
                     className="citycard-image"
                   />
-                  <div className="city-title">Tp Hồ Chí Minh</div>
+                  <div className="city-title">Tokyo</div>
                 </div>
                 <div className="smaller-city-card city-card">
                   <img
