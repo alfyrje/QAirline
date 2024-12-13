@@ -73,6 +73,30 @@ class FlightSearchView(ListAPIView):
         )
 
         return flights
+    
+class TicketSearchView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+    serializer_class = TicketSerializer
+
+    def get_queryset(self):
+        flight_id = self.request.query_params.get('flight_id')
+        citizen_id = self.request.query_params.get('citizen_id')
+        seat = self.request.query_params.get('seat')
+        ticket_class = self.request.query_params.get('ticket_class')
+
+        query = Q()
+        if flight_id:
+            query &= Q(flight_id=flight_id)
+        if citizen_id:
+            query &= Q(passenger__citizen_id=citizen_id)
+        if seat:
+            query &= Q(seat=seat)
+        if ticket_class:
+            query &= Q(ticket_class=ticket_class)
+
+        return Ticket.objects.filter(query)
+    
+    def 
 
 class CreateTicketsAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access

@@ -81,6 +81,7 @@ export const login = async (email, password) => {
       body: JSON.stringify({
         username: email,
         password: password,
+        email: email, 
       }),
     });
     const data = await response.json();
@@ -88,6 +89,7 @@ export const login = async (email, password) => {
       setAuthUser(data.access, data.refresh);
       return data;
     } else {
+      console.log(data)
       console.log("Failed to login:", data);
       return data;
     }
