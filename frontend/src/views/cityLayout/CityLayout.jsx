@@ -33,7 +33,7 @@ const CityLayout = () => {
                   <img
                     src="/images_info/booking.jpg"
                     alt="Làm thủ tục"
-                    className="travel-card-image"
+                    className="citycard-image"
                   />
                   <div className="city-title">Hà Nội</div>
                 </div>
