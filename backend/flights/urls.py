@@ -8,5 +8,5 @@ urlpatterns = [
     path('tickets-history/', TicketsFlightsHistoryAPI.as_view(), name='tickets-history'),
     path('booked-seats/', BookedSeatsView.as_view(), name='booked-seats'),
     path('locations/', FlightLocationsView.as_view(), name='locations'),
-    path('search-tickets/', TicketSearchView.as_view(), name='ticket-search'),
+    path('search-tickets/', TicketSearchView.as_view(), name='ticket-info'),
 ]   

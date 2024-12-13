@@ -41,7 +41,6 @@ function LogIn() {
     setIsLoading(true);
     const response = await login(formData.email, formData.password);
     if (response.status===200) {
-      console.log("hehehehe")
       navigate("/profile");
     } else if (response.status===404) {
       setEmailError(response.detail || "Người dùng không tồn tại.");

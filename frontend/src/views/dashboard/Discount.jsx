@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
-import TicketSearch from "./TicketSearch";
 import "./discount.css";
 
 const DiscountCard = ({ image, title, subtitle, buttonText }) => {
@@ -129,7 +128,6 @@ const Discount = () => {
           <img src="/icons/next.png" alt="Next Page" />
           </button>
         </div>
-        <TicketSearch />
       </div>
       <Footer />
     </section>

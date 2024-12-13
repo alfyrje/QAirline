@@ -18,7 +18,6 @@ function Header() {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const handleLogout = () => {
     logout();
-    console.log("Logged out HEHEEEEEE");
     navigate("/dashboard");
   };
 

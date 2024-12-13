@@ -11,6 +11,7 @@ import FlightSelect from "./views/booking/flight_search/FlightSelect"
 import BookingInfo from "./views/booking/booking_info/BookingInfo";
 import CityPage from './views/dashboard/CityPage.jsx';
 import Discount from './views/dashboard/Discount';
+import TicketInfo from './views/dashboard/TicketInfo';
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/auth";
 import SeatSelect from "./views/booking/seat_select/SeatSelect";
@@ -44,6 +45,7 @@ function App() {
                         <Route path="/dashboard/" element={<Dashboard />} />
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/discount" element={<Discount />} />
+                        <Route path="/ticket-info" element={<TicketInfo />} />
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />
                         <Route path="/flight-select" element={<FlightSelect />} />
                         <Route path="/seat-select" element={<SeatSelect />} />

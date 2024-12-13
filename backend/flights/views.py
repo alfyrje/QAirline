@@ -77,16 +77,17 @@ class FlightSearchView(ListAPIView):
 class TicketSearchView(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     serializer_class = TicketSerializer
+    queryset = Ticket.objects.none()  # Set an empty queryset as the default
 
-    def get_queryset(self):
-        flight_id = self.request.query_params.get('flight_id')
-        citizen_id = self.request.query_params.get('citizen_id')
-        seat = self.request.query_params.get('seat')
-        ticket_class = self.request.query_params.get('ticket_class')
+    def post(self, request, *args, **kwargs):
+        flight_code = request.data.get('flight_code')
+        citizen_id = request.data.get('citizen_id')
+        seat = request.data.get('seat')
+        ticket_class = request.data.get('ticket_class')
 
         query = Q()
-        if flight_id:
-            query &= Q(flight_id=flight_id)
+        if flight_code:
+            query &= Q(flight__code=flight_code)
         if citizen_id:
             query &= Q(passenger__citizen_id=citizen_id)
         if seat:
@@ -94,8 +95,43 @@ class TicketSearchView(ListAPIView):
         if ticket_class:
             query &= Q(ticket_class=ticket_class)
 
-        return Ticket.objects.filter(query)
-    
+        queryset = Ticket.objects.filter(query)
+
+        if not queryset.exists():
+            return Response({"error": "No tickets found with the provided details."}, status=status.HTTP_404_NOT_FOUND)
+
+        response_data = []
+        for ticket in queryset:
+            flight = ticket.flight
+            passenger = ticket.passenger
+            ticket_info = {
+                "flight": {
+                    "code": flight.code,
+                    "plane_id": flight.plane.id,
+                    "start_location": flight.start_location,
+                    "end_location": flight.end_location,
+                    "start_time": flight.start_time,
+                    "end_time": flight.end_time,
+                    "delay_status": flight.delay_status,
+                },
+                "passenger_info": {
+                    "first_name": passenger.first_name,
+                    "last_name": passenger.last_name,
+                    "qr_mail": passenger.qr_email,
+                    "date_of_birth": passenger.date_of_birth,
+                    "citizen_id": passenger.citizen_id,
+                    "nationality": passenger.nationality,
+                    "gender": passenger.gender,
+                },
+                "ticket_info": {
+                    "seat": ticket.seat,
+                    "ticket_class": ticket.ticket_class,
+                    "cancelled": ticket.cancelled,
+                }
+            }
+            response_data.append(ticket_info)
+
+        return Response(response_data, status=status.HTTP_200_OK)
 class CreateTicketsAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     def post(self, request, *args, **kwargs):
@@ -133,9 +169,20 @@ class CreateTicketsAPI(ListAPIView):
             for passenger_data in passengers_data:
                 print('PASSENGER DATA', passenger_data)
                 passenger_serializer = PassengerSerializer(data=passenger_data)
-                passenger_serializer.is_valid(raise_exception=True)
-                passenger = passenger_serializer.save()
-                
+                try:
+                    passenger_serializer = PassengerSerializer(data=passenger_data)
+                    passenger_serializer.is_valid(raise_exception=True)
+                    passenger = passenger_serializer.save()
+
+                    # Add more logging for each passenger creation
+                    logger.info("Passenger created: %s", passenger)
+                except Exception as e:
+                    error_message = f"Error processing passenger data: {str(e)}"
+                    print(error_message)
+                    return Response(
+                        {"error": error_message},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 seat = next((s['seat'] for s in passenger_data['seats'] if s['flight_id'] == flight_id), 'TEMP')
 
                 ticket_data = {
