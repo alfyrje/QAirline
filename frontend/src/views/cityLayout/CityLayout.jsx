@@ -5,11 +5,7 @@ import ImageSeparator from "../partials/ImageSeparator";
 import "./cityLayout.css";
 
 const CityLayout = () => {
-  //   const navigate = useNavigate();
-  //   const handleInfoClick = (title) => {
-  //     navigate(`/travel-info/${title}`);
-  //     console.log(title);
-  //   };
+
   return (
     <>
       <Header />
@@ -74,7 +70,33 @@ const CityLayout = () => {
           </div>
 
 
-          <div className="areaContainer chauau">
+          
+          <div className="areaContainer dongbaca">
+            <div className ="area-element">
+              <div className="area-text ">Đông Bắc Á</div>
+              <div className="city-grid-container">
+                <div className="bigger-city-card city-card">
+                  <img
+                    src="/images_info/hanhli.jpg"
+                    alt="Hành lý"
+                    className="citycard-image"
+                  />
+                  <div className="city-title">Jeju</div>
+                </div>
+                <div className="smaller-city-card city-card">
+                  <img
+                    src="/images_info/booking.jpg"
+                    alt="Làm thủ tục"
+                    className="citycard-image"
+                  />
+                  <div className="city-title">Tokyo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div className="areaContainer">
             <div className ="area-element">
               <div className="area-text ">Châu Âu</div>
 
@@ -109,29 +131,6 @@ const CityLayout = () => {
 
 
           
-          <div className="areaContainer">
-            <div className ="area-element">
-              <div className="area-text ">Đông Bắc Á</div>
-              <div className="city-grid-container">
-                <div className="bigger-city-card city-card">
-                  <img
-                    src="/images_info/hanhli.jpg"
-                    alt="Hành lý"
-                    className="citycard-image"
-                  />
-                  <div className="city-title">Jeju</div>
-                </div>
-                <div className="smaller-city-card city-card">
-                  <img
-                    src="/images_info/booking.jpg"
-                    alt="Làm thủ tục"
-                    className="citycard-image"
-                  />
-                  <div className="city-title">Tokyo</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
 
           </div>
