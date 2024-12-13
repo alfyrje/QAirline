@@ -59,7 +59,7 @@ const CityLayout = () => {
                     alt="Làm thủ tục"
                     className="citycard-image"
                   />
-                  <div className="city-title">Singapore</div>
+                  <div className="city-title">Jakarta</div>
                 </div>
                 <div className="biggest-city-card city-card">
                   <img
