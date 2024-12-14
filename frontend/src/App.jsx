@@ -16,6 +16,8 @@ import { Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/auth";
 import SeatSelect from "./views/booking/seat_select/SeatSelect";
 import './index.css'
+import CancellationSuccess from "./views/dashboard/CancellationSuccess";
+
 
 const PrivateRoute = ({ children }) => {
     const loggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -49,6 +51,7 @@ function App() {
                         <Route path="/flight-search/" element={<FlightSearchPage roundTrip={false} />} />
                         <Route path="/flight-select" element={<FlightSelect />} />
                         <Route path="/seat-select" element={<SeatSelect />} />
+                        <Route path="cancellation-success" element={<CancellationSuccess />} />
                         <Route path="/booking-info" element={<BookingInfo />}/>
                         <Route path="/passengers-detail"element={<PassengersDetail />}/>
                     </Routes>

@@ -33,9 +33,20 @@ const TicketInfo = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setTicketData(data.ticket);
-        setPassengerData(data.passenger);
-        setMessage("");
+        console.log(data)
+        console.log(data[0].ticket_info.id)
+        if (data.length > 0) {
+          const ticket = data[0].ticket_info; // Adjusted to match the nested structure
+          const passenger = data[0].passenger_info; // Adjusted to match the nested structure
+          const flight = data[0].flight; // You can use this if needed
+          setTicketData(ticket);
+          setPassengerData(passenger);
+          setMessage("");
+        } else {
+          setTicketData(null);
+          setPassengerData(null);
+          setMessage("No ticket found");
+        }
       } else if (response.status === 404) {
         setTicketData(null);
         setPassengerData(null);
@@ -49,6 +60,27 @@ const TicketInfo = () => {
       setTicketData(null);
       setPassengerData(null);
       setMessage("An error occurred while searching for the ticket");
+    }
+  };
+  const handleCancel = async (ticketId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/flights/initiate-cancel/${ticketId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        setMessage("A confirmation email has been sent to your email address.");
+      } else {
+        setMessage("Failed to initiate cancellation.");
+      }
+    } catch (error) {
+      setMessage("An error occurred while initiating the cancellation.");
     }
   };
 
@@ -106,13 +138,15 @@ const TicketInfo = () => {
             </div>
             <div className="ticket-result-list-body">
               <div className="ticket-result-row">
-                <div className="ticket-column">{ticketData.flight_code}</div>
                 <div className="ticket-column">{ticketData.seat}</div>
                 <div className="ticket-column">{ticketData.ticket_class}</div>
                 <div className="ticket-column">{`${passengerData.first_name} ${passengerData.last_name}`}</div>
                 <div className="ticket-column">{passengerData.citizen_id}</div>
                 <div className="ticket-column">
-                  <button className="ticket-info-cancel-button"></button>
+                  <button
+                    className="ticket-info-cancel-button"
+                    onClick={() => handleCancel(ticketData.id)}
+                  ></button>
                 </div>
               </div>
             </div>
