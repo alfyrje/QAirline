@@ -19,6 +19,10 @@ from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.db.models import Count, Q, F
 import datetime
+from django.urls import reverse
+from django.utils.http import urlencode
+from django.shortcuts import redirect
+
 logger = logging.getLogger(__name__)
 
 class BookedSeatsView(APIView):
@@ -73,6 +77,113 @@ class FlightSearchView(ListAPIView):
         )
 
         return flights
+    
+class TicketSearchView(ListAPIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access
+    serializer_class = TicketSerializer
+    queryset = Ticket.objects.none()  # Set an empty queryset as the default
+
+    def post(self, request, *args, **kwargs):
+        flight_code = request.data.get('flight_code')
+        citizen_id = request.data.get('citizen_id')
+        seat = request.data.get('seat')
+        ticket_class = request.data.get('ticket_class')
+
+        query = Q()
+        if flight_code:
+            query &= Q(flight__code=flight_code)
+        if citizen_id:
+            query &= Q(passenger__citizen_id=citizen_id)
+        if seat:
+            query &= Q(seat=seat)
+        if ticket_class:
+            query &= Q(ticket_class=ticket_class)
+
+        queryset = Ticket.objects.filter(query)
+
+        if not queryset.exists():
+            return Response({"error": "No tickets found with the provided details."}, status=status.HTTP_404_NOT_FOUND)
+
+        response_data = []
+        for ticket in queryset:
+            flight = ticket.flight
+            passenger = ticket.passenger
+            ticket_info = {
+                "flight": {
+                    "code": flight.code,
+                    "plane_id": flight.plane.id,
+                    "start_location": flight.start_location,
+                    "end_location": flight.end_location,
+                    "start_time": flight.start_time,
+                    "end_time": flight.end_time,
+                    "delay_status": flight.delay_status,
+                },
+                "passenger_info": {
+                    "first_name": passenger.first_name,
+                    "last_name": passenger.last_name,
+                    "qr_mail": passenger.qr_email,
+                    "date_of_birth": passenger.date_of_birth,
+                    "citizen_id": passenger.citizen_id,
+                    "nationality": passenger.nationality,
+                    "gender": passenger.gender,
+                },
+                "ticket_info": {
+                    "seat": ticket.seat,
+                    "ticket_class": ticket.ticket_class,
+                    "cancelled": ticket.cancelled,
+                    "id": ticket.id,
+                }
+            }
+            response_data.append(ticket_info)
+        print(response_data)
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+class InitiateCancelTicketAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, ticket_id, *args, **kwargs):
+        print("nooooooooooo")
+        try:
+            ticket = Ticket.objects.get(id=ticket_id)
+        except Ticket.DoesNotExist:
+            return Response({"error": "Ticket not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Generate the cancellation confirmation link
+        cancel_token = jwt.encode({"ticket_id": ticket_id}, settings.SECRET_KEY, algorithm='HS256')
+        cancel_url = request.build_absolute_uri(reverse('confirm-cancel-ticket')) + '?' + urlencode({'token': cancel_token})
+
+        # Send the email with the cancellation confirmation link
+        subject = "Confirm Your Ticket Cancellation"
+        message = f"Please click the following link to confirm your ticket cancellation: {cancel_url}"
+        email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [ticket.passenger.qr_email])
+        try:
+            email.send()
+            return Response({"message": "Cancellation confirmation email sent successfully"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": f"Failed to send email: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ConfirmCancelTicketAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        token = request.query_params.get('token')
+        if not token:
+            return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            ticket_id = payload.get('ticket_id')
+            ticket = Ticket.objects.get(id=ticket_id)
+            ticket.cancelled = True
+            ticket.save()
+            return redirect('http://localhost:5173/cancellation-success')
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Token has expired"}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+        except Ticket.DoesNotExist:
+            return Response({"error": "Ticket not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class CreateTicketsAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
@@ -111,9 +222,20 @@ class CreateTicketsAPI(ListAPIView):
             for passenger_data in passengers_data:
                 print('PASSENGER DATA', passenger_data)
                 passenger_serializer = PassengerSerializer(data=passenger_data)
-                passenger_serializer.is_valid(raise_exception=True)
-                passenger = passenger_serializer.save()
-                
+                try:
+                    passenger_serializer = PassengerSerializer(data=passenger_data)
+                    passenger_serializer.is_valid(raise_exception=True)
+                    passenger = passenger_serializer.save()
+
+                    # Add more logging for each passenger creation
+                    logger.info("Passenger created: %s", passenger)
+                except Exception as e:
+                    error_message = f"Error processing passenger data: {str(e)}"
+                    print(error_message)
+                    return Response(
+                        {"error": error_message},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 seat = next((s['seat'] for s in passenger_data['seats'] if s['flight_id'] == flight_id), 'TEMP')
 
                 ticket_data = {

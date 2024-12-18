@@ -30,7 +30,6 @@ function Header() {
   });
   const handleLogout = () => {
     logout();
-    console.log("Logged out HEHEEEEEE");
     navigate("/dashboard");
   };
 
