@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./bookingPart.css";
 import { FaLightbulb } from "react-icons/fa";
@@ -13,27 +13,34 @@ function BookingPart() {
   const [destinationSelection, setDestinationSelection] = useState([]);
   const [departDate, setDepartDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date());
-  const [tripType, setTripType] = useState("oneWay"); // Add this state
+  const [tripType, setTripType] = useState("oneWay");
+  const [options, setOptions] = useState([]);
+  const [passengersNo, setPassengersNo] = useState(1);
+  const navigate = useNavigate();
   const handleTripTypeChange = (e) => {
     setTripType(e.target.value);
   };
 
-  const options = [
-    { id: 1, name: "Ha Noi" },
-    { id: 2, name: "New York" },
-    { id: 3, name: "Newark" },
-    { id: 4, name: "New Orleans" },
-    { id: 5, name: "Boston" },
-    { id: 6, name: "Chicago" },
-    { id: 7, name: "Los Angeles" },
-    { id: 8, name: "San Francisco" },
-    { id: 9, name: "Seattle" },
-    { id: 10, name: "Atlanta" },
-    { id: 11, name: "Miami" },
-    { id: 12, name: "Denver" },
-    { id: 13, name: "Dallas" },
-    { id: 14, name: "Eugene" },
-  ];
+  const handlePassengersChange = (e) => {
+    const value = e.target.value;
+    const newValue = value === '' ? '' : Math.max(1, parseInt(value) || 1);
+    setPassengersNo(newValue);
+  };
+
+
+  useEffect(() => {
+    fetch('http://localhost:8000/flights/locations/')
+      .then(response => response.json())
+      .then(data => {
+        const locationOptions = data.locations.map((location, index) => ({
+          id: index + 1,
+          name: location
+        }));
+        setOptions(locationOptions);
+      })
+      .catch(error => console.error('Error fetching locations:', error));
+  }, []);
+
 
   const filterByStartsWith = (option, props) => {
     const labelKey = props.labelKey;
@@ -45,7 +52,21 @@ function BookingPart() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/flight-select", { state: { searchParams: form, roundTrip: form.tripType === "roundTrip" } });
+
+    const searchParams = {
+      start_location: originSelection[0]?.name || '',
+      end_location: destinationSelection[0]?.name || '',
+      start_time: departDate.toISOString().split('T')[0],
+      return_time: returnDate.toISOString().split('T')[0],
+      passengers_no: passengersNo.toString()
+    };
+
+    navigate("/flight-select", {
+      state: {
+        searchParams: searchParams,
+        roundTrip: tripType === "roundTrip"
+      }
+    });
   };
 
   return (
@@ -103,7 +124,12 @@ function BookingPart() {
             <div className="booking-row">
               <div className="flight-element">
                 <label for="passengers">Hành khách</label>
-                <input type="number" id="passengers" min="1" value="1" />
+                <input
+                  type="number"
+                  min="1"
+                  value={passengersNo}
+                  onChange={handlePassengersChange}
+                />
               </div>
             </div>
 
@@ -212,6 +238,7 @@ function BookingPart() {
                         minDate={departDate}
                         placeholderText="Chọn ngày về"
                         className="date-picker-input"
+                        onSubmit={handleSubmit}
                       />
                     </div>
                   </div>
@@ -220,7 +247,12 @@ function BookingPart() {
                 <div className="form__group">
                   <div>Hành khách</div>
                   <div className="input__group">
-                    <input type="text" />
+                    <input
+                      type="number"
+                      min="1"
+                      value={passengersNo}
+                      onChange={handlePassengersChange}
+                    />
                   </div>
                 </div>
               </form>
@@ -232,7 +264,7 @@ function BookingPart() {
                   ></input>
                 </div>
                 <div className="header_button_container">
-                  <button className="flight_search_btn">Tìm chuyến bay</button>
+                  <button className="flight_search_btn" type="submit" onClick={handleSubmit}>Tìm chuyến bay</button>
                 </div>
               </div>
             </div>
