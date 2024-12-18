@@ -48,7 +48,7 @@ const setAuthUser = (access_token: string, refresh_token: string) => {
 
 const authProvider: AuthProvider = {
     login: async ({ username, password }) => {
-        const request = new Request(`${apiUrl}/token/`, {
+        const request = new Request(`${apiUrl}/admtoken/`, {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
