@@ -10,24 +10,12 @@ import logout_icon from "/icons/log-out.svg";
 import React, { useState, useEffect, useRef } from "react";
 import notification_icon from "/icons/bell-ring.svg";
 import { stack as Menu } from "react-burger-menu";
-import useWebSocket from 'react-use-websocket';
 
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const { sendMessage, lastMessage, readyState } = useWebSocket('ws://localhost:8000/ws/notifications/', {
-    onOpen: () => console.log('WebSocket connection established.'),
-    onMessage: (event) => {
-      const data = JSON.parse(event.data);
-      console.log('WebSocket message received:', data);
-      setNotifications((prev) => [...prev, data.message]);
-    },
-    onClose: () => console.log('WebSocket connection closed.'),
-    onError: (error) => console.log('WebSocket error:', error),
-  });
   const handleLogout = () => {
     logout();
     navigate("/dashboard");
@@ -52,12 +40,12 @@ function Header() {
       document.removeEventListener("mousedown", handler);
     };
   });
-  const isUserLoggedIn = isLoggedIn;
+
   return (
     <>
       <nav className="header-navbar">
         <div className="header-logoContainer">
-          <Link to="/">
+          <Link to="/dashboard">
             <img
               src="/images/0.svg"
               alt="Logo"
@@ -68,13 +56,13 @@ function Header() {
           </Link>
         </div>
         <div className="header-navLink">
-          <Link to="/" id="header-khamPha">
-            Khám phá
+          <Link to="/explore" id="header-khamPha">
+          Khám phá 
           </Link>
           <Link to="/bookings" id="header-datVe">
-            Đặt vé
+            Khuyến mãi 
           </Link>
-          <Link to="/contact" id="header-thongTinHanhTrinh">
+          <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
           </Link>
         </div>
@@ -86,18 +74,19 @@ function Header() {
             <a className="menu-item" href="/register">
               Đăng Kí
             </a>
-            <a id="home" className="menu-item" href="/">
-              Khám phá
+            <a id="home" className="menu-item" href="/explore">
+              Khám phá 
             </a>
             <a id="about" className="menu-item" href="/about">
-              Đặt vé
+              Khuyến mãi 
             </a>
-            <a id="contact" className="menu-item" href="/contact">
+            <a id="contact" className="menu-item" href="/travel-info">
               Thông tin hành trình
             </a>
             {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
           </Menu>
-          {isUserLoggedIn ? (
+
+          {isLoggedIn ? (
             <>
               <div className="header-controls">
                 <div className="header-notification" ref={notificationRef}>
@@ -112,13 +101,14 @@ function Header() {
                     className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
                   >
                     <ul>
-                      {notifications.map((notification, index) => (
-                        <DropdownItem
-                          key={index}
-                          className="dropdownItem"
-                          text={notification}
-                        />
-                      ))}
+                      <DropdownItem
+                        className="dropdownItem"
+                        text={"Notification 1"}
+                      />
+                      <DropdownItem
+                        className="dropdownItem"
+                        text={"Notification 2"}
+                      />
                     </ul>
                   </div>
                 </div>
@@ -144,13 +134,11 @@ function Header() {
                         />
                       </Link>
                       <Link to="/login">
-                        <button className="header-button-dropdownItem" onClick={handleLogout}>
-                          <DropdownItem
-                            img={logout_icon}
-                            className="dropdownItem"
-                            text={"Đăng xuất"}
-                          />
-                        </button>
+                        <DropdownItem
+                          img={logout_icon}
+                          className="dropdownItem"
+                          text={"Đăng xuất"}
+                        />
                       </Link>
                     </ul>
                   </div>
@@ -163,13 +151,13 @@ function Header() {
                 <a className="menu-item" href="/register">
                   Thông tin cá nhân
                 </a>
-                <a id="home" className="menu-item" href="/">
-                  Khám phá
+                <a id="home" className="menu-item" href="/explore">
+                  Khám phá 
                 </a>
                 <a id="about" className="menu-item" href="/about">
-                  Đặt vé
+                    Khuyến mãi 
                 </a>
-                <a id="contact" className="menu-item" href="/contact">
+                <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
                 </a>
                 {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
@@ -192,13 +180,13 @@ function Header() {
                 <a className="menu-item" href="/register">
                   Đăng Kí
                 </a>
-                <a id="home" className="menu-item" href="/">
-                  Khám phá
+                <a id="home" className="menu-item" href="/explore">
+                  Khám phá 
                 </a>
                 <a id="about" className="menu-item" href="/about">
-                  Đặt vé
+                  Khuyến mãi 
                 </a>
-                <a id="contact" className="menu-item" href="/contact">
+                <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
                 </a>
                 {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}

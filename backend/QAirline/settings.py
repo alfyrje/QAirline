@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'flights',
     'adminapp',
     'city_introduction',
+    'travel_info',
+    'voucher',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -92,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'qAirline',
         'USER': 'qAirline',
-        'PASSWORD': 'denhothoi',
+        'PASSWORD': 'denhothoi1',
         'HOST': '127.0.0.1'
         # 'HOST': 'localhost'
     }

@@ -4,7 +4,7 @@ import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ProfileFlights from "./ProfileFlights";
 import ProfileInfo from "./ProfileInfo";
-
+import ImageSeparator from "../partials/ImageSeparator";
 import { useAuthStore } from "../../store/auth";
 import { register } from "../../utils/auth";
 
@@ -26,6 +26,7 @@ function Profile() {
     <>
       <section className="profile-container">
         <Header />
+            <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
         <div className="profile-content-container">
           <div className="profile-sidemenu">
             <div className="profile-sidemenu-list">

@@ -8,5 +8,8 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('flights/', include('flights.urls')),
     path('city_introduction/', include('city_introduction.urls')),
+    path('voucher/', include('voucher.urls')),
+    path('travel_info/', include('travel_info.urls')),
+    # path('dynapi/', include('django_dyn_api.urls')),
     path('adminapp/', include('adminapp.urls')),
 ]

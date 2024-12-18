@@ -23,13 +23,14 @@
   padding: 5rem 1rem;
 }
 
+
+
 .section__header {
   font-size: 2rem;
   font-weight: 600;
   color: var(--text-dark);
   text-align: center;
 }
-
 
 a {
   text-decoration: none;
@@ -54,6 +55,10 @@ img {
 
 .header__container {
   padding: 1rem 1rem 5rem 1rem;
+}
+.input_voucher::placeholder {
+  text-align: left;
+  padding-left: 0.4rem;
 }
 
 .header__image__container {
@@ -88,6 +93,79 @@ img {
 
 .header__content p {
   color: var(--extra-light);
+}
+
+.flight-element {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem;
+  justify-content: space-between;
+}
+
+.flight-element-date {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.date-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.date-container input {
+  outline: none;
+  border: transparent;
+  background-color: transparent;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.search-button {
+  width: 90%;
+  margin: 20px auto;
+  display: block;
+  padding: 0.8rem;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--white);
+  background-color: #6a9839;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+.flight-element input {
+  outline: none;
+  border: transparent;
+  background-color: transparent;
+  border-bottom: 1px solid var(--primary-color);
+}
+.booking-row {
+  padding: 0.3rem;
+}
+
+.booking__container_responsive {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: -11rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 6rem);
+
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  border-radius: 2rem;
+  background-color: white;
+  /* background-color: rgba(255, 255, 255, 0.7); */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .booking__container {
@@ -127,6 +205,9 @@ img {
   display: flex;
   justify-content: flex-start;
 }
+.upper_case {
+  text-transform: uppercase;
+}
 
 .radioText {
   width: 6rem;
@@ -136,7 +217,17 @@ img {
   width: 100%;
   flex: 1;
   display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.booking__container form.one-way {
   grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.booking__container form.round-trip {
+  grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
 }
 
@@ -145,7 +236,7 @@ img {
   position: relative;
 }
 
-.booking__container label {
+/* .booking__container label {
   margin-bottom: 2rem;
   position: absolute;
   top: 50%;
@@ -174,6 +265,16 @@ img {
   font-size: 0.8rem;
   top: 0;
   transform: translateY(0);
+} */
+
+.booking__container .input__group input {
+  width: 100%;
+  font-size: 1.2rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--primary-color);
+  color: var(--text-dark);
 }
 
 .booking__container .form__group p {
@@ -181,18 +282,13 @@ img {
   font-size: 0.8rem;
   color: var(--text-light);
 }
-.booking__container .button_container{
+.booking__container .button_container {
   display: flex;
   /* margin-left: auto; */
   justify-content: flex-end;
 }
 
-.third_row {
-  display: flex;
-}
-
-
-.booking__container .flight-search-btn {
+.booking__container .flight_search_btn {
   padding: 0.8rem;
   outline: none;
   border: none;
@@ -205,21 +301,132 @@ img {
   transition: 0.3s;
   font-family: "Funnel Sans", sans-serif;
   font-weight: 500;
-  margin: 1rem;
+  margin-top: 1rem;
 }
 
-.booking__container .flight-search-btn:hover {
+.booking__container .flight_search_btn:hover {
   background-color: #49651c;
+}
+
+.header_third_row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header_third_row .header_sale_container {
+  display: flex;
+  /* justify-content: begin; */
+}
+
+.header_third_row .header_button_container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header_third_row .header_sale_container input {
+  margin-top: 1rem;
+  max-height: 3rem;
+  border-radius: 0.5rem;
+  border: 1px solid #767268;
+}
+
+.header_third_row .header_sale_container input:focus {
+  border-color: #6a9839; /* Change to your desired focus color */
+  /* outline: none; Remove default focus outline */
+  outline: 0.1rem solid #6a9839;
+}
+
+/* --------------------DROPDOWN FOR CITY OPTIONS------------------ */
+/* #origin .rbt-menu {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+} */
+.rbt-menu.dropdown-menu.show {
+  max-height: 16rem !important;
+  background-color:;
+  margin-left: 0.2rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* overflow: hidden !important; */
+  z-index: 1000;
+  /* padding: 1rem 1.5rem; */
+  cursor: pointer;
+}
+
+.rbt-menu.dropdown-menu.show::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.rbt-menu.dropdown-menu.show::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+.rbt-menu.dropdown-menu.show::-webkit-scrollbar-thumb {
+  background-color: #6a9839;
+  border-radius: 4px;
+  border: 2px solid #f0f0f0;
+}
+
+.rbt-menu.dropdown-menu.show::-webkit-scrollbar-thumb:hover {
+  background-color: #527b2d;
+}
+
+#origin.dropdown-menu {
+  z-index: 1000;
+
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+.dropdown-item {
+  color: #6a9839; /* Text color */
+}
+
+/* --------------------------haiz DCM cai nay la CSS cho datepicker--------------------------------- */
+.react-datepicker-popper {
+  background-color: white;
+  color: #6a9839;
+}
+
+.react-datepicker__current-month {
+  color: #6a9839 !important;
+}
+
+.react-datepicker__header {
+  background-color: rgb(241, 248, 243) !important;
+  color: #49651c !important;
+}
+
+.react-datepicker__day-name {
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 600;
+  color: #709b43 !important;
+}
+.react-datepicker__day {
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 500;
+  color: #e687a5 !important;
+}
+.react-datepicker__day--selected {
+  background-color: #6a9839 !important;
+  color: white !important;
 }
 
 @media (width < 600px) {
   .header__container {
-    padding-bottom: 25rem;
+    padding-bottom: 10oke rem;
   }
 
   .booking__container {
-    flex-direction: column;
-    bottom: -25rem;
+    display: none;
+  }
+
+  .booking__container_responsive {
+    display: block;
   }
 
   .booking__container form {
