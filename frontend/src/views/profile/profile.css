@@ -63,7 +63,7 @@ body {
 }
 
 .profile-info-header {
-  background-color: #cce1b1;
+  background-color: #a1cf67;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
   font-weight: 900;
   border-radius: 0 10px 0 0;
@@ -109,13 +109,7 @@ body {
 .profile-info-item {
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
   display: flex;
-  }
-.profile-info-column {
-  display: flex;
-  flex-direction: row;
-  column-gap: 15px;
 }
-
 .profile-info-item > input {
   position: relative;
   outline: none;
@@ -144,6 +138,51 @@ body {
   background: #e687a5;
   border-radius: 5px 5px 5px 5px;
 }
+
+.profile-info-edit-button {
+  margin: 0rem 0.5rem 0rem 0.5rem;
+  background: transparent url('/icons/profile-info-edit-pwd.png') no-repeat center center;
+  background-size: contain;
+  border: none; 
+  cursor: pointer; 
+  transition: all 0.2s ease; 
+  width: 1.5rem; 
+  height: 1.5rem;
+}
+.profile-info-edit-button:hover {
+  transform: scale(1.1); 
+  opacity: 0.8; 
+}
+
+.profile-info-item > input {
+  position: relative;
+  outline: none;
+  color: #344054;
+  font-size: 1rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #f9fafb;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  padding: 0rem 0.1rem 0.1rem 0.1rem;
+}
+
+.profile-info-item > input::placeholder {
+  color: #9aa0a6;
+  font-size: 0.95rem;
+  font-weight: 300;
+}
+
+.profile-info-item > input:focus {
+  border-color: #76a049;
+  box-shadow: 0 0 5px rgba(118, 160, 73, 0.5);
+  background: #fff;
+}
+
+.profile-info-item > label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
 .profile-flights-header {
   background-color:  #a1cf67;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
@@ -206,32 +245,22 @@ body {
   opacity: 0.8; 
 }
 
-
 .profile-flights-list {
   margin: 1rem 1rem 1rem 1rem;
   border: 1px solid #ccc;
   border-radius: 10px;
-  overflow: hidden;
   font-size: 0.9rem;
-  overflow-x: auto; 
-  -webkit-overflow-scrolling: touch; 
+  overflow-x: auto
+
 }
 
-.profile-flights-list-header {
-  display: grid;
-  grid-template-columns: minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(200px, 6fr) minmax(150px, 3fr) minmax(100px, 2fr) minmax(50px, 1fr);
-  /* grid-template-columns: 2fr 2fr 2fr 2fr 6fr 3fr 2fr 1fr; */
-  background-color: #cce1b1;
-  font-weight: 700;
-  text-align: center;
-  align-items: center;
-  width: 100%;
+.profile-flights-list > .profile-flights-list-row:first-child {
+  background-color: #cce1b1; 
+  font-weight: 700; 
 }
-
 .profile-flights-list-row {
   display: grid;
-  grid-template-columns: minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(100px, 2fr) minmax(200px, 6fr) minmax(150px, 3fr) minmax(100px, 2fr) minmax(50px, 1fr);
-  /* grid-template-columns: 2fr 2fr 2fr 2fr 6fr 3fr 2fr 1fr; */
+  grid-template-columns: minmax(5rem, 2fr) minmax(5rem, 2fr) minmax(5rem, 2fr) minmax(5rem, 2fr) minmax(15rem, 6fr) minmax(7.5rem, 3fr) minmax(5rem, 2fr) minmax(2.5rem, 1fr);
   align-items: center;
   border-bottom: 1px solid #ccc;
   text-align: center;
@@ -253,7 +282,7 @@ body {
 
 .column.passenger-info,
 .column.ticket-info {
-  text-align: left; /* Căn trái cho các cột thông tin dài */
+  text-align: left;
   padding-left: 1rem;
 }
 
@@ -274,8 +303,8 @@ body {
 }
 .profile-flights-list-body{
   display: flex;
-  flex-direction: column; /* Make children align horizontally */
-  white-space: nowrap; /* Prevent text from wrapping */
+  flex-direction: column;
+  white-space: nowrap;
   width: 100%;
 }
 
@@ -305,7 +334,13 @@ body {
     width: 98%;
     margin: 1% 1% 1% 1%;
     padding: 0 0 0 0;
-
+  }
+  .profile-sidemenu-item {
+    border-radius: 0 0px 0 15px;
+  }
+  .profile-sidemenu-item:not(:first-child) {
+    border: 0.5px solid #f2f4f7;
+    border-radius: 0 15px 0 0px;
   }
   .profile-sidemenu-list {
     width: 100%;
@@ -322,15 +357,14 @@ body {
     border-left: 0.5px solid #c7d5d6;
   }
   .profile-a {
-    /* align-items: center;  */
     text-align: center;
   }
   .profile-content {
     width: 98%;
     margin: 1% 1% 1% 1%;
   }
-  /* .profile-flights-list-row,
-  .profile-flights-list-header {
-    grid-template-columns: 2fr 2fr 2fr 2fr 4fr 3fr 2fr 1fr;
-  } */
+  .profile-info-column {
+    display: flex;
+    flex-direction: column;
+  }
 }

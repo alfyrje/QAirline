@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./bookingPart.css";
 import { FaLightbulb } from "react-icons/fa";
 import React, { useMemo } from "react";
@@ -41,6 +41,11 @@ function BookingPart() {
     const query = props.text;
 
     return text.toLowerCase().startsWith(query.toLowerCase());
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/flight-select", { state: { searchParams: form, roundTrip: form.tripType === "roundTrip" } });
   };
 
   return (

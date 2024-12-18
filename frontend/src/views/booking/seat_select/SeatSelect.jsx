@@ -69,11 +69,13 @@ const SeatSelect = () => {
     return (
         <>
             <Header />
-            <div className='container seat-select'>
+            <div className='seat-select-container'>
                 <ProgressBar currentStep="seats" />
                 <div className='booking-header'>
                     <h1>Lựa chọn ghế ngồi</h1>
-                    <button className='btn btn-primary' onClick={() => navigate(-1)}>Quay lại</button>
+                    <button className='btn btn-primary' onClick={() => navigate(-1)}>
+                        Quay lại
+                    </button>
                 </div>
                 <FlightInfo flight={flight} />
                 <div className="seat-map-list">

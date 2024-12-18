@@ -107,6 +107,7 @@
     padding: 1rem;
     margin: 0;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .flight-list .price.economy {
@@ -123,7 +124,6 @@
     cursor: pointer;
     background-color: #f7c6cc;
     color: #934960;
-    text-wrap: wrap;
 }
 
 
@@ -136,7 +136,7 @@
     font-size: 1rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .flight-list .flight-details {
         display: flex;
         flex-direction: column;

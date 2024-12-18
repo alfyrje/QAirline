@@ -18,7 +18,7 @@ const PassengersDetail = () => {
         Array.from({ length: passengersNo }, () => ({
             first_name: "",
             last_name: "",
-            tel_num: "",
+            qr_email: "",
             date_of_birth: "",
             citizen_id: "",
             nationality: "",
@@ -143,13 +143,14 @@ const PassengersDetail = () => {
     return (
         <>
             <Header />
-            <div className="container">
+            <div className="passenger-details-container">
                 <ProgressBar currentStep="passengers" />
                 <div className="container passenger-details">
 
                     <div className="passenger-details">
                         <div className="booking-header">
                             <h1>Nhập thông tin hành khách</h1>
+                            
                             <button className="btn btn-primary" onClick={() => navigate(-1)}>
                                 Quay lại
                             </button>
@@ -231,16 +232,16 @@ const PassengersDetail = () => {
                                         </div>
                                         <div className="form-group">
                                             <input
-                                                type="tel"
-                                                id={`tel_num_${index}`}
+                                                type="text"
+                                                id={`qr_email_${index}`}
                                                 placeholder=""
-                                                value={passenger.tel_num}
+                                                value={passenger.qr_email}
                                                 onChange={(e) =>
-                                                    handleChange(index, "tel_num", e.target.value)
+                                                    handleChange(index, "qr_email", e.target.value)
                                                 }
                                                 required
                                             />
-                                            <label htmlFor={`tel_num_${index}`}>Số điện thoại*</label>
+                                            <label htmlFor={`qr_email_${index}`}>Email*</label>
                                         </div>
                                         <div className="form-group">
                                             <input

@@ -32,6 +32,7 @@
     "react-multi-carousel": "^2.8.5",
     "react-photo-album": "^2.3.0",
     "react-router-dom": "6.10.0",
+    "react-use-websocket": "^4.11.1",
     "shadcn-ui": "^0.2.3",
     "styled-components": "^6.1.13",
     "sweetalert2": "^11.6.13",

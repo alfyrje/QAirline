@@ -28,6 +28,7 @@ function ProfileFlights() {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         setFlights(data);
         setLoading(false);
       })
@@ -41,7 +42,6 @@ function ProfileFlights() {
     const currentTime = new Date();
     const departureTime = new Date(startTime);
 
-    // Check if the difference between current time and departure time is less than 2 hours
     const timeDifference = (departureTime - currentTime) / (1000 * 60 * 60); // Convert to hours
     if (timeDifference < 2) {
       alert(
@@ -79,27 +79,7 @@ function ProfileFlights() {
       <div className="profile-content">
         <div className="profile-flights-header">Lịch sử chuyến bay</div>
         <div className="profile-flights-content">
-          <div className="profile-flights-search">
-            <div className="profile-flights-search-date">
-              <label htmlFor="date">Từ ngày</label>
-              <input type="date"></input>
-            </div>
-            <div className="profile-flights-search-date">
-              <label htmlFor="date">Đến ngày</label>
-              <input type="date"></input>
-            </div>
-            <div className="profile-flights-search-date">
-              <label htmlFor="date">Đến ngày</label>
-              <input type="date"></input>
-            </div>
-            <div className="profile-flights-search-date">
-              <label htmlFor="date">Đến ngày</label>
-              <input type="date"></input>
-            </div>
-            <button className="profile-flights-search-button"></button>
-          </div>
           <div className="profile-flights-list">
-            <div className="profile-flights-list-header">
               <div className="profile-flights-list-row">
                 <div className="profile-flights-column departure-time">Thời gian xuất phát</div>
                 <div className="profile-flights-column arrival-time">Thời gian đến</div>
@@ -111,9 +91,7 @@ function ProfileFlights() {
                 <div className="profile-flights-column ticket-info">Thông tin vé</div>
                 <div className="profile-flights-column status">Trạng thái</div>
                 <div className="profile-flights-column cancel">Hủy vé</div>
-
               </div>
-            </div>
             <div className="profile-flights-list-body">
               {flights.map((ticket, index) => (
                 <div key={index} className="profile-flights-list-row">
@@ -150,7 +128,21 @@ function ProfileFlights() {
                       {ticket.passenger_info.nationality}
                     </p>
                   </div>
-                  <div className="profile-flights-column ticket-info">{`Ghế ${ticket.seat}, ${ticket.ticket_class}`}</div>
+                  <div className="profile-flights-column ticket-info">
+                    <p>
+                      <strong>Chuyến bay:</strong> 
+                      {ticket.flight.code}
+                    </p>
+                    <p>
+                      <strong>Ghế:</strong>
+                      {ticket.seat}
+                    </p>
+                    <p>
+                      <strong>Loại vé:</strong>
+                      {ticket.ticket_class}
+                    </p>
+
+                  </div>
                   <div className="profile-flights-column status">{ticket.flight.delay_status}</div>
                   <div className="profile-flights-column cancel">
                     <button className="profile-flights-cancel-ticket-button"onClick={() => handleCancel(ticket.ticket_id, ticket.flight.start_time)}>

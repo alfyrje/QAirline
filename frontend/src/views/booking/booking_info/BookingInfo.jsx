@@ -121,7 +121,7 @@ const BookingInfo = () => {
   return (
     <>
       <Header />
-      <div className="container">
+      <div className="booking-info-container">
         <ProgressBar currentStep="info" />
         <div className="booking-header">
           <h1>Các chuyến bay của bạn</h1>

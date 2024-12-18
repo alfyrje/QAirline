@@ -16,10 +16,8 @@ nav {
   justify-content: space-between; 
   align-items: center;
   width: 100%;
-  max-width: 77rem;
   margin: 0 auto;
   color:#76a049;
-
 }
 
 
@@ -324,7 +322,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
   display: none;
 }
 
-
+.header-button-dropdownItem {
+  all: unset; /* Resets all inherited styles */
+  cursor: pointer; /* Ensures the cursor appears as a pointer for buttons */
+}
 
 
 

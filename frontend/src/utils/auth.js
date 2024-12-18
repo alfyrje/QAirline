@@ -81,21 +81,24 @@ export const login = async (email, password) => {
       body: JSON.stringify({
         username: email,
         password: password,
+        email: email, 
       }),
     });
     const data = await response.json();
-    if (response.status === 200) {
+    if (data.status === 200) {
       setAuthUser(data.access, data.refresh);
-      console.log(useAuthStore.getState().allUserData.user_id);
-      return { data: "Success", error: null };
+      return data;
     } else {
-      return { data: "Failed", error };
+      console.log(data)
+      console.log("Failed to login:", data);
+      return data;
     }
   } catch (error) {
     console.error("Error logging in:", error);
     return {
       data: "Failed",
       error: "Network error or server unreachable",
+      status: null, // Always include the 'status' property
     };
   }
 };
@@ -123,24 +126,30 @@ export const register = async (formData) => {
   } = formData;
   console.log(formData);
   try {
-    const { data } = await axios.post("http://127.0.0.1:8000/users/register/", {
-      email,
-      first_name: name_firstname,
-      last_name: name_lastname,
-      personal_info: {
-        tel_num: phone_number,
+    const response = await fetch("http://127.0.0.1:8000/users/register/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
         first_name: name_firstname,
         last_name: name_lastname,
-        date_of_birth: date_birth,
-        citizen_id: ID_citizen,
-        nationality: nationality,
-        gender,
-      },
-      username: email,
-      password,
+        personal_info: {
+          first_name: name_firstname,
+          last_name: name_lastname,
+          qr_email: email,
+          date_of_birth: date_birth,
+          citizen_id: ID_citizen,
+          nationality: nationality,
+          gender,
+        },
+        username: email,
+        password: password,
+      }),
     });
-
-    return { data: "Success", error: null };
+    const data = await response.json();
+    return data;
   } catch (error) {
     return {
       data: "Failed",

@@ -10,12 +10,24 @@ import logout_icon from "/icons/log-out.svg";
 import React, { useState, useEffect, useRef } from "react";
 import notification_icon from "/icons/bell-ring.svg";
 import { stack as Menu } from "react-burger-menu";
+import useWebSocket from 'react-use-websocket';
 
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const { sendMessage, lastMessage, readyState } = useWebSocket('ws://localhost:8000/ws/notifications/', {
+    onOpen: () => console.log('WebSocket connection established.'),
+    onMessage: (event) => {
+      const data = JSON.parse(event.data);
+      console.log('WebSocket message received:', data);
+      setNotifications((prev) => [...prev, data.message]);
+    },
+    onClose: () => console.log('WebSocket connection closed.'),
+    onError: (error) => console.log('WebSocket error:', error),
+  });
   const handleLogout = () => {
     logout();
     navigate("/dashboard");
@@ -40,7 +52,7 @@ function Header() {
       document.removeEventListener("mousedown", handler);
     };
   });
-
+  const isUserLoggedIn = isLoggedIn;
   return (
     <>
       <nav className="header-navbar">
@@ -94,8 +106,17 @@ function Header() {
                     className="menu-trigger"
                     onClick={() => setNotificationOpen(!notificationOpen)}
                   >
+                <div className="header-notification" ref={notificationRef}>
+                  <div
+                    className="menu-trigger"
+                    onClick={() => setNotificationOpen(!notificationOpen)}
+                  >
                     <img src={notification_icon} alt="notification" />
                   </div>
+
+                  <div
+                    className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
+                  >
 
                   <div
                     className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
@@ -112,7 +133,15 @@ function Header() {
                     </ul>
                   </div>
                 </div>
+                </div>
 
+                <div className="header-logOut" ref={menuRef}>
+                  <div
+                    className="menu-trigger"
+                    onClick={() => {
+                      setOpen(!open);
+                    }}
+                  >
                 <div className="header-logOut" ref={menuRef}>
                   <div
                     className="menu-trigger"
@@ -125,7 +154,16 @@ function Header() {
                   <div
                     className={`dropdown-menu ${open ? "active" : "inactive"}`}
                   >
+                  <div
+                    className={`dropdown-menu ${open ? "active" : "inactive"}`}
+                  >
                     <ul>
+                      <Link to="/profile">
+                        <DropdownItem
+                          img={profile}
+                          className="dropdownItem"
+                          text={"Thông tin cá nhân"}
+                        />
                       <Link to="/profile">
                         <DropdownItem
                           img={profile}
