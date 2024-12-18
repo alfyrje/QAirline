@@ -1,5 +1,4 @@
 from django.db import models
-from markdown import markdown
 
 # Create your models here.
 class TravelInfo(models.Model):
