@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -47,6 +49,14 @@ class FlightViewSet(viewsets.ModelViewSet):
             user_id = ticket.booker.id
             notify_user(user_id, {"message": f"Flight {flight.code} has been updated, affecting your ticket {ticket.id}"})
         return response
+    
+    @action(detail=True, methods=['post'])
+    def process_update(self, request, pk=None):
+        flight = self.get_object()
+        print(f"Processing additional update logic for flight {flight.code}")
+        print("Request user:", request.user)
+        return Response({"message": "Flight update processed"})
+
 
 class TicketViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]

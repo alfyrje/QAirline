@@ -2,6 +2,7 @@
 import { DateTimeInput, ReferenceField, List, Datagrid, TextField, DateField, NumberField, Edit, SimpleForm, TextInput, DateInput, NumberInput, Create, Show, SimpleShowLayout, SimpleList } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 import CustomReferenceField from './CustomReferenceField';
+import { useNotify } from 'react-admin';
 
 export const FlightList = (props: any) => {
   const isSmall = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
@@ -33,21 +34,41 @@ export const FlightList = (props: any) => {
   );
 };
 
-export const FlightEdit = (props: any) => (
-  <Edit {...props}>
-    <SimpleForm>
-      <TextInput source="code" />
-      <TextInput source="start_location" />
-      <TextInput source="end_location" />
-      <DateTimeInput source="start_time" />
-      <DateTimeInput source="end_time" />
-      <NumberInput source="plane" />
-      <NumberInput source="delay_status" />
-      <NumberInput source="economic_price" />
-      <NumberInput source="business_price" />
-    </SimpleForm>
-  </Edit>
-);
+export const FlightEdit = (props: any) => {
+  const notify = useNotify();
+  
+  const onSuccess = async (data: any) => {
+    try {
+      const token = localStorage.getItem('access_token');
+      await fetch(`http://localhost:8000/adminapp/api/flights/${data.id}/process_update/`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      notify('Flight updated successfully', { type: 'success' });
+    } catch (error) {
+      notify('Error processing flight update', { type: 'error' });
+    }
+  };
+
+  return (
+    <Edit {...props} mutationOptions={{ onSuccess }}>
+      <SimpleForm>
+        <TextInput source="code" />
+        <TextInput source="start_location" />
+        <TextInput source="end_location" />
+        <DateTimeInput source="start_time" />
+        <DateTimeInput source="end_time" />
+        <NumberInput source="plane" />
+        <NumberInput source="delay_status" />
+        <NumberInput source="economic_price" />
+        <NumberInput source="business_price" />
+      </SimpleForm>
+    </Edit>
+  );
+};
 
 export const FlightShow = (props: any) => (
   <Show {...props}>
