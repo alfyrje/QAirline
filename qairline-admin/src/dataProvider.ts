@@ -1,4 +1,4 @@
-import { DataProvider } from 'ra-core';
+import { DataProvider, fetchUtils } from 'ra-core';
 import { stringify } from 'query-string';
 
 const apiUrl = 'http://localhost:8000/adminapp/api';
@@ -8,7 +8,6 @@ const httpClient = async (url: string, options: any = {}) => {
     }
     const token = localStorage.getItem('access_token');
     options.headers.set('Authorization', `Bearer ${token}`);
-    options.headers.set('Content-Type', 'application/json');
 
     const response = await fetch(url, options);
     const json = await response.json();
@@ -23,6 +22,18 @@ const httpClient = async (url: string, options: any = {}) => {
         body: response.body,
         json,
     };
+};
+
+const createFormData = (data: any) => {
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+        if (data[key] && data[key].rawFile) {
+            formData.append(key, data[key].rawFile);
+        } else {
+            formData.append(key, data[key]);
+        }
+    });
+    return formData;
 };
 
 const dataProvider: DataProvider = {
@@ -79,11 +90,13 @@ const dataProvider: DataProvider = {
         }));
     },
 
-    update: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}/`, {
+    update: (resource, params) => {
+        const formData = createFormData(params.data);
+        return httpClient(`${apiUrl}/${resource}/${params.id}/`, {
             method: 'PUT',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json })),
+            body: formData,
+        }).then(({ json }) => ({ data: json }));
+    },
 
     updateMany: (resource, params) => {
         const query = {
@@ -95,13 +108,15 @@ const dataProvider: DataProvider = {
         }).then(({ json }) => ({ data: json }));
     },
 
-    create: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/`, {
+    create: (resource, params) => {
+        const formData = createFormData(params.data);
+        return httpClient(`${apiUrl}/${resource}/`, {
             method: 'POST',
-            body: JSON.stringify(params.data),
+            body: formData,
         }).then(({ json }) => ({
             data: { ...params.data, ...json },
-        })),
+        }));
+    },
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}/`, {

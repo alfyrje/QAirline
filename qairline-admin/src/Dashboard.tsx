@@ -86,7 +86,7 @@ const Dashboard = () => {
     return (
         <Card>
             <CardContent>
-                <Typography variant="h3" component="h2" gutterBottom>
+                <Typography variant="h4" component="h3" gutterBottom>
                     Ticket Statistics
                 </Typography>
                 <Grid container spacing={3}>

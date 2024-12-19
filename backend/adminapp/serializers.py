@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from users.models import User, Passenger
+from travel_info.models import TravelInfo
+from voucher.models import Voucher
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,3 +16,13 @@ class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passenger
         fields = ['id','first_name', 'last_name', 'tel_num', 'date_of_birth', 'citizen_id', 'nationality', 'gender']
+
+class TravelInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TravelInfo
+        fields = '__all__'
+
+class VoucherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Voucher
+        fields = '__all__'

@@ -16,6 +16,8 @@ import FlightIcon from '@mui/icons-material/Flight';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import Dashboard from "./Dashboard";
+import { TravelInfoList, TravelInfoCreate, TravelInfoEdit, TravelInfoShow } from "./travelinfo";
+import { VoucherList, VoucherCreate, VoucherEdit, VoucherShow } from "./vouchers";
 
 const lightTheme = createTheme({
   palette: {
@@ -58,8 +60,10 @@ const darkTheme = createTheme({
 
 export const App = () => (
   <Admin dashboard={Dashboard} theme={lightTheme} layout={Layout} dataProvider={dataProvider} authProvider={authProvider}>
-    <Resource name="flights" list={FlightList} show={FlightShow} edit={FlightEdit} create={FlightCreate} icon={FlightLandIcon} />
-    <Resource name="planes" list={PlaneList} edit={EditGuesser} show={ShowGuesser} create={PlaneCreate} icon={FlightIcon} />
-    <Resource name="tickets" list={TicketList} show={ShowGuesser} icon={AirplaneTicketIcon} />
+    <Resource name="flights" options={{ label: 'Flights' }} list={FlightList} show={FlightShow} edit={FlightEdit} create={FlightCreate} icon={FlightLandIcon} />
+    <Resource name="planes" options={{ label: 'Planes' }} list={PlaneList} edit={EditGuesser} show={ShowGuesser} create={PlaneCreate} icon={FlightIcon} />
+    <Resource name="tickets" options={{ label: 'Tickets' }} list={TicketList} show={ShowGuesser} icon={AirplaneTicketIcon} />
+    <Resource name="travelinfo" options={{ label: 'Travel Info' }} list={TravelInfoList} show={TravelInfoShow} edit={TravelInfoEdit} create={TravelInfoCreate} />
+    <Resource name="vouchers" options={{ label: 'Vouchers' }} list={VoucherList} show={VoucherShow} edit={VoucherEdit} create={VoucherCreate} />
   </Admin>
 );

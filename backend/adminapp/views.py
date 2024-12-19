@@ -9,6 +9,10 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from travel_info.models import TravelInfo
+from voucher.models import Voucher
+from .serializers import TravelInfoSerializer, VoucherSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -79,5 +83,22 @@ class PassengerViewSet(viewsets.ModelViewSet):
     queryset = Passenger.objects.all()
     serializer_class = PassengerSerializer
     filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
+    pagination_class = StandardResultsSetPagination
+
+class TravelInfoViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = TravelInfo.objects.all()
+    serializer_class = TravelInfoSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
+    pagination_class = StandardResultsSetPagination
+
+class VoucherViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = Voucher.objects.all()
+    serializer_class = VoucherSerializer
+    filter_backends = [filters.OrderingFilter]
+    parser_classes = [MultiPartParser, FormParser]
     ordering_fields = '__all__'
     pagination_class = StandardResultsSetPagination

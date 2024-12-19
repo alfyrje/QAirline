@@ -5,7 +5,7 @@ from flights.models import Flight
 
 class Voucher(models.Model):
     voucher_code = models.CharField(
-        max_length=100, primary_key=True, unique=True)
+        max_length=100)
     voucher_picture = models.ImageField(upload_to='images_voucher/')
     percentage = models.IntegerField()
     voucher_description = models.CharField()
