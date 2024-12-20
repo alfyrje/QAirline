@@ -18,6 +18,7 @@ import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import Dashboard from "./Dashboard";
 import { TravelInfoList, TravelInfoCreate, TravelInfoEdit, TravelInfoShow } from "./travelinfo";
 import { VoucherList, VoucherCreate, VoucherEdit, VoucherShow } from "./vouchers";
+import { PassengerList, PassengerShow } from "./passengers";
 
 const lightTheme = createTheme({
   palette: {
@@ -65,5 +66,6 @@ export const App = () => (
     <Resource name="tickets" options={{ label: 'Tickets' }} list={TicketList} show={ShowGuesser} icon={AirplaneTicketIcon} />
     <Resource name="travelinfo" options={{ label: 'Travel Info' }} list={TravelInfoList} show={TravelInfoShow} edit={TravelInfoEdit} create={TravelInfoCreate} />
     <Resource name="vouchers" options={{ label: 'Vouchers' }} list={VoucherList} show={VoucherShow} edit={VoucherEdit} create={VoucherCreate} />
+    <Resource name="passengers" options={{ label: 'Passengers' }} list={PassengerList} show={PassengerShow} />
   </Admin>
 );
