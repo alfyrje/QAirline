@@ -16,6 +16,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .models import News
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
+import random
+from datetime import datetime, timedelta
+from django.utils.encoding import smart_str
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -68,15 +71,22 @@ class FlightViewSet(viewsets.ModelViewSet):
             updated_data = serializer.data
 
             changes = []
-            for field in original_data:
-                if original_data[field] != updated_data[field]:
-                    changes.append(f"{field} changed from {original_data[field]} to {updated_data[field]}")
-
-            news_title = f"Flight {flight.code} Updated"
-            news_content = f"The flight {flight.code} has been updated. Changes: " + ", ".join(changes)
+            possible_reasons = ["vì lý do thời tiết", "vì lý do kỹ thuật"]
+            news_title = f"Chuyến bay {flight.code} thay đổi giờ khởi hành."
+            i = random.randint(0, 1)
+            orig_time = datetime.fromisoformat(original_data['start_time'])
+            updated_time = orig_time + timedelta(hours=updated_data['delay_status'])
+            print(updated_time)
+            updated_time_format = updated_time.strftime("%H:%M giờ ngày %d-%m-%Y").encode('utf-8').decode('utf-8')
+            orig_time_format = orig_time.strftime("%H:%M giờ ngày %d-%m-%Y").encode('utf-8').decode('utf-8')
+            news_content = f"""
+                Chuyến bay {flight.code} xin được phép cập nhật giờ khởi hành từ 
+                {orig_time_format} thành {updated_time_format}
+                {possible_reasons[i]}. Cảm ơn quý khách đã thông cảm và lựa chọn QAirline. Xin quý khách có một chuyến đi vui vẻ!
+                """
             news_entry = News.objects.create(
-                title=news_title,
-                content=news_content,
+                title=smart_str(news_title, encoding='utf-8'),
+                content=smart_str(news_content, encoding='utf-8'),
                 # user=request.user
             )
             news_entry.save()
@@ -85,7 +95,7 @@ class FlightViewSet(viewsets.ModelViewSet):
             for ticket in tickets:
                 passenger_email = ticket.passenger.qr_email
                 subject = f"QAirline: Thông báo thay đổi về chuyến bay {flight.code}"
-                message = f"Thưa quý khách {ticket.passenger.first_name},\n\nChuyến bay {flight.code} đã có thay đổi như sau: " + "\n ".join(changes)
+                message = f"Thưa quý khách {ticket.passenger.first_name},\n" + news_content
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger_email])
 
             return Response({"message": "Flight update processed"})

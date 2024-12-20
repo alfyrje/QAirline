@@ -264,8 +264,19 @@ class CreateTicketsAPI(ListAPIView):
 
                 # Send the email with the QR code attached
                 subject = f"QAirline: Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
-                message = "Vui lòng giữ mã QR này để kiểm tra vé của bạn tại quầy check-in hoặc cổng lên máy bay."
-                email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
+                message = (
+                    f"Hệ thống đã ghi nhận vé đặt cho quý khách cho chuyến bay {flight.code} với thông tin như sau: \n\n"
+                    + f"Mã chuyến bay: {flight.code}\n"
+                    + f"Thời gian khởi hành: {flight.start_time}\n"
+                    + f"Thời gian đến: {flight.end_time}\n"
+                    + f"Địa điểm xuất phát: {flight.start_location}\n"
+                    + f"Địa điểm đến: {flight.end_location}\n"
+                    + f"Số ghế: {seat}\n"
+                    + f"Hạng vé: {seat_class}\n"
+                    + "Cảm ơn quý khách đã lựa chọn QAirline. Chúc quý khách có một chuyến đi vui vẻ!"
+                )
+
+                email = EmailMessage(subject, str(message), settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
                 email.attach('ticket_qr.png', qr_file.read(), 'image/png')
                 try:
                     email.send()

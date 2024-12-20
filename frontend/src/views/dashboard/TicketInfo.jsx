@@ -197,8 +197,10 @@ const TicketInfo = () => {
           </div>
         )}
       </div>
+    
       <div className="news-list">
           <h2>Thông báo về chuyến bay</h2>
+          <div className="news-list-content">
           {currentItems.length > 0 ? (
             currentItems.map((newsItem) => (
               <NewsCard
@@ -211,6 +213,7 @@ const TicketInfo = () => {
           ) : (
             <p>No news available</p>
           )}
+          </div>
         </div>
         <div className="pagination">
           <button onClick={goToPreviousPage} disabled={currentPage === 1}>
