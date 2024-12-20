@@ -4,6 +4,7 @@ import CustomReferenceField from './CustomReferenceField';
 
 export const TicketList = (props: any) => {
   const isSmall = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
+  console.log(props);
   return (
     <List {...props}>
       {isSmall ? (

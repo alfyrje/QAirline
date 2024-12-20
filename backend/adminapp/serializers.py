@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passenger
-        fields = ['id','first_name', 'last_name', 'tel_num', 'date_of_birth', 'citizen_id', 'nationality', 'gender']
+        fields = ['id','first_name', 'last_name', 'qr_email', 'date_of_birth', 'citizen_id', 'nationality', 'gender']
 
 class TravelInfoSerializer(serializers.ModelSerializer):
     class Meta:
