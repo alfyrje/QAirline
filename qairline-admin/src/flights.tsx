@@ -40,12 +40,14 @@ export const FlightEdit = (props: any) => {
   const onSuccess = async (data: any) => {
     try {
       const token = localStorage.getItem('access_token');
+      console.log(data);
       await fetch(`http://localhost:8000/adminapp/api/flights/${data.id}/process_update/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(data),
       });
       notify('Flight updated successfully', { type: 'success' });
     } catch (error) {
