@@ -1,5 +1,5 @@
 
-import { DateTimeInput, ReferenceField, List, Datagrid, TextField, DateField, NumberField, Edit, SimpleForm, TextInput, DateInput, NumberInput, Create, Show, SimpleShowLayout, SimpleList } from 'react-admin';
+import { DateTimeInput, ReferenceField, List, Datagrid, TextField, ReferenceInput, AutocompleteInput, DateField, NumberField, Edit, SimpleForm, TextInput, DateInput, NumberInput, Create, Show, SimpleShowLayout, SimpleList } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 import CustomReferenceField from './CustomReferenceField';
 import { useNotify } from 'react-admin';
@@ -22,6 +22,9 @@ export const FlightList = (props: any) => {
           <TextField source="end_location" />
           <DateField source="start_time" showTime />
           <DateField source="end_time" showTime />
+          <ReferenceField source="plane" reference="planes">
+            <TextField source="name" />
+          </ReferenceField>
           <NumberField source="delay_status" />
           <NumberField source="duration" />
           <NumberField source="economic_seats_left" />
@@ -63,7 +66,9 @@ export const FlightEdit = (props: any) => {
         <TextInput source="end_location" />
         <DateTimeInput source="start_time" />
         <DateTimeInput source="end_time" />
-        <NumberInput source="plane" />
+        <ReferenceInput source="plane" reference="planes">
+          <AutocompleteInput optionText="name" />
+        </ReferenceInput>
         <NumberInput source="delay_status" />
         <NumberInput source="economic_price" />
         <NumberInput source="business_price" />
@@ -102,7 +107,9 @@ export const FlightCreate = (props: any) => (
       <TextInput source="end_location" />
       <DateTimeInput source="start_time" />
       <DateTimeInput source="end_time" />
-      <NumberInput source="plane" />
+      <ReferenceInput source="plane" reference="planes">
+        <AutocompleteInput optionText="name" />
+      </ReferenceInput>
       <NumberInput source="delay_status" />
       <NumberInput source="economic_price" />
       <NumberInput source="business_price" />
