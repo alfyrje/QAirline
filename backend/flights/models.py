@@ -36,7 +36,11 @@ class Flight(models.Model):
     def __str__(self):
         return f"{self.code}"
 
+def generate_ticket_code():
+   return str(uuid.uuid4())[:10]
+
 class Ticket(models.Model):
+    code = models.CharField(max_length=10, unique=True, default=generate_ticket_code, editable=False)
     booker = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)

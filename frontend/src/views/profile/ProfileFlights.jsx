@@ -14,11 +14,11 @@ function ProfileFlights() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/flights/tickets-history", {
+    fetch("http://localhost:8000/flights/tickets-history/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
       },
     })
       .then((response) => {
@@ -56,7 +56,7 @@ function ProfileFlights() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
           },
           body: JSON.stringify({
             action: "cancel",

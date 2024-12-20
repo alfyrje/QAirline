@@ -89,11 +89,11 @@ function LogIn() {
               {passwordError && <span className="error-message">{passwordError}</span>}
             </div>
             <a className="login-a"href="#">Quên mật khẩu?</a>
-            <button type="submit">Log In</button>
+            <button type="submit">Đăng nhập</button>
             <p>
-              Don't have an account?              
+              Không có tài khoản?{" "}        
               <Link className="login-a" to="/register">
-                Sign up
+                Đăng ký
               </Link>
             </p>
           </form>

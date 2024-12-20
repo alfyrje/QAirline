@@ -273,13 +273,13 @@ class CreateTicketsAPI(ListAPIView):
                     + "Cảm ơn quý khách đã lựa chọn QAirline. Chúc quý khách có một chuyến đi vui vẻ!"
                 )
 
-                email = EmailMessage(subject, str(message), settings.DEFAULT_FROM_EMAIL, [passenger.qr_email])
+                email = EmailMessage(subject, str(message), settings.DEFAULT_FROM_EMAIL, [passenger_data['qr_email']])
                 email.attach('ticket_qr.png', qr_file.read(), 'image/png')
                 try:
                     email.send()
-                    print(f"Email sent successfully to {passenger.qr_email}")
+                    print(f"Email sent successfully to {passenger_data['qr_email']}")
                 except Exception as e:
-                    print(f"Failed to send email to {passenger.qr_email}: {e}")
+                    print(f"Failed to send email to {passenger_data['qr_email']}: {e}")
 
         return Response(
             {"message": "Passengers and tickets created successfully", "tickets": [TicketSerializer(t).data for t in tickets]},
@@ -290,7 +290,9 @@ class TicketsFlightsHistoryAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     serializer_class = TicketSerializer
     def get(self, request, *args, **kwargs):
+        print("REQUEST HEADERS")
         request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
+        print(request_jwt)
         request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
         user_id = request_jwt_decoded['user_id']
         
