@@ -3,6 +3,20 @@ import "./ticketInfo.css";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 
+const NewsCard = ({ title, content, createdAt }) => {
+  return (
+    <div className="news-card">
+      <div className="news-card-content">
+        <div className="news-card-subtitle">
+          <span>{new Date(createdAt).toLocaleString()}</span>
+        </div>
+        <h2 className="news-card-title">{title}</h2>
+        <p>{content}</p>
+      </div>
+    </div>
+  );
+};
+
 const TicketInfo = () => {
   const [searchParams, setSearchParams] = useState({
     flight_code: "",
@@ -14,7 +28,8 @@ const TicketInfo = () => {
   const [passengerData, setPassengerData] = useState(null);
   const [message, setMessage] = useState("");
   const [news, setNews] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSearchParams({ ...searchParams, [name]: value });
@@ -104,6 +119,13 @@ const TicketInfo = () => {
   useEffect(() => {
     fetchNews();
   }, []);
+  const totalPages = Math.ceil(news.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = news.slice(startIndex, endIndex);
+
+  const goToPreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
     <section className="ticket-info-container">
@@ -127,7 +149,7 @@ const TicketInfo = () => {
             onChange={handleChange}
           />
 
-          <label htmlFor="seat">Seat:</label>
+          <label htmlFor="seat">Số ghế:</label>
           <input type="text" id="seat" name="seat" onChange={handleChange} />
 
           <label htmlFor="ticket-class">Ghế hạng:</label>
@@ -177,17 +199,29 @@ const TicketInfo = () => {
       </div>
       <div className="news-list">
           <h2>Thông báo về chuyến bay</h2>
-          {news.length > 0 ? (
-            news.map((newsItem) => (
-              <div key={newsItem.id} className="news-item">
-                <h3>{newsItem.title}</h3>
-                <p>{newsItem.content}</p>
-                <p><small>{new Date(newsItem.created_at).toLocaleString()}</small></p>
-              </div>
+          {currentItems.length > 0 ? (
+            currentItems.map((newsItem) => (
+              <NewsCard
+                key={newsItem.id}
+                title={newsItem.title}
+                content={newsItem.content}
+                createdAt={newsItem.created_at}
+              />
             ))
           ) : (
             <p>No news available</p>
           )}
+        </div>
+        <div className="pagination">
+          <button onClick={goToPreviousPage} disabled={currentPage === 1}>
+            <img src="/icons/previous.png" alt="Previous Page" />
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button onClick={goToNextPage} disabled={currentPage === totalPages}>
+            <img src="/icons/next.png" alt="Next Page" />
+          </button>
         </div>
       <Footer />
     </section>

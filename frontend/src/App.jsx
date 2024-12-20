@@ -49,7 +49,7 @@ function App() {
                         <Route path="/travel-info/:title" element={<InfoPost />} />
                         <Route path="/dashboard/cityIntroduction/:city_name" element={<CityPage />} />
                         <Route path="/dashboard/" element={<Dashboard />} />
-                        <Route path="/" element={<Dashboard />} />
+                        <Route path="" element={<Dashboard />} />
                         <Route path="/travel-info/" element={<TravelInfo />} />
                         <Route path="/voucher" element={<Sale />} />
                         <Route path="/explore" element={<CityLayout />} />

@@ -14,6 +14,8 @@ from voucher.models import Voucher
 from .serializers import TravelInfoSerializer, VoucherSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import News
+from django.core.mail import EmailMessage, send_mail
+from django.conf import settings
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -74,8 +76,8 @@ class FlightViewSet(viewsets.ModelViewSet):
             tickets = Ticket.objects.filter(flight=flight)
             for ticket in tickets:
                 passenger_email = ticket.passenger.qr_email
-                subject = f"Update on your flight {flight.code}"
-                message = f"Dear {ticket.passenger.first_name},\n\nThe flight {flight.code} has been updated. Please check your ticket details.\n\nChanges: " + ", ".join(changes)
+                subject = f"QAirline: Thông báo thay đổi về chuyến bay {flight.code}"
+                message = f"Thưa quý khách {ticket.passenger.first_name},\n\nChuyến bay {flight.code} đã có thay đổi như sau: " + "\n ".join(changes)
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger_email])
 
             return Response({"message": "Flight update processed"})
@@ -137,3 +139,4 @@ class NewsListView(APIView):
         news_entries = News.objects.all()
         serializer = NewsSerializer(news_entries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
