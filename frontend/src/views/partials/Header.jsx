@@ -59,7 +59,7 @@ function Header() {
           <Link to="/explore" id="header-khamPha">
           Khám phá 
           </Link>
-          <Link to="/bookings" id="header-datVe">
+          <Link to="/discount" id="header-datVe">
             Khuyến mãi 
           </Link>
           <Link to="/travel-info" id="header-thongTinHanhTrinh">
@@ -77,7 +77,7 @@ function Header() {
             <a id="home" className="menu-item" href="/explore">
               Khám phá 
             </a>
-            <a id="about" className="menu-item" href="/about">
+            <a id="about" className="menu-item" href="/discount">
               Khuyến mãi 
             </a>
             <a id="contact" className="menu-item" href="/travel-info">
@@ -154,7 +154,7 @@ function Header() {
                 <a id="home" className="menu-item" href="/explore">
                   Khám phá 
                 </a>
-                <a id="about" className="menu-item" href="/about">
+                <a id="about" className="menu-item" href="/discount">
                     Khuyến mãi 
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
@@ -183,7 +183,7 @@ function Header() {
                 <a id="home" className="menu-item" href="/explore">
                   Khám phá 
                 </a>
-                <a id="about" className="menu-item" href="/about">
+                <a id="about" className="menu-item" href="/discount">
                   Khuyến mãi 
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
