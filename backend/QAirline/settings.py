@@ -83,7 +83,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'QAirline.wsgi.application'
-ASGI_APPLICATION = 'QAirline.asgi.application'
 
 
 # Database
@@ -214,13 +213,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tangha2005@gmail.com'
 EMAIL_HOST_PASSWORD = 'nwss fljc cjtm bevt'
 DEFAULT_FROM_EMAIL = 'tangha2005@gmail.com'
-
-CHANNEL_LAYERS = {
-   "default": {
-       "BACKEND": "channels.layers.InMemoryChannelLayer"
-   }
-}
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
-CORS_ALLOW_CREDENTIALS = True

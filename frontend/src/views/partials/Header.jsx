@@ -17,32 +17,7 @@ function Header() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const ws = useRef(null);
-  useEffect(() => {
-    if (isLoggedIn) {
-      // Connect to WebSocket
-      ws.current = new WebSocket('ws://localhost:8000/ws/notifications/');
 
-      ws.current.onopen = () => {
-        console.log('WebSocket Connected');
-      };
-      ws.current.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setNotifications(prev => [...prev, data]);
-      };
-      ws.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
-      ws.current.onclose = () => {
-        console.log('WebSocket Disconnected');
-      };
-    }
-    return () => {
-      if (ws.current) {
-        ws.current.close();
-      }
-    };
-  }, [isLoggedIn]);
   const handleLogout = () => {
     logout();
     navigate("/dashboard");
@@ -87,7 +62,7 @@ function Header() {
             Khám phá
           </Link>
           <Link to="/discount" id="header-datVe">
-            Khuyến mãi 
+            Khuyến mãi
           </Link>
           <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
@@ -105,7 +80,7 @@ function Header() {
               Khám phá
             </a>
             <a id="about" className="menu-item" href="/discount">
-              Khuyến mãi 
+              Khuyến mãi
             </a>
             <a id="contact" className="menu-item" href="/travel-info">
               Thông tin hành trình
@@ -164,13 +139,13 @@ function Header() {
                           text={"Thông tin cá nhân"}
                         />
                       </Link>
-                      <Link to="/login">
+                      <div onClick={handleLogout}>
                         <DropdownItem
                           img={logout_icon}
                           className="dropdownItem"
                           text={"Đăng xuất"}
                         />
-                      </Link>
+                      </div>
                     </ul>
                   </div>
                 </div>
@@ -186,7 +161,7 @@ function Header() {
                   Khám phá
                 </a>
                 <a id="about" className="menu-item" href="/discount">
-                    Khuyến mãi 
+                  Khuyến mãi
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
@@ -215,7 +190,7 @@ function Header() {
                   Khám phá
                 </a>
                 <a id="about" className="menu-item" href="/discount">
-                  Khuyến mãi 
+                  Khuyến mãi
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình

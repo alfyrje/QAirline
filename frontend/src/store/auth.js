@@ -5,17 +5,22 @@ const useAuthStore = create(
   (set, get) => ({
     allUserData: null,
     loading: false,
+    isLoggedIn: false,
     user: () => ({
       user_id: get().allUserData?.user_id || null,
       username: get().allUserData?.username || null,
     }),
     setUser: (user) => set({ allUserData: user }),
     setLoading: (loading) => set({ loading }),
-    isLoggedIn: () => {
-      console.log("Calling isLoggedIn");
+    checkLoginStatus: () => {  // Move the check to a separate function
       const refreshToken = localStorage.getItem("refresh_token");
-      if (!refreshToken) return false;
-      return !isAccessTokenExpired(refreshToken);
+      if (!refreshToken) {
+        set({ isLoggedIn: false });
+        return false;
+      }
+      const loginStatus = !isAccessTokenExpired(refreshToken);
+      set({ isLoggedIn: loginStatus });
+      return loginStatus;
     },
     setLogout: () => {
       set({ allUserData: null, isLoggedIn: false });
