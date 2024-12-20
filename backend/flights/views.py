@@ -142,17 +142,14 @@ class InitiateCancelTicketAPI(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, ticket_id, *args, **kwargs):
-        print("nooooooooooo")
         try:
             ticket = Ticket.objects.get(id=ticket_id)
         except Ticket.DoesNotExist:
             return Response({"error": "Ticket not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Generate the cancellation confirmation link
         cancel_token = jwt.encode({"ticket_id": ticket_id}, settings.SECRET_KEY, algorithm='HS256')
         cancel_url = request.build_absolute_uri(reverse('confirm-cancel-ticket')) + '?' + urlencode({'token': cancel_token})
 
-        # Send the email with the cancellation confirmation link
         subject = "Confirm Your Ticket Cancellation"
         message = f"Please click the following link to confirm your ticket cancellation: {cancel_url}"
         email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [ticket.passenger.qr_email])
