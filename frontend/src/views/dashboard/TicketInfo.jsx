@@ -174,8 +174,8 @@ const TicketInfo = () => {
             </div>
           </div>
         )}
-
-        <div className="news-list">
+      </div>
+      <div className="news-list">
           <h2>Thông báo về chuyến bay</h2>
           {news.length > 0 ? (
             news.map((newsItem) => (
@@ -189,7 +189,6 @@ const TicketInfo = () => {
             <p>No news available</p>
           )}
         </div>
-      </div>
       <Footer />
     </section>
   );
