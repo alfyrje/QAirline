@@ -39,10 +39,7 @@ const DiscountCard = ({ image, title, subtitle, buttonText }) => {
 };
 
 const Discount = () => {
-  // Data for discount cards
   const [discountData, setDiscountData] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDiscounts = async () => {
@@ -63,6 +60,7 @@ const Discount = () => {
           description: discount.voucher_description,
           flightCode: discount.voucher_flight_code
         }));
+        // console.log("This is IMAGE------------------",image);
 
         setDiscountData(formattedData);
       } catch (error) {
@@ -90,8 +88,7 @@ const Discount = () => {
   return (
     <section className="discount-container">
       <Header />
-            <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
-      
+      <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
       <div className="discount-wrapper">
         <div className="discount-list">
         <div className="discount-head-title">Khuyến mãi</div> 
