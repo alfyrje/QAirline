@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ticketInfo.css";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
+
 const TicketInfo = () => {
   const [searchParams, setSearchParams] = useState({
     flight_code: "",
@@ -12,6 +13,7 @@ const TicketInfo = () => {
   const [ticketData, setTicketData] = useState(null);
   const [passengerData, setPassengerData] = useState(null);
   const [message, setMessage] = useState("");
+  const [news, setNews] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,8 +35,8 @@ const TicketInfo = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
-        console.log(data[0].ticket_info.id)
+        console.log(data);
+        console.log(data[0].ticket_info.id);
         if (data.length > 0) {
           const ticket = data[0].ticket_info; // Adjusted to match the nested structure
           const passenger = data[0].passenger_info; // Adjusted to match the nested structure
@@ -62,6 +64,7 @@ const TicketInfo = () => {
       setMessage("An error occurred while searching for the ticket");
     }
   };
+
   const handleCancel = async (ticketId) => {
     try {
       const response = await fetch(
@@ -84,13 +87,31 @@ const TicketInfo = () => {
     }
   };
 
+  const fetchNews = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/adminapp/api/news/");
+      if (response.ok) {
+        const data = await response.json();
+        setNews(data);
+      } else {
+        console.error("Failed to fetch news");
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching news:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
   return (
     <section className="ticket-info-container">
       <Header />
       <div className="ticket-info-wrapper">
-        <div className="ticket-info-header">Search for Tickets</div>
+        <div className="ticket-info-header">Tìm vé</div>
         <form className="ticket-info-form">
-          <label htmlFor="flight-id">Flight ID:</label>
+          <label htmlFor="flight-id">Mã chuyến bay:</label>
           <input
             type="text"
             id="flight-code"
@@ -98,7 +119,7 @@ const TicketInfo = () => {
             onChange={handleChange}
           />
 
-          <label htmlFor="citizen-id">Citizen ID:</label>
+          <label htmlFor="citizen-id">Số CCCD:</label>
           <input
             type="text"
             id="citizen-id"
@@ -109,7 +130,7 @@ const TicketInfo = () => {
           <label htmlFor="seat">Seat:</label>
           <input type="text" id="seat" name="seat" onChange={handleChange} />
 
-          <label htmlFor="ticket-class">Ticket Class:</label>
+          <label htmlFor="ticket-class">Ghế hạng:</label>
           <input
             type="text"
             id="ticket-class"
@@ -121,7 +142,8 @@ const TicketInfo = () => {
             type="button"
             className="ticket-info-button"
             onClick={handleSearch}
-          ></button>
+          >
+          </button>
         </form>
 
         {message && <div className="ticket-info-message">{message}</div>}
@@ -129,12 +151,10 @@ const TicketInfo = () => {
         {ticketData && (
           <div className="ticket-result-list">
             <div className="ticket-result-list-header">
-              <div className="ticket-column">Flight ID</div>
-              <div className="ticket-column">Seat</div>
-              <div className="ticket-column">Class</div>
-              <div className="ticket-column">Passenger Name</div>
-              <div className="ticket-column">Citizen ID</div>
-              <div className="ticket-column">Actions</div>
+              <div className="ticket-column">Mã chuyến bay</div>
+              <div className="ticket-column">Ghế ngồi</div>
+              <div className="ticket-column">Hạng</div>
+              <div className="ticket-column">Số CCCD</div>
             </div>
             <div className="ticket-result-list-body">
               <div className="ticket-result-row">
@@ -146,12 +166,29 @@ const TicketInfo = () => {
                   <button
                     className="ticket-info-cancel-button"
                     onClick={() => handleCancel(ticketData.id)}
-                  ></button>
+                  >
+                    Yêu cầu hủy vé
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         )}
+
+        <div className="news-list">
+          <h2>Thông báo về chuyến bay</h2>
+          {news.length > 0 ? (
+            news.map((newsItem) => (
+              <div key={newsItem.id} className="news-item">
+                <h3>{newsItem.title}</h3>
+                <p>{newsItem.content}</p>
+                <p><small>{new Date(newsItem.created_at).toLocaleString()}</small></p>
+              </div>
+            ))
+          ) : (
+            <p>No news available</p>
+          )}
+        </div>
       </div>
       <Footer />
     </section>

@@ -13,6 +13,7 @@ from travel_info.models import TravelInfo
 from voucher.models import Voucher
 from .serializers import TravelInfoSerializer, VoucherSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
+from .models import News
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -59,6 +60,15 @@ class FlightViewSet(viewsets.ModelViewSet):
         flight = self.get_object()
         print(f"Processing additional update logic for flight {flight.code}")
         print("Request user:", request.user)
+
+        # Create a news entry
+        news_title = f"Flight {flight.code} Updated"
+        news_content = f"The flight {flight.code} has been updated. Please check your ticket details."
+        news_entry = News.objects.create(
+            title=news_title,
+            content=news_content,
+        )
+        news_entry.save()
         return Response({"message": "Flight update processed"})
 
 
@@ -102,3 +112,17 @@ class VoucherViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
     ordering_fields = '__all__'
     pagination_class = StandardResultsSetPagination
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import News
+from .serializers import NewsSerializer
+from rest_framework.permissions import AllowAny
+
+class NewsListView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, *args, **kwargs):
+        news_entries = News.objects.all()
+        serializer = NewsSerializer(news_entries, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
