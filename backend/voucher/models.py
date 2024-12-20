@@ -9,12 +9,12 @@ class Voucher(models.Model):
     voucher_picture = models.ImageField(upload_to='images_voucher/')
     percentage = models.IntegerField()
     voucher_description = models.CharField()
-    voucher_flight_code = models.ForeignKey(
-        Flight,
-        on_delete=models.CASCADE,
-        to_field='code',
-        related_name='vouchers'
-    )
+    # voucher_flight_code = models.ForeignKey(
+    #     Flight,
+    #     on_delete=models.CASCADE,
+    #     to_field='code',
+    #     related_name='vouchers'
+    # )
 
     def __str__(self):
         return self.voucher_code
