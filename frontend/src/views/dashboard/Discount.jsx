@@ -1,17 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import "./discount.css";
+import ImageSeparator from "../partials/ImageSeparator";
 
 const DiscountCard = ({ image, title, subtitle, buttonText }) => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(subtitle)
+      .then(() => {
+        // Optional: Add feedback like alert or toast
+        alert('Copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Failed to copy:', err);
+      });
+  };
+ 
   return (
+
     <div className="discount-card">
       <div className="discount-card-image">
         <img src={image} alt={title} style={{ width: "100%" }} />
       </div>
       <div className="discount-card-content">
         <div className="discount-card-subtitle">
-          <span>{subtitle}</span>
+          <span>
+            <span>Nhập mã</span>
+            <span className = "discount-subtitle"> {subtitle}</span>
+            <button className="copy-button" onClick={handleCopy}>
+              Copy
+            </button>
+            </span> 
         </div>
         <h2 className="discount-card-title">{title}</h2>
       </div>
@@ -21,69 +40,38 @@ const DiscountCard = ({ image, title, subtitle, buttonText }) => {
 
 const Discount = () => {
   // Data for discount cards
-  const discountData = [
-    {
-      image: "/images_sale/jeju.jpg",
-      card_title: "Giảm tới 20%",
-      card_subtitle: "Nhập mã: MIDNIGHT",
-      buttonText: "Chi Tiết",
-    },
-    {
-      image: "/images_sale/your_name.jpg",
-      card_title: "Bay Thái Giá Yêu",
-      card_subtitle: "Hành lý chẳng thiếu",
-      buttonText: "Chi Tiết",
-    },
-    {
-      image: "/images_sale/your_name.jpg",
-      card_title: "Bay Thái",
-      card_subtitle: "Giảm 50% hành lý ký gửi",
-      buttonText: "Chi Tiết",
-    },
-    {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-      {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-      {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-      {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-      {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-      {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-      {
-        image: "/images_sale/your_name.jpg",
-        card_title: "Bay Thái",
-        card_subtitle: "Giảm 50% hành lý ký gửi",
-        buttonText: "Chi Tiết",
-      },
-    // Add more data as needed
-  ];
+  const [discountData, setDiscountData] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDiscounts = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/voucher/'); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        
+        // Transform API data to match card format
+        const formattedData = data.map(discount => ({
+
+          image: discount.voucher_picture,
+          card_title: `Giảm ${discount.voucher_description}`,
+          card_subtitle: `${discount.voucher_code}`, /// này là nhập mã 
+          buttonText: "Chi Tiết",
+          description: discount.voucher_description,
+          flightCode: discount.voucher_flight_code
+        }));
+
+        setDiscountData(formattedData);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchDiscounts();
+  }, []);
 
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -102,9 +90,11 @@ const Discount = () => {
   return (
     <section className="discount-container">
       <Header />
+            <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
+      
       <div className="discount-wrapper">
-        <div className="discount-head-title">Khuyến mãi</div>
         <div className="discount-list">
+        <div className="discount-head-title">Khuyến mãi</div> 
           {currentItems.map((discount, index) => (
             <DiscountCard
               key={index}
@@ -113,6 +103,7 @@ const Discount = () => {
               subtitle={discount.card_subtitle}
               buttonText={discount.buttonText}
             />
+            
           ))}
         </div>
 
