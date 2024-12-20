@@ -1,7 +1,7 @@
 .ticket-info-container {
   position: relative;
   width: 100%;
-  background: #edefee;
+  /* background: #edefee; */
   align-items: center;
   justify-content: center;
 }
