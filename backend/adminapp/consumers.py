@@ -4,6 +4,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope["user"]
+        print(self.user)
         self.group_name = f"user_{self.user.id}"
 
         await self.channel_layer.group_add(
@@ -23,4 +24,5 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         pass
 
     async def send_notification(self, event):
+        print(json.dumps(event["message"]))
         await self.send(text_data=json.dumps(event["message"]))

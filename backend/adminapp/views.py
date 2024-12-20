@@ -54,6 +54,11 @@ class FlightViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def process_update(self, request, pk=None):
         flight = self.get_object()
+        tickets = Ticket.objects.filter(flight=flight)
+        for ticket in tickets:
+            if ticket.booker is not None:
+                user_id = ticket.booker.id
+                notify_user(user_id, {"message": f"Flight {flight.code} has been updated, affecting your ticket {ticket.id}"})
         original_data = FlightSerializer(flight).data
         print(original_data)
         print(request.data)

@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django_filters',
     'users',
     'flights',
@@ -50,7 +51,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
-    'channels',
 ]
 
 MIDDLEWARE = [
@@ -216,7 +216,11 @@ EMAIL_HOST_PASSWORD = 'nwss fljc cjtm bevt'
 DEFAULT_FROM_EMAIL = 'tangha2005@gmail.com'
 
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-    },
+   "default": {
+       "BACKEND": "channels.layers.InMemoryChannelLayer"
+   }
 }
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+CORS_ALLOW_CREDENTIALS = True

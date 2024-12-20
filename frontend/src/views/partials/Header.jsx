@@ -16,6 +16,33 @@ function Header() {
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const ws = useRef(null);
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Connect to WebSocket
+      ws.current = new WebSocket('ws://localhost:8000/ws/notifications/');
+
+      ws.current.onopen = () => {
+        console.log('WebSocket Connected');
+      };
+      ws.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setNotifications(prev => [...prev, data]);
+      };
+      ws.current.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+      ws.current.onclose = () => {
+        console.log('WebSocket Disconnected');
+      };
+    }
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+      }
+    };
+  }, [isLoggedIn]);
   const handleLogout = () => {
     logout();
     navigate("/dashboard");
@@ -57,10 +84,10 @@ function Header() {
         </div>
         <div className="header-navLink">
           <Link to="/explore" id="header-khamPha">
-          Khám phá 
+            Khám phá
           </Link>
           <Link to="/bookings" id="header-datVe">
-            Khuyến mãi 
+            Khuyến mãi
           </Link>
           <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
@@ -75,10 +102,10 @@ function Header() {
               Đăng Kí
             </a>
             <a id="home" className="menu-item" href="/explore">
-              Khám phá 
+              Khám phá
             </a>
             <a id="about" className="menu-item" href="/about">
-              Khuyến mãi 
+              Khuyến mãi
             </a>
             <a id="contact" className="menu-item" href="/travel-info">
               Thông tin hành trình
@@ -97,18 +124,22 @@ function Header() {
                     <img src={notification_icon} alt="notification" />
                   </div>
 
-                  <div
-                    className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
-                  >
+                  <div className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}>
                     <ul>
-                      <DropdownItem
-                        className="dropdownItem"
-                        text={"Notification 1"}
-                      />
-                      <DropdownItem
-                        className="dropdownItem"
-                        text={"Notification 2"}
-                      />
+                      {notifications.length > 0 ? (
+                        notifications.map((notification, index) => (
+                          <DropdownItem
+                            key={index}
+                            className="dropdownItem"
+                            text={notification.message}
+                          />
+                        ))
+                      ) : (
+                        <DropdownItem
+                          className="dropdownItem"
+                          text="No new notifications"
+                        />
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -152,10 +183,10 @@ function Header() {
                   Thông tin cá nhân
                 </a>
                 <a id="home" className="menu-item" href="/explore">
-                  Khám phá 
+                  Khám phá
                 </a>
                 <a id="about" className="menu-item" href="/about">
-                    Khuyến mãi 
+                  Khuyến mãi
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
@@ -181,10 +212,10 @@ function Header() {
                   Đăng Kí
                 </a>
                 <a id="home" className="menu-item" href="/explore">
-                  Khám phá 
+                  Khám phá
                 </a>
                 <a id="about" className="menu-item" href="/about">
-                  Khuyến mãi 
+                  Khuyến mãi
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
