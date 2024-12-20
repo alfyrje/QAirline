@@ -58,18 +58,37 @@ class FlightViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def process_update(self, request, pk=None):
         flight = self.get_object()
-        print(f"Processing additional update logic for flight {flight.code}")
-        print("Request user:", request.user)
+        original_data = FlightSerializer(flight).data
 
-        # Create a news entry
-        news_title = f"Flight {flight.code} Updated"
-        news_content = f"The flight {flight.code} has been updated. Please check your ticket details."
-        news_entry = News.objects.create(
-            title=news_title,
-            content=news_content,
-        )
-        news_entry.save()
-        return Response({"message": "Flight update processed"})
+        serializer = FlightSerializer(flight, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            updated_data = serializer.data
+
+            changes = []
+            for field in original_data:
+                if original_data[field] != updated_data[field]:
+                    changes.append(f"{field} changed from {original_data[field]} to {updated_data[field]}")
+
+            news_title = f"Flight {flight.code} Updated"
+            news_content = f"The flight {flight.code} has been updated. Changes: " + ", ".join(changes)
+            news_entry = News.objects.create(
+                title=news_title,
+                content=news_content,
+                user=request.user
+            )
+            news_entry.save()
+
+            tickets = Ticket.objects.filter(flight=flight)
+            for ticket in tickets:
+                passenger_email = ticket.passenger.qr_email
+                subject = f"Update on your flight {flight.code}"
+                message = f"Dear {ticket.passenger.first_name},\n\nThe flight {flight.code} has been updated. Please check your ticket details.\n\nChanges: " + ", ".join(changes)
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger_email])
+
+            return Response({"message": "Flight update processed"})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TicketViewSet(viewsets.ModelViewSet):
