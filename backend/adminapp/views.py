@@ -77,6 +77,7 @@ class FlightViewSet(viewsets.ModelViewSet):
             news_entry = News.objects.create(
                 title=news_title,
                 content=news_content,
+                # user=request.user
             )
             news_entry.save()
 
