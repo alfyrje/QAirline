@@ -38,8 +38,9 @@ const FlightSelect = () => {
   
   useEffect(() => {
     if (!isReturnFlight && state?.searchParams) {
+      console.log(state.searchParams);
       axios
-        .get("http://localhost:8000/flights/search-flights", {
+        .get("http://localhost:8000/flights/search-flights/", {
           params: state.searchParams,
         })
         .then((response) => setFlights(response.data.results))
@@ -52,7 +53,7 @@ const FlightSelect = () => {
       };
 
       axios
-        .get("http://localhost:8000/flights/search-flights", {
+        .get("http://localhost:8000/flights/search-flights/", {
           params: returnParams,
         })
         .then((response) => setFlights(response.data.results))
