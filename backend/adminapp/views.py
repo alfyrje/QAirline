@@ -45,21 +45,13 @@ class FlightViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.OrderingFilter]
     ordering_fields = [field for field in FlightSerializer.Meta.fields if field not in ['duration', 'economic_seats_left', 'business_seats_left']]
     pagination_class = StandardResultsSetPagination
-
-    def update(self, request, *args, **kwargs):
-        response = super().update(request, *args, **kwargs)
-        flight = self.get_object()
-        tickets = Ticket.objects.filter(flight=flight)
-        for ticket in tickets:
-            user_id = ticket.booker.id
-            notify_user(user_id, {"message": f"Flight {flight.code} has been updated, affecting your ticket {ticket.id}"})
-        return response
     
     @action(detail=True, methods=['post'])
     def process_update(self, request, pk=None):
         flight = self.get_object()
         original_data = FlightSerializer(flight).data
-
+        print(original_data)
+        print(request.data)
         serializer = FlightSerializer(flight, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
