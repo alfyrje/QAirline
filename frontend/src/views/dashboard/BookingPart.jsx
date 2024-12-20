@@ -57,7 +57,7 @@ function BookingPart() {
       start_location: originSelection[0]?.name || '',
       end_location: destinationSelection[0]?.name || '',
       start_time: departDate.toISOString().split('T')[0],
-      return_time: returnDate.toISOString().split('T')[0],
+      return_time: tripType === "roundTrip" ? returnDate.toISOString().split('T')[0] : '',
       passengers_no: passengersNo.toString()
     };
 
