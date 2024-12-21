@@ -55,7 +55,8 @@ const customVietnameseMessages: TranslationMessages = {
                 passenger: 'Hành khách',
                 seat: 'Số ghế',
                 ticket_class: 'Hạng vé',
-                cancelled: 'Đã hủy'
+                cancelled: 'Đã hủy',
+                code: 'Mã vé'
             }
         },
         travelinfo: {

@@ -1,6 +1,8 @@
 from django.db import models
 import uuid
 from users.models import Passenger, User
+import random
+import string
 
 class Plane(models.Model):
     name = models.CharField(max_length=100)
@@ -37,7 +39,16 @@ class Flight(models.Model):
         return f"{self.code}"
 
 def generate_ticket_code():
-   return str(uuid.uuid4())[:10]
+    chars = string.ascii_uppercase + string.digits
+    
+    def create_code():
+        return ''.join(random.choices(chars, k=6))
+    
+    code = create_code()
+    while Ticket.objects.filter(code=code).exists():
+        code = create_code()
+    
+    return code
 
 class Ticket(models.Model):
     code = models.CharField(max_length=10, unique=True, default=generate_ticket_code, editable=False)
