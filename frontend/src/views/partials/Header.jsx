@@ -33,7 +33,7 @@ function Header() {
 
   useEffect(() => {
     let handler = (e) => {
-      if (!menuRef.current.contains(e.target)) {
+      if (!menuRef.current || !menuRef.current.contains(e.target)) {
         setOpen(false);
       }
     };
@@ -67,6 +67,9 @@ function Header() {
           <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
           </Link>
+          <Link to="/ticket-info" id="header-thongTinHanhTrinh">
+            Vé đã đặt
+          </Link>
         </div>
         <div>
           <Menu right className="navSideBar">
@@ -84,6 +87,9 @@ function Header() {
             </a>
             <a id="contact" className="menu-item" href="/travel-info">
               Thông tin hành trình
+            </a>
+            <a id="contact" className="menu-item" href="/ticket-info">
+              Vé đã đặt 
             </a>
             {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
           </Menu>
@@ -166,6 +172,11 @@ function Header() {
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
                 </a>
+                <a id="contact" className="menu-item" href="/ticket-info">
+                  Vé đã đặt 
+                </a>
+
+
                 {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
               </Menu>
             </>
@@ -194,6 +205,9 @@ function Header() {
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
+                </a>
+                <a id="contact" className="menu-item" href="/ticket-infoinfo">
+                  Vé đã đặt 
                 </a>
                 {/* <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a> */}
               </Menu>
