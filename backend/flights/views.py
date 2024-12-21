@@ -3,7 +3,7 @@ from .models import Flight, Ticket
 from .serializers import FlightSerializer, TicketSerializer
 from users.serializers import PassengerSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, serializers
 from .serializers import TicketSerializer
 from rest_framework.views import APIView
 import logging
@@ -200,14 +200,14 @@ class CreateTicketsAPI(ListAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if request_token is None:
-            booker_id = None
-        else:
+        booker_id = None
+        if request_token is not None:
             request_jwt = request_token
             request_jwt_decoded = jwt.decode(
                 request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
             user_id = request_jwt_decoded['user_id']
             booker_id = user_id
+        print("BOOKER ID", booker_id)
 
         tickets = []
         for flight_info in flights:
@@ -255,8 +255,11 @@ class CreateTicketsAPI(ListAPIView):
                 }
 
                 ticket_serializer = TicketSerializer(data=ticket_data)
-                ticket_serializer.is_valid(raise_exception=True)
-                print("-----------------------------meo meo meo")
+                print("-----------------------------Debug Serializer Data")
+                print("Input data:", ticket_data)
+                if not ticket_serializer.is_valid():
+                    print("Validation errors:", ticket_serializer.errors)
+                    raise serializers.ValidationError(ticket_serializer.errors)
                 ticket = ticket_serializer.save()
                 tickets.append(ticket)
 

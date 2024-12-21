@@ -2,7 +2,7 @@ from rest_framework import serializers
 from users.models import User, Passenger
 from travel_info.models import TravelInfo
 from voucher.models import Voucher
-
+from flights.models import Ticket
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,3 +43,10 @@ class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = '__all__'
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = [
+            'id', 'booker', 'passenger', 'flight', 'seat', 'ticket_class', 'cancelled', 'code'
+        ]

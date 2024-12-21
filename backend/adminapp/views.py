@@ -1,7 +1,8 @@
 from rest_framework import viewsets, filters
 from flights.models import Plane, Flight, Ticket
 from users.models import User, Passenger
-from flights.serializers import PlaneSerializer, FlightSerializer, TicketSerializer
+from flights.serializers import PlaneSerializer, FlightSerializer
+from .serializers import TicketSerializer
 from .serializers import PassengerSerializer, UserSerializer
 from rest_framework.permissions import IsAdminUser
 from rest_framework.pagination import PageNumberPagination
