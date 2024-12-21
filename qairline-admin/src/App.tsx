@@ -19,6 +19,7 @@ import Dashboard from "./Dashboard";
 import { TravelInfoList, TravelInfoCreate, TravelInfoEdit, TravelInfoShow } from "./travelinfo";
 import { VoucherList, VoucherCreate, VoucherEdit, VoucherShow } from "./vouchers";
 import { PassengerList, PassengerShow } from "./passengers";
+import { Login } from './Login';
 
 const lightTheme = createTheme({
   palette: {
@@ -60,7 +61,7 @@ const darkTheme = createTheme({
 });
 
 export const App = () => (
-  <Admin dashboard={Dashboard} theme={lightTheme} layout={Layout} dataProvider={dataProvider} authProvider={authProvider}>
+  <Admin dashboard={Dashboard} theme={lightTheme} layout={Layout} dataProvider={dataProvider} authProvider={authProvider} loginPage={Login}>
     <Resource name="flights" options={{ label: 'Flights' }} list={FlightList} show={FlightShow} edit={FlightEdit} create={FlightCreate} icon={FlightLandIcon} />
     <Resource name="planes" options={{ label: 'Planes' }} list={PlaneList} edit={EditGuesser} show={ShowGuesser} create={PlaneCreate} icon={FlightIcon} />
     <Resource name="tickets" options={{ label: 'Tickets' }} list={TicketList} show={ShowGuesser} icon={AirplaneTicketIcon} />

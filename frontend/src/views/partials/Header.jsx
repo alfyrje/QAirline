@@ -16,6 +16,8 @@ function Header() {
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
   const handleLogout = () => {
     logout();
     navigate("/dashboard");
@@ -57,10 +59,10 @@ function Header() {
         </div>
         <div className="header-navLink">
           <Link to="/explore" id="header-khamPha">
-          Khám phá 
+            Khám phá
           </Link>
           <Link to="/discount" id="header-datVe">
-            Khuyến mãi 
+            Khuyến mãi
           </Link>
           <Link to="/travel-info" id="header-thongTinHanhTrinh">
             Thông tin hành trình
@@ -75,10 +77,10 @@ function Header() {
               Đăng Kí
             </a>
             <a id="home" className="menu-item" href="/explore">
-              Khám phá 
+              Khám phá
             </a>
             <a id="about" className="menu-item" href="/discount">
-              Khuyến mãi 
+              Khuyến mãi
             </a>
             <a id="contact" className="menu-item" href="/travel-info">
               Thông tin hành trình
@@ -97,18 +99,22 @@ function Header() {
                     <img src={notification_icon} alt="notification" />
                   </div>
 
-                  <div
-                    className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}
-                  >
+                  <div className={`dropdown-menu ${notificationOpen ? "active" : "inactive"}`}>
                     <ul>
-                      <DropdownItem
-                        className="dropdownItem"
-                        text={"Notification 1"}
-                      />
-                      <DropdownItem
-                        className="dropdownItem"
-                        text={"Notification 2"}
-                      />
+                      {notifications.length > 0 ? (
+                        notifications.map((notification, index) => (
+                          <DropdownItem
+                            key={index}
+                            className="dropdownItem"
+                            text={notification.message}
+                          />
+                        ))
+                      ) : (
+                        <DropdownItem
+                          className="dropdownItem"
+                          text="No new notifications"
+                        />
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -133,13 +139,13 @@ function Header() {
                           text={"Thông tin cá nhân"}
                         />
                       </Link>
-                      <Link to="/login">
+                      <div onClick={handleLogout}>
                         <DropdownItem
                           img={logout_icon}
                           className="dropdownItem"
                           text={"Đăng xuất"}
                         />
-                      </Link>
+                      </div>
                     </ul>
                   </div>
                 </div>
@@ -152,10 +158,10 @@ function Header() {
                   Thông tin cá nhân
                 </a>
                 <a id="home" className="menu-item" href="/explore">
-                  Khám phá 
+                  Khám phá
                 </a>
                 <a id="about" className="menu-item" href="/discount">
-                    Khuyến mãi 
+                  Khuyến mãi
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình
@@ -181,10 +187,10 @@ function Header() {
                   Đăng Kí
                 </a>
                 <a id="home" className="menu-item" href="/explore">
-                  Khám phá 
+                  Khám phá
                 </a>
                 <a id="about" className="menu-item" href="/discount">
-                  Khuyến mãi 
+                  Khuyến mãi
                 </a>
                 <a id="contact" className="menu-item" href="/travel-info">
                   Thông tin hành trình

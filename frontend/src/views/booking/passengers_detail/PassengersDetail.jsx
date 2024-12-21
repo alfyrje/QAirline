@@ -30,8 +30,6 @@ const PassengersDetail = () => {
         }))
     );
 
-    console.log(passengers);
-
     const [expandedCards, setExpandedCards] = useState(
         Array.from({ length: passengersNo }, () => true)
     );

@@ -27,6 +27,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 def notify_user(user_id, message):
     channel_layer = get_channel_layer()
+    print(f"Sending notification to user_{user_id}")
     async_to_sync(channel_layer.group_send)(
         f"user_{user_id}",
         {
@@ -54,6 +55,11 @@ class FlightViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def process_update(self, request, pk=None):
         flight = self.get_object()
+        tickets = Ticket.objects.filter(flight=flight)
+        for ticket in tickets:
+            if ticket.booker is not None:
+                user_id = ticket.booker.id
+                notify_user(user_id, {"message": f"Flight {flight.code} has been updated, affecting your ticket {ticket.id}"})
         original_data = FlightSerializer(flight).data
         serializer = FlightSerializer(flight, data=request.data, partial=True)
         if serializer.is_valid():
@@ -81,12 +87,12 @@ class FlightViewSet(viewsets.ModelViewSet):
             )
             news_entry.save()
 
-            tickets = Ticket.objects.filter(flight=flight)
-            for ticket in tickets:
-                passenger_email = ticket.passenger.qr_email
-                subject = f"QAirline: Thông báo thay đổi về chuyến bay {flight.code}"
-                message = f"Thưa quý khách {ticket.passenger.first_name},\n" + news_content
-                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger_email])
+            # tickets = Ticket.objects.filter(flight=flight)
+            # for ticket in tickets:
+            #     passenger_email = ticket.passenger.qr_email
+            #     subject = f"QAirline: Thông báo thay đổi về chuyến bay {flight.code}"
+            #     message = f"Thưa quý khách {ticket.passenger.first_name},\n" + news_content
+            #     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [passenger_email])
 
             return Response({"message": "Flight update processed"})
         else:

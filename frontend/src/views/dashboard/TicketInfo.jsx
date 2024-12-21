@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ticketInfo.css";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
+import ImageSeparator from "../partials/ImageSeparator";
 
 const NewsCard = ({ title, content, createdAt }) => {
   return (
@@ -130,6 +131,8 @@ const TicketInfo = () => {
   return (
     <section className="ticket-info-container">
       <Header />
+            <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
+      
       <div className="ticket-info-wrapper">
         <div className="ticket-info-header">Tìm vé</div>
         <form className="ticket-info-form">

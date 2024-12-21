@@ -7,6 +7,7 @@ import Footer from "../../partials/Footer";
 import FlightList from "./FlightList";
 import FlightInfo from "./FlightInfo";
 import ProgressBar from "../ProgressBar";
+import ImageSeparator from "../../partials/ImageSeparator";
 
 const FlightSelect = () => {
   const { state } = useLocation();
@@ -93,6 +94,7 @@ const FlightSelect = () => {
   return (
     <>
       <Header />
+      <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
       <div className="flight-select-container">
         <ProgressBar currentStep="flights" />
         <div className="booking-header">
