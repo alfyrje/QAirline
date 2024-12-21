@@ -1,0 +1,13 @@
+.cityCarouselContainer {
+    max-width: 80rem;
+    margin: 0 auto;
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+}
+.cityCarouselTextIntroduction{
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-family: "Funnel Sans", sans-serif;
+    font-weight: 500;
+    color: #adbd6c;
+}

@@ -5,7 +5,7 @@
 
 .flight-list .flight-card {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     border: 2px solid #a1cf67;
     margin-bottom: 1rem;
     background-color: white;
@@ -24,6 +24,7 @@
     display: flex;
     padding: 1rem 1rem 1rem 1rem;
     width: 70%;
+    height: 100%;
 }
 
 .flight-list .flight-info span {
@@ -91,15 +92,13 @@
     flex: 1;
     display: flex;
     align-items: stretch;
-    justify-content: space-around;
     padding: 0;
     margin: 0;
-    height: 100%;
-    width: 30%;
+    min-height: 100%;
 }
 
 .flight-list .price {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -108,6 +107,8 @@
     margin: 0;
     text-align: center;
     box-sizing: border-box;
+    width: 100%;
+    min-height: 100%;
 }
 
 .flight-list .price.economy {
@@ -137,8 +138,24 @@
 }
 
 @media (max-width: 1000px) {
-    .flight-list .flight-details {
-        display: flex;
-        flex-direction: column;
+    .flight-list .flight-card {
+        height: auto;
+    }
+
+    .flight-list .flight-info {
+        position: relative;
+    }
+
+    .flight-list .flight-info span {
+        display: none;
+    }
+
+    .flight-list .location-time {
+        width: 100%;
+    }
+
+    .flight-list .additional-info {
+        order: 2;
+        margin: 1rem 0;
     }
 }

@@ -15,6 +15,7 @@ export const TicketList = (props: any) => {
       ) : (
         <Datagrid rowClick="show">
           <TextField source="id" />
+          <TextField source="code" />
           <ReferenceField source="booker" reference="users">
             <CustomReferenceField source="email" />
           </ReferenceField>

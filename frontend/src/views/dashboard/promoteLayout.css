@@ -3,17 +3,28 @@
   grid-template-columns: repeat(12, 1fr); /* 12 columns */
   grid-template-rows: repeat(6, 1fr); /* 6 rows */
   gap: 2rem;
-  max-width: 78rem;
+  width: 100%;
   height: 40rem;
+}
+
+.promo-layout-container {
   margin: 0 auto;
   margin-top: 10rem;
+  max-width: 78rem;
+
+}
+.promo-text-introduction {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-family: "Funnel Sans", sans-serif;
+  font-weight: 500;
+  color: #adbd6c;
 }
 
 .promo-card {
   position: relative; 
   
   overflow: hidden;
-  /* padding-top: 50%; Height is 50% of width, creating a 2:1 ratio */
   background-color: #f0f0f0; /* Optional styling */
   border-radius: 8px; /* Optional styling */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional styling */  
