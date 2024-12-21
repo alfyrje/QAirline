@@ -394,29 +394,19 @@ const PassengersDetail = () => {
                     </div>
                     <div className="form-group">
                       <div className="input-wrapper">
-                        <div className="pdetails-select-box">
-                          <select
+                          <input
+                            type="text"
                             id={`nationality_${index}`}
-                            value={passenger.nationality || ""}
+                            placeholder=""
+                            value={passenger.nationality}
                             onChange={(e) =>
                               handleChange(index, "nationality", e.target.value)
                             }
-                            onBlur={(e) =>
-                              handleBlur(index, "nationality", e.target.value)
-                            }
                             required
-                          >
-                            <option value="">Chọn quốc tịch</option>
-                            {nationalities.map((nationality, idx) => (
-                              <option key={idx} value={nationality}>
-                                {nationality}
-                              </option>
-                            ))}
-                          </select>
+                          />
                           <label htmlFor={`nationality_${index}`}>
                             Quốc tịch*
                           </label>
-                        </div>
                         {errors[`nationality_${index}`] && (
                           <span className="error-message">
                             {errors[`nationality_${index}`]}

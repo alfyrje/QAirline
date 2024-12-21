@@ -113,10 +113,7 @@
   margin-bottom: 1rem;
   font-size: 1rem;
 }
-.input-wrapper {
-    height: 10%;
-  }
-  
+
 .passenger-details input[type="text"]:focus,
 .passenger-details input[type="date"]:focus,
 .passenger-details input[type="tel"]:focus,
@@ -125,9 +122,13 @@
 }
 
 .passenger-details .form-group {
-  position: relative;
-  width: 50%;
-  display: inline-block;
+    position: relative;
+    margin-bottom: 2rem;
+    width: 50%;
+    display: inline-block;
+    vertical-align: top; /* Ensure top alignment */
+    padding-right: 1rem; /* Add spacing between columns */
+    box-sizing: border-box;
 }
 
 .passenger-details .form-group label {

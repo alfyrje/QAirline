@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import "./profile.css";
-
+import "./profile2.css"
 const formatDateTime = (djangoDateTime) => {
   const date = new Date(djangoDateTime);
   const hours = String(date.getHours()).padStart(2, '0');
@@ -127,7 +127,7 @@ function ProfileFlights() {
               flights.map((ticket, index) => (
                 <div key={index} className="flight-card">
                   <div className="flight-header">
-                    <div className="flight-code">Chuyến bay #{ticket.flight.code}</div>
+                    <div className="flight-code">Vé #{ticket.ticket_code}</div>
                     <div className="flight-status">Hoãn: {ticket.flight.delay_status} giờ</div>
                   </div>
                   
@@ -198,10 +198,6 @@ function ProfileFlights() {
                                 <span className="info-value">{ticket.passenger_info.first_name} {ticket.passenger_info.last_name}</span>
                               </div>
                               <div className="info-item">
-                                <span className="info-label">Email:</span>
-                                <span className="info-value">{ticket.passenger_info.qr_email}</span>
-                              </div>
-                              <div className="info-item">
                                 <span className="info-label">Ngày sinh:</span>
                                 <span className="info-value">{ticket.passenger_info.date_of_birth}</span>
                               </div>
@@ -215,6 +211,20 @@ function ProfileFlights() {
                               </div>
                             </div>
                           </div>
+                        </div>
+
+                        <div className="expanded-details-content">
+                        <h3>Thông tin vé</h3>
+                            <div className="info-grid">
+                              <div className="info-item">
+                                <span className="info-label">Mã chuyến bay: </span>
+                                <span className="info-value">{ticket.flight.code}</span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">Giá vé: </span>
+                                <span className="info-value">{ticket.price} đồng</span>
+                              </div>
+                            </div>
                         </div>
                       </div>
                     )}

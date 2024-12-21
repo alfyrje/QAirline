@@ -51,8 +51,6 @@ const TicketInfo = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        console.log(data[0].ticket_info.id);
         if (data.length > 0) {
           const ticket = data[0].ticket_info; // Adjusted to match the nested structure
           const passenger = data[0].passenger_info; // Adjusted to match the nested structure
@@ -94,12 +92,12 @@ const TicketInfo = () => {
       );
 
       if (response.ok) {
-        setMessage("A confirmation email has been sent to your email address.");
+        setMessage("Email xác nhận hủy vé đã được gửi tới mail của bạn.");
       } else {
-        setMessage("Failed to initiate cancellation.");
+        setMessage("Có lỗi xảy ra khi hủy vé.");
       }
     } catch (error) {
-      setMessage("An error occurred while initiating the cancellation.");
+      setMessage("Đã có lỗi xảy ra khi hủy vé.");
     }
   };
 
@@ -144,24 +142,14 @@ const TicketInfo = () => {
             onChange={handleChange}
           />
 
-          <label htmlFor="citizen-id">Số CCCD:</label>
+          <label htmlFor="ticket-code">Mã vé: </label>
           <input
             type="text"
-            id="citizen-id"
-            name="citizen_id"
+            id="ticket-code"
+            name="ticket_code"
             onChange={handleChange}
           />
 
-          <label htmlFor="seat">Số ghế:</label>
-          <input type="text" id="seat" name="seat" onChange={handleChange} />
-
-          <label htmlFor="ticket-class">Ghế hạng:</label>
-          <input
-            type="text"
-            id="ticket-class"
-            name="ticket_class"
-            onChange={handleChange}
-          />
 
           <button
             type="button"

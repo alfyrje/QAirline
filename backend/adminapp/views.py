@@ -28,13 +28,13 @@ class StandardResultsSetPagination(PageNumberPagination):
 def notify_user(user_id, message):
     channel_layer = get_channel_layer()
     print(f"Sending notification to user_{user_id}")
-    async_to_sync(channel_layer.group_send)(
-        f"user_{user_id}",
-        {
-            "type": "send_notification",
-            "message": message,
-        }
-    )
+    # async_to_sync(channel_layer.group_send)(
+    #     f"user_{user_id}",
+    #     {
+    #         "type": "send_notification",
+    #         "message": message,
+    #     }
+    # )
 
 class PlaneViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
