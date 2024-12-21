@@ -1,7 +1,8 @@
 from rest_framework import viewsets, filters
 from flights.models import Plane, Flight, Ticket
 from users.models import User, Passenger
-from flights.serializers import PlaneSerializer, FlightSerializer, TicketSerializer
+from flights.serializers import PlaneSerializer, FlightSerializer
+from .serializers import TicketSerializer
 from .serializers import PassengerSerializer, UserSerializer
 from rest_framework.permissions import IsAdminUser
 from rest_framework.pagination import PageNumberPagination
@@ -11,7 +12,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from travel_info.models import TravelInfo
 from voucher.models import Voucher
-from .serializers import TravelInfoSerializer, VoucherSerializer
+from .serializers import TravelInfoSerializer, VoucherSerializer, NewsSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import News
 from django.core.mail import EmailMessage, send_mail
@@ -146,6 +147,8 @@ from rest_framework import status
 from .models import News
 from .serializers import NewsSerializer
 from rest_framework.permissions import AllowAny
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 class NewsListView(APIView):
     permission_classes = [AllowAny]
@@ -153,4 +156,19 @@ class NewsListView(APIView):
         news_entries = News.objects.all()
         serializer = NewsSerializer(news_entries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+
+@permission_classes([IsAuthenticated])
+class UserNotificationsView(APIView):
+    def get(self, request):
+        user_flights = Flight.objects.filter(
+            ticket__booker=request.user,
+            ticket__cancelled=False
+        ).values_list('code', flat=True).distinct()
+        
+        notifications = News.objects.filter(
+            flight_code__in=user_flights
+        ).order_by('-created_at')[:5] 
+        
+        serializer = NewsSerializer(notifications, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
