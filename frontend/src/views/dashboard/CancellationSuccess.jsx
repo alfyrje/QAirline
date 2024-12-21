@@ -7,8 +7,8 @@ const CancellationSuccess = () => {
     <>
       <Header />
       <div className="cancellation-success-container">
-        <h1>Cancellation Successful</h1>
-        <p>Your ticket has been successfully cancelled.</p>
+        <h1>Hủy vé thành công</h1>
+        <p>Vé của bạn đã được hủy thành công.</p>
       </div>
       <Footer />
     </>

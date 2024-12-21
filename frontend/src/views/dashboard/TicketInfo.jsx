@@ -113,7 +113,7 @@ const TicketInfo = () => {
         setMessage("Có lỗi xảy ra khi hủy vé.");
       }
     } catch (error) {
-      setMessage("Đã có lỗi xảy ra khi hủy vé.");
+      setMessage("Vé không tồn tại hoặc đã bị hủy.");
     }
   };
 

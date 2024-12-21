@@ -135,7 +135,6 @@ class TicketSearchView(ListAPIView):
                 "id": ticket.id,
             }
             response_data.append(ticket_info)
-        print(response_data)
         return Response(response_data, status=status.HTTP_200_OK)
 
 
@@ -154,7 +153,7 @@ class InitiateCancelTicketAPI(APIView):
             reverse('confirm-cancel-ticket')) + '?' + urlencode({'token': cancel_token})
 
         subject = f"Xác nhận hủy vé cho chuyến bay {ticket.flight.code}"
-        message = f"Please click the following link to confirm your ticket cancellation: {cancel_url}"
+        message = f"Hãy bấm link sau để xác nhận hủy vé của bạn cho chuyến bay: {cancel_url}"
         email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [
                              ticket.passenger.qr_email])
         try:
