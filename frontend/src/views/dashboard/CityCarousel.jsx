@@ -84,6 +84,7 @@ const CityCarousel = () => {
                 <img
                   src={item.image}
                   alt={item.title}
+                  draggable="false"
                   style={{
                     width: "100%",
                     height: "20rem",

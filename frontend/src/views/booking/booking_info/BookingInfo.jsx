@@ -5,6 +5,7 @@ import Footer from "../../partials/Footer";
 import FlightInfo from "../flight_search/FlightInfo";
 import "../flight_search/FlightInfo.css";
 import ProgressBar from "../ProgressBar";
+import ImageSeparator from "../../partials/ImageSeparator";
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -121,6 +122,7 @@ const BookingInfo = () => {
   return (
     <>
       <Header />
+      <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
       <div className="booking-info-container">
         <ProgressBar currentStep="info" />
         <div className="booking-header">

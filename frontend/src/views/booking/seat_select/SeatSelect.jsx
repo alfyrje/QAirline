@@ -7,6 +7,7 @@ import FlightInfo from '../flight_search/FlightInfo';
 import SeatMap from './SeatMap';
 import ProgressBar from '../ProgressBar';
 import axios from 'axios';
+import ImageSeparator from "../../partials/ImageSeparator";
 
 const SeatSelect = () => {
     const { state } = useLocation();
@@ -69,6 +70,7 @@ const SeatSelect = () => {
     return (
         <>
             <Header />
+            <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
             <div className='seat-select-container'>
                 <ProgressBar currentStep="seats" />
                 <div className='booking-header'>

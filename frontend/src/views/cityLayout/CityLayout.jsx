@@ -12,7 +12,7 @@ const CityLayout = () => {
           if (e.target.className === 'city-title') {
             const cityName = e.target.textContent; 
             console.log(`Clicked city: ${cityName}`);
-            navigate(`/dashboard/cityIntroduction/${cityName}`);
+            navigate(`/dashboard/cityIntroduction/${cityName}/`);
           }
         };
 
@@ -35,16 +35,16 @@ const CityLayout = () => {
               <div className="city-grid-container">
                 <div className="bigger-city-card city-card">
                   <img
-                    src="/images_info/hanhli.jpg"
-                    alt="Hành lý"
+                    src="/images_info/hoian.jpg"
+                    alt="Hội An"
                     className="citycard-image"
                   />
-                  <div className="city-title">Tokyo</div>
+                  <div className="city-title">Hội An</div>
                 </div>
                 <div className="smaller-city-card city-card">
                   <img
-                    src="/images_info/booking.jpg"
-                    alt="Làm thủ tục"
+                    src="/images_info/hanoi.jpg"
+                    alt="Hà Nội"
                     className="citycard-image"
                   />
                   <div className="city-title">Hà Nội</div>
@@ -60,24 +60,24 @@ const CityLayout = () => {
               <div className="dongnama-city-grid-container">
                 <div className="smaller-city-card city-card">
                   <img
-                    src="/images_info/hanhli.jpg"
-                    alt="Hành lý"
+                    src="/images_info/bangkok.jpg"
+                    alt="Bangkok"
                     className="citycard-image"
                   />
                   <div className="city-title">Bangkok</div>
                 </div>
                 <div className="bigger-city-card city-card">
                   <img
-                    src="/images_info/booking.jpg"
-                    alt="Làm thủ tục"
+                    src="/images_info/jakarta.jpg"
+                    alt="Jakarta"
                     className="citycard-image"
                   />
                   <div className="city-title">Jakarta</div>
                 </div>
                 <div className="biggest-city-card city-card">
                   <img
-                    src="/images_info/booking.jpg"
-                    alt="Làm thủ tục"
+                    src="/images_info/singapore.jpg"
+                    alt="Singapore"
                     className="citycard-image"
                   />
                   <div className="city-title">Singapore</div>
@@ -94,7 +94,7 @@ const CityLayout = () => {
               <div className="city-grid-container">
                 <div className="bigger-city-card city-card">
                   <img
-                    src="/images_info/hanhli.jpg"
+                    src="/images_info/jeju.jpg"
                     alt="Hành lý"
                     className="citycard-image"
                   />
@@ -102,7 +102,7 @@ const CityLayout = () => {
                 </div>
                 <div className="smaller-city-card city-card">
                   <img
-                    src="/images_info/booking.jpg"
+                    src="/images_info/tokyo.jpg"
                     alt="Làm thủ tục"
                     className="citycard-image"
                   />
@@ -120,7 +120,7 @@ const CityLayout = () => {
               <div className="city-grid-container">
               <div className="biggest-city-card city-card">
                   <img
-                    src="/images_info/hanhli.jpg"
+                    src="/images_info/london.jpg"
                     alt="Hành lý"
                     className="citycard-image"
                   />
@@ -128,15 +128,15 @@ const CityLayout = () => {
                 </div>
                 <div className="bigger-city-card city-card">
                   <img
-                    src="/images_info/hanhli.jpg"
+                    src="/images_info/berlin.jpg"
                     alt="Hành lý"
                     className="citycard-image"
                   />
-                  <div className="city-title">London</div>
+                  <div className="city-title">Berlin</div>
                 </div>
                 <div className="smaller-city-card city-card">
                   <img
-                    src="/images_info/booking.jpg"
+                    src="/images_info/paris.jpg"
                     alt="Làm thủ tục"
                     className="citycard-image"
                   />

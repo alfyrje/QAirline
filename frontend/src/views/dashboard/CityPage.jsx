@@ -13,7 +13,7 @@ const CityPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/city_introduction/${city_name}`); // Use city_name in the URL
+                const response = await fetch(`http://localhost:8000/city_introduction/${city_name}/`); // Use city_name in the URL
                 const data = await response.json();
                 console.log(data); 
                 setCityData(data);

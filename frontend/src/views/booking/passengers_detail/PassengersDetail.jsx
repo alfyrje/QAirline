@@ -7,6 +7,7 @@ import FlightInfo from "../flight_search/FlightInfo";
 import Swal from "sweetalert2";
 import ProgressBar from "../ProgressBar";
 import nationalities from "../../auth/nationalities.json";
+import ImageSeparator from "../../partials/ImageSeparator";
 
 const PassengersDetail = () => {
     const { state } = useLocation();
@@ -215,6 +216,7 @@ const PassengersDetail = () => {
     return (
         <>
             <Header />
+            <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
             <div className="passenger-details-container">
                 <ProgressBar currentStep="passengers" />
                 <div className="booking-header">
