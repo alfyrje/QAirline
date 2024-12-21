@@ -51,25 +51,6 @@ const Dashboard = () => {
     fetchCities();
   }, []);
 
-  const fetchTimeSeriesStats = async () => {
-    try {
-      const { data } = await dataProvider.getList("tickets", {
-        pagination: { page: 1, perPage: 1000 },
-        sort: { field: "id", order: "ASC" },
-        filter: {
-          start_date: startDate.toISOString(),
-          end_date: endDate.toISOString(),
-        },
-      });
-
-      // Process data for time series
-      const timeSeriesData = processTimeSeriesData(data);
-      setStats((prev) => ({ ...prev, timeSeriesData }));
-    } catch (error) {
-      console.error("Error fetching time series stats:", error);
-    }
-  };
-
   const fetchCityStats = async () => {
     if (!selectedCity) return;
 
@@ -78,22 +59,26 @@ const Dashboard = () => {
         pagination: { page: 1, perPage: 1000 },
         sort: { field: "id", order: "ASC" },
         filter: {
-          start_date: startDate.toISOString(),
-          end_date: endDate.toISOString(),
-          city: selectedCity,
+          cancelled: false,
+          'flight__end_location': selectedCity,
+          'flight__start_time__gte': startDate.toISOString(),
+          'flight__start_time__lte': endDate.toISOString()
         },
       });
 
-      // Process data for city statistics
+      // Count tickets by class
+      const economyCount = data.filter(ticket => ticket.ticket_class === 'E').length;
+      const businessCount = data.filter(ticket => ticket.ticket_class === 'B').length;
+
       const cityData = [
         {
           city: selectedCity,
-          tickets: data.length,
-          start_date: startDate.toLocaleDateString(),
-          end_date: endDate.toLocaleDateString(),
-        },
+          'Vé phổ thông': economyCount,
+          'Vé thương gia': businessCount,
+        }
       ];
-      setStats((prev) => ({ ...prev, cityData }));
+
+      setStats(prev => ({ ...prev, cityData }));
     } catch (error) {
       console.error("Error fetching city stats:", error);
     }
@@ -166,44 +151,6 @@ const Dashboard = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box p={3}>
-        {/* Time Series Chart */}
-        <Card sx={{ mb: 3 }}>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
-              Thống kê số vé đặt theo thời gian
-            </Typography>
-            <Grid container spacing={2} sx={{ mb: 2 }}>
-              <Grid item xs={12} sm={4}>
-                <DatePicker
-                  label="Ngày bắt đầu"
-                  value={startDate}
-                  onChange={(newValue) => setStartDate(newValue)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <DatePicker
-                  label="Ngày kết thúc"
-                  value={endDate}
-                  onChange={(newValue) => setEndDate(newValue)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Button variant="contained" onClick={fetchTimeSeriesStats}>
-                  Xem số liệu
-                </Button>
-              </Grid>
-            </Grid>
-            <LineChart width={800} height={400} data={stats.timeSeriesData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="tickets" stroke="#8884d8" />
-            </LineChart>
-          </CardContent>
-        </Card>
-
         {/* City Statistics */}
         <Card sx={{ mb: 3 }}>
           <CardContent>
@@ -231,22 +178,6 @@ const Dashboard = () => {
                 </TextField>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <DatePicker
-                  label="Ngày bắt đầu"
-                  value={startDate}
-                  onChange={(newValue) => setStartDate(newValue)}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <DatePicker
-                  label="Ngày kết thúc"
-                  value={endDate}
-                  onChange={(newValue) => setEndDate(newValue)}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
                 <Button variant="contained" onClick={fetchCityStats}>
                   Xem số liệu
                 </Button>
@@ -258,7 +189,8 @@ const Dashboard = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="tickets" fill="#82ca9d" />
+              <Bar dataKey="Vé phổ thông" fill="#82ca9d" />
+              <Bar dataKey="Vé thương gia" fill="#8884d8" />
             </BarChart>
           </CardContent>
         </Card>
