@@ -83,7 +83,7 @@ class FlightViewSet(viewsets.ModelViewSet):
             news_entry = News.objects.create(
                 title=smart_str(news_title, encoding='utf-8'),
                 content=smart_str(news_content, encoding='utf-8'),
-                flight_code=flight.code  # Add this line to include flight code
+                flight_code=flight.code,  # Add this line to include flight code,
             )
             news_entry.save()
 

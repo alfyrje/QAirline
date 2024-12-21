@@ -41,7 +41,7 @@ function Profile() {
                 <a className="profile-a"href="#flights"
                 onClick={()=>setCurrentView("flights")}
                 >
-                  <span className="text">Lịch sử chuyến bay</span>
+                  <span className="text">Danh sách vé đã đặt</span>
                 </a>
               </div>
             </div>

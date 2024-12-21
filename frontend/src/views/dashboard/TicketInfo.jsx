@@ -223,7 +223,7 @@ const TicketInfo = () => {
             <img src="/icons/previous.png" alt="Previous Page" />
           </button>
           <span>
-            Page {currentPage} of {totalPages}
+            Trang {currentPage} of {totalPages}
           </span>
           <button onClick={goToNextPage} disabled={currentPage === totalPages}>
             <img src="/icons/next.png" alt="Next Page" />

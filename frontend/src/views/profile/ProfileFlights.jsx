@@ -4,6 +4,22 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./profile.css";
 
+const formatDateTime = (djangoDateTime) => {
+  const date = new Date(djangoDateTime);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  
+  return `${hours}:${minutes} ${day}/${month}/${year}`;
+};
+const calculateDuration = (startTime, endTime) => {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+  const diffInHours = (end - start) / (1000 * 60 * 60);
+  return Math.round(diffInHours);
+};
 function ProfileFlights() {
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -102,7 +118,7 @@ function ProfileFlights() {
   return (
     <>
       <div className="profile-content">
-        <div className="profile-flights-header">Lịch sử chuyến bay</div>
+        <div className="profile-flights-header">Danh sách vé đã đặt</div>
         <div className="profile-flights-content">
           <div className="flight-cards-container">
             {loading ? (
@@ -111,30 +127,32 @@ function ProfileFlights() {
               flights.map((ticket, index) => (
                 <div key={index} className="flight-card">
                   <div className="flight-header">
-                    <div className="flight-code">Vé số #{ticket.flight.code}</div>
-                    <div className="flight-status">{ticket.flight.delay_status}</div>
+                    <div className="flight-code">Chuyến bay #{ticket.flight.code}</div>
+                    <div className="flight-status">Hoãn: {ticket.flight.delay_status} giờ</div>
                   </div>
                   
                   <div className="flight-details">
                     <div className="time-location-container">
                       <div className="departure">
-                        <div className="time">{ticket.flight.start_time}</div>
-                        <div className="location">{ticket.flight.start_location}</div>
+                      <div className="time">{formatDateTime(ticket.flight.start_time)}</div>
+                      <div className="location">{ticket.flight.start_location}</div>
                       </div>
 
                       <div className="flight-duration">
                         <div className="duration-line">
-                          <span className="duration-text">7h</span>
+                          <span className="duration-text">
+                            Thời gian bay: {calculateDuration(ticket.flight.start_time, ticket.flight.end_time)} giờ
+                          </span>
                         </div>
                       </div>
 
                       <div className="arrival">
-                        <div className="time">{ticket.flight.end_time}</div>
+                        <div className="time">{formatDateTime(ticket.flight.end_time)}</div>
                         <div className="location">{ticket.flight.end_location}</div>
                       </div>
                     </div>
 
-                    <div className="flight-info">
+                    <div className="flight-info-profile">
                       <div className="passenger-details">
                         <div className="info-group">
                           <span className="label">Họ tên:</span>
@@ -180,8 +198,8 @@ function ProfileFlights() {
                                 <span className="info-value">{ticket.passenger_info.first_name} {ticket.passenger_info.last_name}</span>
                               </div>
                               <div className="info-item">
-                                <span className="info-label">Số điện thoại:</span>
-                                <span className="info-value">{ticket.passenger_info.tel_num}</span>
+                                <span className="info-label">Email:</span>
+                                <span className="info-value">{ticket.passenger_info.qr_email}</span>
                               </div>
                               <div className="info-item">
                                 <span className="info-label">Ngày sinh:</span>

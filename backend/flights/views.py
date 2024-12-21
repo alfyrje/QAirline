@@ -300,6 +300,7 @@ class TicketsFlightsHistoryAPI(ListAPIView):
         for ticket in tickets:
             flight = ticket.flight
             passenger = ticket.passenger
+            price = flight.business_price if ticket.ticket_class == 'B' else flight.economic_price
             ticket_info = {
                 "flight": {
                     "code": flight.code,
@@ -321,6 +322,8 @@ class TicketsFlightsHistoryAPI(ListAPIView):
                 "seat": ticket.seat,
                 "ticket_class": ticket.get_ticket_class_display(),
                 "ticket_id": ticket.id,
+                "ticket_code": ticket.code,
+                "price": price,
             }
             response_data.append(ticket_info)
 
