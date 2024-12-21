@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Register from "./views/auth/Register";
 import LogIn from "./views/auth/Login";
@@ -23,9 +23,13 @@ import Sale from "./views/sales/Sale.jsx"
 import InfoPost from "./views/travel_info/InfoPost";
 import CityLayout from './views/cityLayout/CityLayout.jsx';
 const PrivateRoute = ({ children }) => {
-    const loggedIn = useAuthStore((state) => state.isLoggedIn);
+    const { isLoggedIn, checkLoginStatus } = useAuthStore();
+    
+    useEffect(() => {
+    checkLoginStatus();
+    }, []);
 
-    return loggedIn ? children : <Navigate to="/login/" />;
+    return isLoggedIn ? children : <Navigate to="/login/" />;
 };
 import PassengersDetail from "./views/booking/passengers_detail/PassengersDetail";
 import { Disc } from 'lucide-react';

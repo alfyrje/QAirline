@@ -10,6 +10,8 @@ import logout_icon from "/icons/log-out.svg";
 import React, { useState, useEffect, useRef } from "react";
 import notification_icon from "/icons/bell-ring.svg";
 import { stack as Menu } from "react-burger-menu";
+import { format } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
 function NotificationItem({ notification }) {
   return (
@@ -25,22 +27,36 @@ function NotificationItem({ notification }) {
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { isLoggedIn, checkLoginStatus } = useAuthStore();
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchNotifications = async () => {
+      console.log("Fetching notifications...");
       try {
-        const response = await axios.get(
+        const response = await fetch(
           'http://localhost:8000/adminapp/notifications/',
           {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { 
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
           }
         );
 
-        setNotifications(response.data.map(news => ({
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Notifications:', data);
+        setNotifications(data.map(news => ({
           title: news.title,
           message: news.content,
           created_at: news.created_at,
