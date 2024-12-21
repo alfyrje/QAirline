@@ -189,7 +189,7 @@ const TicketInfo = () => {
         )}
       </div>
     
-      <div className="news-list">
+      {/* <div className="news-list">
           <h2>Thông báo về chuyến bay</h2>
           <div className="news-list-content">
           {currentItems.length > 0 ? (
@@ -205,7 +205,7 @@ const TicketInfo = () => {
             <p>No news available</p>
           )}
           </div>
-        </div>
+        </div> */}
         <div className="pagination">
           <button onClick={goToPreviousPage} disabled={currentPage === 1}>
             <img src="/icons/previous.png" alt="Previous Page" />
