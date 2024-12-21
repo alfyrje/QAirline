@@ -182,7 +182,7 @@ function ProfileFlights() {
                       </button>
                       <button 
                         className="cancel-button"
-                        onClick={() => confirmCancel(ticket.ticket_id, ticket.flight.start_time)}
+                        onClick={() => confirmCancel(ticket.id, ticket.flight.start_time)}
                       >
                         Hủy vé
                       </button>

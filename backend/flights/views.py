@@ -232,9 +232,6 @@ class CreateTicketsAPI(ListAPIView):
                         data=passenger_data)
                     passenger_serializer.is_valid(raise_exception=True)
                     passenger = passenger_serializer.save()
-                    # print("-----------------------------MEO MEO MEO")
-
-                    # Add more logging for each passenger creation
                     logger.info("Passenger created: %s", passenger)
                 except Exception as e:
                     error_message = f"Error processing passenger data: {str(e)}"
@@ -279,6 +276,7 @@ class CreateTicketsAPI(ListAPIView):
                 message = (
                     f"Hệ thống đã ghi nhận vé đặt cho quý khách cho chuyến bay {flight.code} với thông tin như sau: \n\n"
                     + f"Mã chuyến bay: {flight.code}\n"
+                    + f"Mã vé: {ticket.code}\n"
                     + f"Thời gian khởi hành: {flight.start_time}\n"
                     + f"Thời gian đến: {flight.end_time}\n"
                     + f"Địa điểm xuất phát: {flight.start_location}\n"
@@ -358,6 +356,7 @@ class TicketsFlightsHistoryAPI(ListAPIView):
         body = json.loads(request.body)
         action = body.get("action")
         if action == 'cancel':
+            print("HERRRRRRRRRRRRE")
             ticket_id = request.data.get('ticketId')
             try:
                 ticket = Ticket.objects.get(id=ticket_id)
