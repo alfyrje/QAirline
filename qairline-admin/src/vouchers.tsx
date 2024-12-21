@@ -6,7 +6,6 @@ export const VoucherList = (props: any) => (
             <TextField source="voucher_code" />
             <TextField source="voucher_description" />
             <TextField source="percentage" />
-            <TextField source="voucher_flight_code" />
         </Datagrid>
     </List>
 );
@@ -20,7 +19,6 @@ export const VoucherEdit = (props: any) => (
             <ImageInput source="voucher_picture" label="Voucher Picture" accept={{ 'image/*': ['.png', '.jpg'] }}>
                 <ImageField source="src" title="title" />
             </ImageInput>
-            <TextInput source="voucher_flight_code" />
         </SimpleForm>
     </Edit>
 );
@@ -34,7 +32,6 @@ export const VoucherCreate = (props: any) => (
             <ImageInput source="voucher_picture" label="Voucher Picture" accept={{ 'image/*': ['.png', '.jpg'] }}>
                 <ImageField source="src" title="title" />
             </ImageInput>
-            <TextInput source="voucher_flight_code" />
         </SimpleForm>
     </Create>
 );
@@ -46,7 +43,6 @@ export const VoucherShow = (props: any) => (
             <TextField source="voucher_description" />
             <TextField source="percentage" />
             <ImageField source="voucher_picture" title="Voucher Picture" />
-            <TextField source="voucher_flight_code" />
         </SimpleShowLayout>
     </Show>
 );
