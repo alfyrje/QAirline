@@ -60,6 +60,16 @@ img {
   text-align: left;
   padding-left: 0.4rem;
 }
+.input_voucher {
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  transition: border-bottom 0.3s ease;
+}
+
+.input_voucher:focus {
+  border-bottom: 2px solid var(--primary-color);
+}
 
 .header__image__container {
   position: relative;

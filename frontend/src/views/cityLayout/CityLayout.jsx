@@ -26,7 +26,7 @@ const CityLayout = () => {
   return (
     <>
       <Header />
-      <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
+      <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
       <div className="cityLayout">
         <h1 className="exploreTitle">Top điểm đến phổ biến</h1>
           <div className="areaContainer vietnam">

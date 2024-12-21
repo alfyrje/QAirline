@@ -11,7 +11,7 @@ const Sale= () => {
   return (
     <>
     <Header />
-    <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
+    <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
     <div className="appContent">
         
     </div>

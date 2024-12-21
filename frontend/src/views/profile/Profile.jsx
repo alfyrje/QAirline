@@ -26,7 +26,7 @@ function Profile() {
     <>
       <section className="profile-container">
         <Header />
-            <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
+      <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
         <div className="profile-content-container">
           <div className="profile-sidemenu">
             <div className="profile-sidemenu-list">

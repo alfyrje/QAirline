@@ -88,7 +88,7 @@ const Discount = () => {
   return (
     <section className="discount-container">
       <Header />
-      <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
+      <ImageSeparator imagePath="/images/gigapixel-bg3(1).png"/>
       <div className="discount-wrapper">
         <div className="discount-list">
         <div className="discount-head-title">Khuyến mãi</div> 
