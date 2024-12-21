@@ -315,7 +315,7 @@ class TicketsFlightsHistoryAPI(ListAPIView):
             request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
         user_id = request_jwt_decoded['user_id']
 
-        tickets = Ticket.objects.filter(booker_id=user_id)
+        tickets = Ticket.objects.filter(booker_id=user_id, cancelled=False)
         response_data = []
 
         for ticket in tickets:
