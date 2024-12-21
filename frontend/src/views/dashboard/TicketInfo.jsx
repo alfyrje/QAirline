@@ -19,12 +19,12 @@ const NewsCard = ({ title, content, createdAt }) => {
 };
 const formatDateTime = (djangoDateTime) => {
   const date = new Date(djangoDateTime);
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
-  
+
   return `${hours}:${minutes} ${day}/${month}/${year}`;
 };
 const calculateDuration = (startTime, endTime) => {
@@ -61,7 +61,7 @@ const TicketInfo = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: 'same-origin',
+          credentials: "same-origin",
           body: JSON.stringify(searchParams),
         }
       );
@@ -90,7 +90,9 @@ const TicketInfo = () => {
 
     const timeDifference = (departureTime - currentTime) / (1000 * 60 * 60);
     if (timeDifference < 2) {
-      alert("Bạn chỉ có thể hủy vé tối đa 2 giờ trước khi chuyến bay khởi hành.");
+      alert(
+        "Bạn chỉ có thể hủy vé tối đa 2 giờ trước khi chuyến bay khởi hành."
+      );
       return;
     }
     try {
@@ -100,9 +102,10 @@ const TicketInfo = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": document.cookie.split('csrftoken=')[1]?.split(';')[0] || '',
+            "X-CSRFToken":
+              document.cookie.split("csrftoken=")[1]?.split(";")[0] || "",
           },
-          credentials: 'include', // Important for CSRF
+          credentials: "include", // Important for CSRF
           body: JSON.stringify({ ticket_id: ticketId }),
         }
       );
@@ -118,9 +121,9 @@ const TicketInfo = () => {
   };
 
   const toggleDetails = (index) => {
-    setExpandedCards(prev => ({
+    setExpandedCards((prev) => ({
       ...prev,
-      [index]: !prev[index]
+      [index]: !prev[index],
     }));
   };
   const fetchNews = async () => {
@@ -145,165 +148,214 @@ const TicketInfo = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = news.slice(startIndex, endIndex);
 
-  const goToPreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const goToPreviousPage = () =>
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
-    <section className="ticket-info-container">
+    <>
       <Header />
-            <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
-      
-      <div className="ticket-info-wrapper">
-        <div className="ticket-info-header">Tìm vé</div>
-        <form className="ticket-info-form">
-          <label htmlFor="flight-id">Mã chuyến bay:</label>
-          <input
-            type="text"
-            id="flight-code"
-            name="flight_code"
-            onChange={handleChange}
-          />
+      <ImageSeparator imagePath="/separator/separator_travel_info.jpg" />
 
-          <label htmlFor="ticket-code">Mã vé: </label>
-          <input
-            type="text"
-            id="ticket-code"
-            name="ticket_code"
-            onChange={handleChange}
-          />
+      <section className="ticket-info-container">
+        <div className="ticket-info-wrapper">
+          <form className="ticket-info-form">
+            <div className="flight-id-container">
+              <label htmlFor="flight-id">Mã chuyến bay:</label>
+              <input
+                type="text"
+                id="flight-code"
+                name="flight_code"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="ticket-code-container">
+              <label htmlFor="ticket-code">Mã vé đã đặt: </label>
+              <input
+                type="text"
+                id="ticket-code"
+                name="ticket_code"
+                onChange={handleChange}
+              />
+            </div>
 
+            <div className="ticket-info-button" onClick={handleSearch}>
+              Search
+            </div>
 
-          <button
-            type="button"
-            className="ticket-info-button"
-            onClick={handleSearch}
-          >
-          </button>
-        </form>
+            {/* <button
+              type="button"
+              className="ticket-info-button"
+              onClick={handleSearch}
+            ></button> */}
+          </form>
+        </div>
 
-        {message && <div className="ticket-info-message">{message}</div>}
+        <div className="ticket-info-result-container">
+          {message && <div className="ticket-info-message">{message}</div>}
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          ticketData && (
-            <div className="flight-cards-container">
-              <div className="flight-card">
-                <div className="flight-header">
-                  <div className="flight-code">Vé #{ticketData.ticket_code}</div>
-                  <div className="flight-status">Hoãn: {ticketData.flight.delay_status} giờ</div>
-                </div>
-                
-                <div className="flight-details">
-                  <div className="time-location-container">
-                    <div className="departure">
-                      <div className="time">{formatDateTime(ticketData.flight.start_time)}</div>
-                      <div className="location">{ticketData.flight.start_location}</div>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            ticketData && (
+              <div className="flight-cards-container">
+                <div className="flight-card">
+                  <div className="flight-header">
+                    <div className="flight-code">
+                      Vé #{ticketData.ticket_code}
                     </div>
-
-                    <div className="flight-duration">
-                      <div className="duration-line">
-                        <span className="duration-text">
-                          Thời gian bay: {calculateDuration(ticketData.flight.start_time, ticketData.flight.end_time)} giờ
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="arrival">
-                      <div className="time">{formatDateTime(ticketData.flight.end_time)}</div>
-                      <div className="location">{ticketData.flight.end_location}</div>
+                    <div className="flight-status">
+                      Hoãn: {ticketData.flight.delay_status} giờ
                     </div>
                   </div>
 
-                  <div className="flight-info-profile">
-                    <div className="passenger-details">
-                      <div className="info-group">
-                        <span className="label">Họ tên:</span>
-                        <span className="value">
-                          {ticketData.passenger_info.first_name} {ticketData.passenger_info.last_name}
-                        </span>
+                  <div className="flight-details">
+                    <div className="time-location-container">
+                      <div className="departure">
+                        <div className="time">
+                          {formatDateTime(ticketData.flight.start_time)}
+                        </div>
+                        <div className="location">
+                          {ticketData.flight.start_location}
+                        </div>
                       </div>
-                      <div className="info-group">
-                        <span className="label">CCCD:</span>
-                        <span className="value">{ticketData.passenger_info.citizen_id}</span>
+
+                      <div className="flight-duration">
+                        <div className="duration-line">
+                          <span className="duration-text">
+                            Thời gian bay:{" "}
+                            {calculateDuration(
+                              ticketData.flight.start_time,
+                              ticketData.flight.end_time
+                            )}{" "}
+                            giờ
+                          </span>
+                        </div>
                       </div>
-                      <div className="info-group">
-                        <span className="label">Ghế:</span>
-                        <span className="value">{ticketData.seat}</span>
-                      </div>
-                      <div className="info-group">
-                        <span className="label">Hạng vé:</span>
-                        <span className="value">{ticketData.ticket_class}</span>
+
+                      <div className="arrival">
+                        <div className="time">
+                          {formatDateTime(ticketData.flight.end_time)}
+                        </div>
+                        <div className="location">
+                          {ticketData.flight.end_location}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="action-buttons">
-                    <button 
-                      className="details-button"
-                      onClick={() => toggleDetails(0)}
-                    >
-                      {expandedCards[0] ? 'Ẩn chi tiết' : 'Xem chi tiết'}
-                    </button>
-                    <button 
-                      className="cancel-button"
-                      onClick={() => handleCancel(ticketData.id, ticketData.flight.start_time)}
-                    >
-                      Hủy vé
-                    </button>
-                  </div>
+                    <div className="flight-info-profile">
+                      <div className="passenger-details">
+                        <div className="info-group">
+                          <span className="label">Họ tên:</span>
+                          <span className="value">
+                            {ticketData.passenger_info.first_name}{" "}
+                            {ticketData.passenger_info.last_name}
+                          </span>
+                        </div>
+                        <div className="info-group">
+                          <span className="label">CCCD:</span>
+                          <span className="value">
+                            {ticketData.passenger_info.citizen_id}
+                          </span>
+                        </div>
+                        <div className="info-group">
+                          <span className="label">Ghế:</span>
+                          <span className="value">{ticketData.seat}</span>
+                        </div>
+                        <div className="info-group">
+                          <span className="label">Hạng vé:</span>
+                          <span className="value">
+                            {ticketData.ticket_class}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-                  {expandedCards[0] && (
-                    <div className="expanded-details">
-                      <div className="expanded-details-content">
-                        <div className="passenger-info-section">
-                          <h3>Thông tin hành khách</h3>
+                    <div className="action-buttons">
+                      <button
+                        className="details-button"
+                        onClick={() => toggleDetails(0)}
+                      >
+                        {expandedCards[0] ? "Ẩn chi tiết" : "Xem chi tiết"}
+                      </button>
+                      <button
+                        className="cancel-button"
+                        onClick={() =>
+                          handleCancel(
+                            ticketData.id,
+                            ticketData.flight.start_time
+                          )
+                        }
+                      >
+                        Hủy vé
+                      </button>
+                    </div>
+
+                    {expandedCards[0] && (
+                      <div className="expanded-details">
+                        <div className="expanded-details-content">
+                          <div className="passenger-info-section">
+                            <h3>Thông tin hành khách</h3>
+                            <div className="info-grid">
+                              <div className="info-item">
+                                <span className="info-label">Họ tên:</span>
+                                <span className="info-value">
+                                  {ticketData.passenger_info.first_name}{" "}
+                                  {ticketData.passenger_info.last_name}
+                                </span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">Ngày sinh:</span>
+                                <span className="info-value">
+                                  {ticketData.passenger_info.date_of_birth}
+                                </span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">CCCD:</span>
+                                <span className="info-value">
+                                  {ticketData.passenger_info.citizen_id}
+                                </span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">Quốc tịch:</span>
+                                <span className="info-value">
+                                  {ticketData.passenger_info.nationality}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="expanded-details-content">
+                          <h3>Thông tin vé</h3>
                           <div className="info-grid">
                             <div className="info-item">
-                              <span className="info-label">Họ tên:</span>
+                              <span className="info-label">
+                                Mã chuyến bay:{" "}
+                              </span>
                               <span className="info-value">
-                                {ticketData.passenger_info.first_name} {ticketData.passenger_info.last_name}
+                                {ticketData.flight.code}
                               </span>
                             </div>
                             <div className="info-item">
-                              <span className="info-label">Ngày sinh:</span>
-                              <span className="info-value">{ticketData.passenger_info.date_of_birth}</span>
-                            </div>
-                            <div className="info-item">
-                              <span className="info-label">CCCD:</span>
-                              <span className="info-value">{ticketData.passenger_info.citizen_id}</span>
-                            </div>
-                            <div className="info-item">
-                              <span className="info-label">Quốc tịch:</span>
-                              <span className="info-value">{ticketData.passenger_info.nationality}</span>
+                              <span className="info-label">Giá vé: </span>
+                              <span className="info-value">
+                                {ticketData.price} đồng
+                              </span>
                             </div>
                           </div>
                         </div>
                       </div>
-
-                      <div className="expanded-details-content">
-                        <h3>Thông tin vé</h3>
-                        <div className="info-grid">
-                          <div className="info-item">
-                            <span className="info-label">Mã chuyến bay: </span>
-                            <span className="info-value">{ticketData.flight.code}</span>
-                          </div>
-                          <div className="info-item">
-                            <span className="info-label">Giá vé: </span>
-                            <span className="info-value">{ticketData.price} đồng</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        )}
-      </div>
-    
-      {/* <div className="news-list">
+            )
+          )}
+        </div>
+
+        {/* <div className="news-list">
           <h2>Thông báo về chuyến bay</h2>
           <div className="news-list-content">
           {currentItems.length > 0 ? (
@@ -320,19 +372,20 @@ const TicketInfo = () => {
           )}
           </div>
         </div> */}
-        <div className="pagination">
+        {/* <div className="pagination">
           <button onClick={goToPreviousPage} disabled={currentPage === 1}>
             <img src="/icons/previous.png" alt="Previous Page" />
           </button>
           <span>
-            Trang {currentPage} of {totalPages}
+            Trang {currentPage} of {totalPages + 1}
           </span>
           <button onClick={goToNextPage} disabled={currentPage === totalPages}>
             <img src="/icons/next.png" alt="Next Page" />
           </button>
-        </div>
-      <Footer />
-    </section>
+        </div> */}
+      </section>
+      {/* <Footer /> */}
+    </>
   );
 };
 
