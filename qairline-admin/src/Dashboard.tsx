@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
-import { useDataProvider } from 'react-admin';
+import { useDataProvider, useTranslate } from 'react-admin';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 
 interface TicketClassDistribution {
@@ -15,6 +15,7 @@ interface FlightTicketData {
 }
 
 const Dashboard = () => {
+    const translate = useTranslate();
     const dataProvider = useDataProvider();
     const [stats, setStats] = useState<{
         totalTickets: number;
@@ -87,28 +88,28 @@ const Dashboard = () => {
         <Card>
             <CardContent>
                 <Typography variant="h4" component="h3" gutterBottom>
-                    Ticket Statistics
+                    {translate('dashboard.ticket_statistics')}
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" component="p">
-                            Total Tickets: <Typography variant="body1" component="span">{stats.totalTickets}</Typography>
+                            {translate('dashboard.total_tickets')}: <Typography variant="body1" component="span">{stats.totalTickets}</Typography>
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" component="p">
-                            Total Economic Tickets: <Typography variant="body1" component="span">{stats.totalEconomicTickets}</Typography>
+                            {translate('dashboard.total_economic_tickets')} <Typography variant="body1" component="span">{stats.totalEconomicTickets}</Typography>
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" component="p">
-                            Total Business Tickets: <Typography variant="body1" component="span">{stats.totalBusinessTickets}</Typography>
+                            {translate('dashboard.total_business_tickets')}: <Typography variant="body1" component="span">{stats.totalBusinessTickets}</Typography>
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Box display="flex" flexDirection="column" alignItems="center">
                             <Typography variant="h5" component="h3" gutterBottom>
-                                Economy vs Business Tickets
+                                {translate('dashboard.economy_vs_business')}
                             </Typography>
                             <PieChart width={400} height={400}>
                                 <Pie
@@ -132,7 +133,7 @@ const Dashboard = () => {
                     <Grid item xs={12} sm={6}>
                         <Box display="flex" flexDirection="column" alignItems="center">
                             <Typography variant="h5" component="h3" gutterBottom>
-                                Tickets per Flight
+                                {translate('dashboard.tickets_per_flight')}
                             </Typography>
                             <BarChart
                                 width={500}
@@ -147,8 +148,8 @@ const Dashboard = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="tickets" fill="#8884d8" />
-                                <Bar dataKey="cancelledTickets" fill="#ff0000" />
+                                <Bar dataKey="tickets" name={translate('dashboard.tickets')} fill="#8884d8" />
+                                <Bar dataKey="cancelledTickets" name={translate('dashboard.cancelled_tickets')} fill="#ff0000" />
                             </BarChart>
                         </Box>
                     </Grid>

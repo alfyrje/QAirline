@@ -20,6 +20,10 @@ import { TravelInfoList, TravelInfoCreate, TravelInfoEdit, TravelInfoShow } from
 import { VoucherList, VoucherCreate, VoucherEdit, VoucherShow } from "./vouchers";
 import { PassengerList, PassengerShow } from "./passengers";
 import { Login } from './Login';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import customVietnameseMessages from "./customVietnameseMessages";
+
+const i18nProvider = polyglotI18nProvider(() => customVietnameseMessages, 'vi');
 
 const lightTheme = createTheme({
   palette: {
@@ -61,7 +65,7 @@ const darkTheme = createTheme({
 });
 
 export const App = () => (
-  <Admin dashboard={Dashboard} theme={lightTheme} layout={Layout} dataProvider={dataProvider} authProvider={authProvider} loginPage={Login}>
+  <Admin dashboard={Dashboard} theme={lightTheme} layout={Layout} dataProvider={dataProvider} authProvider={authProvider} loginPage={Login} i18nProvider={i18nProvider}>
     <Resource name="flights" options={{ label: 'Flights' }} list={FlightList} show={FlightShow} edit={FlightEdit} create={FlightCreate} icon={FlightLandIcon} />
     <Resource name="planes" options={{ label: 'Planes' }} list={PlaneList} edit={EditGuesser} show={ShowGuesser} create={PlaneCreate} icon={FlightIcon} />
     <Resource name="tickets" options={{ label: 'Tickets' }} list={TicketList} show={ShowGuesser} icon={AirplaneTicketIcon} />
