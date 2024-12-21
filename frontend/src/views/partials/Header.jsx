@@ -11,12 +11,53 @@ import React, { useState, useEffect, useRef } from "react";
 import notification_icon from "/icons/bell-ring.svg";
 import { stack as Menu } from "react-burger-menu";
 
+function NotificationItem({ notification }) {
+  return (
+    <li className="notification-item">
+      <div className="notification-title">{notification.title}</div>
+      <div className="notification-time">
+        {format(new Date(notification.created_at), 'HH:mm - dd/MM/yyyy', { locale: vi })}
+      </div>
+    </li>
+  );
+}
+
 function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8000/adminapp/notifications/',
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+
+        setNotifications(response.data.map(news => ({
+          title: news.title,
+          message: news.content,
+          created_at: news.created_at,
+          flight_code: news.flight_code
+        })));
+
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    if (token) {
+      fetchNotifications();
+      const interval = setInterval(fetchNotifications, 5 * 60 * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [token]);
 
   const handleLogout = () => {
     logout();
@@ -103,17 +144,13 @@ function Header() {
                     <ul>
                       {notifications.length > 0 ? (
                         notifications.map((notification, index) => (
-                          <DropdownItem
+                          <NotificationItem
                             key={index}
-                            className="dropdownItem"
-                            text={notification.message}
+                            notification={notification}
                           />
                         ))
                       ) : (
-                        <DropdownItem
-                          className="dropdownItem"
-                          text="No new notifications"
-                        />
+                        <li className="notification-item">Không có thông báo mới</li>
                       )}
                     </ul>
                   </div>

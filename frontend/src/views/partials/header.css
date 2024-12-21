@@ -328,6 +328,37 @@ Note: Beware of modifying this element as it can break the animations - you shou
   cursor: pointer; /* Ensures the cursor appears as a pointer for buttons */
 }
 
+.header-notification {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #d36286;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-title {
+  font-weight: bold;
+  color: #357a38;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
 
 
 @media (max-width: 830px) {
