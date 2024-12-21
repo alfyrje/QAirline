@@ -20,7 +20,8 @@ from django.conf import settings
 import random
 from datetime import datetime, timedelta
 from django.utils.encoding import smart_str
-
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
@@ -172,3 +173,51 @@ class UserNotificationsView(APIView):
         
         serializer = NewsSerializer(notifications, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class TicketStatsView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        city = request.query_params.get('city')
+
+        tickets = Ticket.objects.filter(cancelled=False)
+        
+        if start_date:
+            tickets = tickets.filter(flight__start_time__gte=start_date)
+        if end_date:
+            tickets = tickets.filter(flight__start_time__lte=end_date)
+        if city:
+            tickets = tickets.filter(flight__end_location=city)
+
+        # Time series data
+        time_series = (
+            tickets
+            .annotate(date=TruncDate('flight__start_time'))
+            .values('date')
+            .annotate(count=Count('id'))
+            .order_by('date')
+        )
+
+        # Class distribution
+        class_distribution = (
+            tickets
+            .values('ticket_class')
+            .annotate(count=Count('id'))
+            .order_by('ticket_class')
+        )
+
+        # City data
+        city_data = (
+            tickets
+            .values('flight__end_location')
+            .annotate(count=Count('id'))
+            .order_by('flight__end_location')
+        )
+
+        return Response({
+            'time_series': list(time_series),
+            'class_distribution': list(class_distribution),
+            'city_data': list(city_data)
+        })
