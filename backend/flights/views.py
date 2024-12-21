@@ -95,16 +95,16 @@ class TicketSearchView(ListAPIView):
         ticket_code = request.data.get('ticket_code')
         flight_code = request.data.get('flight_code')
 
-        query = Q()
+        query = Q(cancelled=False)
         if ticket_code:
             query &= Q(code=ticket_code)
         if flight_code:
             query &= Q(flight__code=flight_code)
-
+        
         queryset = Ticket.objects.filter(query)
 
         if not queryset.exists():
-            return Response({"error": "No tickets found with the provided details."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Vé không tồn tại hoặc đã được hủy."}, status=status.HTTP_404_NOT_FOUND)
 
         response_data = []
         for ticket in queryset:
@@ -131,10 +131,10 @@ class TicketSearchView(ListAPIView):
                 "seat": ticket.seat,
                 "ticket_class": ticket.ticket_class,
                 "ticket_code": ticket.code,
+                "price": flight.business_price if ticket.ticket_class == 'B' else flight.economic_price,
                 "id": ticket.id,
             }
             response_data.append(ticket_info)
-        print(response_data)
         return Response(response_data, status=status.HTTP_200_OK)
 
 
@@ -153,7 +153,7 @@ class InitiateCancelTicketAPI(APIView):
             reverse('confirm-cancel-ticket')) + '?' + urlencode({'token': cancel_token})
 
         subject = f"Xác nhận hủy vé cho chuyến bay {ticket.flight.code}"
-        message = f"Please click the following link to confirm your ticket cancellation: {cancel_url}"
+        message = f"Hãy bấm link sau để xác nhận hủy vé của bạn cho chuyến bay: {cancel_url}"
         email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [
                              ticket.passenger.qr_email])
         try:

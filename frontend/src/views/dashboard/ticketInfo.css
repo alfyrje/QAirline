@@ -255,3 +255,10 @@
   font-weight: 400;
   line-height: 150%;
 }
+
+.passenger-info-section, .expanded-details-content > h3 {
+  color: #344054;
+}
+.info-label, .info-value {
+  color: #667085;
+}

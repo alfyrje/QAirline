@@ -17,7 +17,11 @@ function LogIn() {
     password: "",   
   });
   const[isLoading, setIsLoading] = useState(false);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { isLoggedIn, checkLoginStatus } = useAuthStore();
+      
+  useEffect(() => {
+  checkLoginStatus();
+  }, []);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -98,7 +102,6 @@ function LogIn() {
             </p>
           </form>
         </div>
-        <Footer />
       </section>
     </>
   );

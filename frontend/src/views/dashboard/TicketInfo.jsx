@@ -76,7 +76,7 @@ const TicketInfo = () => {
         }
       } else {
         setTicketData(null);
-        setMessage("Đã xảy ra lỗi khi tìm kiếm vé");
+        setMessage("Vé không tồn tại hoặc đã bị hủy");
       }
     } catch (error) {
       setTicketData(null);

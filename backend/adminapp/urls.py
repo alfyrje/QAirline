@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import PlaneViewSet, FlightViewSet, TicketViewSet, UserViewSet, PassengerViewSet, TravelInfoViewSet, VoucherViewSet
 from .views import NewsListView, UserNotificationsView
+from .views import TicketStatsView
 router = DefaultRouter()
 router.register(r'planes', PlaneViewSet)
 router.register(r'flights', FlightViewSet)
@@ -15,4 +16,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/news/', NewsListView.as_view(), name='news-list'),
     path('notifications/', UserNotificationsView.as_view(), name='user-notifications'),
+    path('ticket-stats/', TicketStatsView.as_view(), name='ticket-stats'),
 ]
