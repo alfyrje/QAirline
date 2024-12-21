@@ -1,0 +1,17 @@
+
+.expanded-details {
+  display: flex;
+  flex-direction: row;
+}
+
+.expanded-details-content {
+    width: 50%;
+}
+
+.expanded-details-content::last-child {
+    text-align: right;
+}
+
+.info-label {
+    font-weight: medium;
+}

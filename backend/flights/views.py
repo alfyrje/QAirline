@@ -84,20 +84,14 @@ class TicketSearchView(ListAPIView):
     queryset = Ticket.objects.none()  # Set an empty queryset as the default
 
     def post(self, request, *args, **kwargs):
+        ticket_code = request.data.get('ticket_code')
         flight_code = request.data.get('flight_code')
-        citizen_id = request.data.get('citizen_id')
-        seat = request.data.get('seat')
-        ticket_class = request.data.get('ticket_class')
 
         query = Q()
+        if ticket_code:
+            query &= Q(code=ticket_code)
         if flight_code:
             query &= Q(flight__code=flight_code)
-        if citizen_id:
-            query &= Q(passenger__citizen_id=citizen_id)
-        if seat:
-            query &= Q(seat=seat)
-        if ticket_class:
-            query &= Q(ticket_class=ticket_class)
 
         queryset = Ticket.objects.filter(query)
 
@@ -111,7 +105,6 @@ class TicketSearchView(ListAPIView):
             ticket_info = {
                 "flight": {
                     "code": flight.code,
-                    "plane_id": flight.plane.id,
                     "start_location": flight.start_location,
                     "end_location": flight.end_location,
                     "start_time": flight.start_time,
@@ -127,12 +120,9 @@ class TicketSearchView(ListAPIView):
                     "nationality": passenger.nationality,
                     "gender": passenger.gender,
                 },
-                "ticket_info": {
-                    "seat": ticket.seat,
-                    "ticket_class": ticket.ticket_class,
-                    "cancelled": ticket.cancelled,
-                    "id": ticket.id,
-                }
+                "seat": ticket.seat,
+                "ticket_class": ticket.ticket_class,
+                "ticket_code": ticket.code,
             }
             response_data.append(ticket_info)
         print(response_data)
@@ -300,10 +290,10 @@ class TicketsFlightsHistoryAPI(ListAPIView):
         for ticket in tickets:
             flight = ticket.flight
             passenger = ticket.passenger
+            price = flight.business_price if ticket.ticket_class == 'B' else flight.economic_price
             ticket_info = {
                 "flight": {
                     "code": flight.code,
-                    "plane_id": flight.plane.id,
                     "start_location": flight.start_location,
                     "end_location": flight.end_location,
                     "start_time": flight.start_time,
@@ -317,10 +307,13 @@ class TicketsFlightsHistoryAPI(ListAPIView):
                     "date_of_birth": passenger.date_of_birth,
                     "citizen_id": passenger.citizen_id,
                     "nationality": passenger.nationality,
+                    "gender": passenger.gender,
+
                 },
                 "seat": ticket.seat,
-                "ticket_class": ticket.get_ticket_class_display(),
-                "ticket_id": ticket.id,
+                "ticket_class": ticket.ticket_class,
+                "ticket_code": ticket.code,
+                "price": price,
             }
             response_data.append(ticket_info)
 

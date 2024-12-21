@@ -28,13 +28,13 @@ class StandardResultsSetPagination(PageNumberPagination):
 def notify_user(user_id, message):
     channel_layer = get_channel_layer()
     print(f"Sending notification to user_{user_id}")
-    async_to_sync(channel_layer.group_send)(
-        f"user_{user_id}",
-        {
-            "type": "send_notification",
-            "message": message,
-        }
-    )
+    # async_to_sync(channel_layer.group_send)(
+    #     f"user_{user_id}",
+    #     {
+    #         "type": "send_notification",
+    #         "message": message,
+    #     }
+    # )
 
 class PlaneViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
@@ -83,7 +83,7 @@ class FlightViewSet(viewsets.ModelViewSet):
             news_entry = News.objects.create(
                 title=smart_str(news_title, encoding='utf-8'),
                 content=smart_str(news_content, encoding='utf-8'),
-                flight_code=flight.code  # Add this line to include flight code
+                flight_code=flight.code,  # Add this line to include flight code,
             )
             news_entry.save()
 
