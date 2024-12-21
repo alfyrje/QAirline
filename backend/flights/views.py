@@ -95,16 +95,16 @@ class TicketSearchView(ListAPIView):
         ticket_code = request.data.get('ticket_code')
         flight_code = request.data.get('flight_code')
 
-        query = Q()
+        query = Q(cancelled=False)
         if ticket_code:
             query &= Q(code=ticket_code)
         if flight_code:
             query &= Q(flight__code=flight_code)
-
+        
         queryset = Ticket.objects.filter(query)
 
         if not queryset.exists():
-            return Response({"error": "No tickets found with the provided details."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Vé không tồn tại hoặc đã được hủy."}, status=status.HTTP_404_NOT_FOUND)
 
         response_data = []
         for ticket in queryset:
@@ -131,6 +131,7 @@ class TicketSearchView(ListAPIView):
                 "seat": ticket.seat,
                 "ticket_class": ticket.ticket_class,
                 "ticket_code": ticket.code,
+                "price": flight.business_price if ticket.ticket_class == 'B' else flight.economic_price,
                 "id": ticket.id,
             }
             response_data.append(ticket_info)

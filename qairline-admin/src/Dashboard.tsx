@@ -1,29 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
+import { useState } from 'react';
+import { Card, CardContent, Typography, Grid, Box, TextField, Button } from '@mui/material';
 import { useDataProvider, useTranslate } from 'react-admin';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
-
-interface TicketClassDistribution {
-    name: string;
-    value: number;
-}
-
-interface FlightTicketData {
-    flight: string;
-    tickets: number;
-    cancelledTickets: number;
-}
 
 const Dashboard = () => {
     const translate = useTranslate();
     const dataProvider = useDataProvider();
-    const [stats, setStats] = useState<{
-        totalTickets: number;
-        totalEconomicTickets: number;
-        totalBusinessTickets: number;
-        ticketClassDistribution: TicketClassDistribution[];
-        flightTicketData: FlightTicketData[];
-    }>({
+    const [selectedFlightCode, setSelectedFlightCode] = useState('');
+    const [stats, setStats] = useState({
         totalTickets: 0,
         totalEconomicTickets: 0,
         totalBusinessTickets: 0,
@@ -31,82 +15,86 @@ const Dashboard = () => {
         flightTicketData: [],
     });
 
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const { data: tickets } = await dataProvider.getList('tickets', {
-                    pagination: { page: 1, perPage: 1000 },
-                    sort: { field: 'id', order: 'ASC' },
-                    filter: {},
-                });
+    const handleFlightCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedFlightCode(event.target.value);
+    };
 
-                const totalTickets = tickets.length;
-                const totalEconomicTickets = tickets.filter(ticket => ticket.ticket_class === 'E').length;
-                const totalBusinessTickets = tickets.filter(ticket => ticket.ticket_class === 'B').length;
+    const fetchStats = async () => {
+        try {
+            const { data: tickets } = await dataProvider.getList('tickets', {
+                pagination: { page: 1, perPage: 1000 },
+                sort: { field: 'id', order: 'ASC' },
+                filter: selectedFlightCode ? { 'flight__code': selectedFlightCode } : {},
+            });
 
-                const ticketClassDistribution = [
-                    { name: 'Economic', value: totalEconomicTickets },
-                    { name: 'Business', value: totalBusinessTickets },
-                ];
+            const totalTickets = tickets.length;
+            const totalEconomicTickets = tickets.filter(ticket => ticket.ticket_class === 'E').length;
+            const totalBusinessTickets = tickets.filter(ticket => ticket.ticket_class === 'B').length;
 
-                const flightIds = [...new Set(tickets.map(ticket => ticket.flight))];
-                const { data: flights } = await dataProvider.getMany('flights', { ids: flightIds });
+            const ticketClassDistribution = [
+                { name: 'Economic', value: totalEconomicTickets },
+                { name: 'Business', value: totalBusinessTickets },
+            ];
 
-                const flightTicketData = tickets.reduce((acc: FlightTicketData[], ticket: any) => {
-                    const flight = flights.find(flight => flight.id === ticket.flight);
-                    const flightCode = flight ? flight.code : ticket.flight;
-                    const flightIndex = acc.findIndex(flight => flight.flight === flightCode);
-                    if (flightIndex >= 0) {
-                        acc[flightIndex].tickets += 1;
-                        if (ticket.status === 'cancelled') {
-                            acc[flightIndex].cancelledTickets += 1;
-                        }
-                    } else {
-                        acc.push({ flight: flightCode, tickets: 1, cancelledTickets: ticket.status === 'cancelled' ? 1 : 0 });
-                    }
-                    return acc;
-                }, []);
-
-                setStats({
-                    totalTickets,
-                    totalEconomicTickets,
-                    totalBusinessTickets,
-                    ticketClassDistribution,
-                    flightTicketData,
-                });
-            } catch (error) {
-                console.error('Error fetching ticket stats:', error);
-            }
-        };
-
-        fetchStats();
-    }, [dataProvider]);
+            setStats({
+                totalTickets,
+                totalEconomicTickets,
+                totalBusinessTickets,
+                ticketClassDistribution,
+                flightTicketData: [],
+            });
+        } catch (error) {
+            console.error('Error fetching ticket stats:', error);
+        }
+    };
 
     const COLORS = ['#0088FE', '#00C49F'];
 
     return (
         <Card>
             <CardContent>
+                <Box mb={3}>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="Flight Code"
+                                value={selectedFlightCode}
+                                onChange={handleFlightCodeChange}
+                                placeholder="Enter flight code"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Button variant="contained" color="primary" onClick={fetchStats}>
+                                Search
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+
                 <Typography variant="h4" component="h3" gutterBottom>
-                    {translate('dashboard.ticket_statistics')}
+                    {translate('dashboard.ticket_statistics')} 
+                    {selectedFlightCode && ` - Flight ${selectedFlightCode}`}
                 </Typography>
+
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" component="p">
-                            {translate('dashboard.total_tickets')}: <Typography variant="body1" component="span">{stats.totalTickets}</Typography>
+                            {translate('dashboard.total_tickets')}: {stats.totalTickets}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" component="p">
-                            {translate('dashboard.total_economic_tickets')} <Typography variant="body1" component="span">{stats.totalEconomicTickets}</Typography>
+                            {translate('dashboard.total_economic_tickets')}: {stats.totalEconomicTickets}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" component="p">
-                            {translate('dashboard.total_business_tickets')}: <Typography variant="body1" component="span">{stats.totalBusinessTickets}</Typography>
+                            {translate('dashboard.total_business_tickets')}: {stats.totalBusinessTickets}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+
+                    <Grid item xs={12}>
                         <Box display="flex" flexDirection="column" alignItems="center">
                             <Typography variant="h5" component="h3" gutterBottom>
                                 {translate('dashboard.economy_vs_business')}
@@ -128,29 +116,6 @@ const Dashboard = () => {
                                 </Pie>
                                 <Tooltip />
                             </PieChart>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Box display="flex" flexDirection="column" alignItems="center">
-                            <Typography variant="h5" component="h3" gutterBottom>
-                                {translate('dashboard.tickets_per_flight')}
-                            </Typography>
-                            <BarChart
-                                width={500}
-                                height={300}
-                                data={stats.flightTicketData}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="flight" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="tickets" name={translate('dashboard.tickets')} fill="#8884d8" />
-                                <Bar dataKey="cancelledTickets" name={translate('dashboard.cancelled_tickets')} fill="#ff0000" />
-                            </BarChart>
                         </Box>
                     </Grid>
                 </Grid>
