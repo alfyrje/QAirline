@@ -67,19 +67,19 @@ class FlightViewSet(viewsets.ModelViewSet):
             orig_time = datetime.fromisoformat(original_data['start_time'])
             updated_time = orig_time + timedelta(hours=updated_data['delay_status'])
             print(updated_time)
-            # updated_time_format = updated_time.strftime("%H:%M giờ ngày %d-%m-%Y").encode('utf-8').decode('utf-8')
-            # orig_time_format = orig_time.strftime("%H:%M giờ ngày %d-%m-%Y").encode('utf-8').decode('utf-8')
-            # news_content = f"""
-            #     Chuyến bay {flight.code} xin được phép cập nhật giờ khởi hành từ 
-            #     {orig_time_format} thành {updated_time_format}
-            #     {possible_reasons[i]}. Cảm ơn quý khách đã thông cảm và lựa chọn QAirline. Xin quý khách có một chuyến đi vui vẻ!
-            #     """
-            # news_entry = News.objects.create(
-            #     title=smart_str(news_title, encoding='utf-8'),
-            #     content=smart_str(news_content, encoding='utf-8'),
-            #     # user=request.user
-            # )
-            # news_entry.save()
+            updated_time_format = updated_time.strftime("%H:%M %d-%m-%Y").encode('utf-8').decode('utf-8')
+            orig_time_format = orig_time.strftime("%H:%M %d-%m-%Y").encode('utf-8').decode('utf-8')
+            news_content = f"""
+                Chuyến bay {flight.code} xin được phép cập nhật giờ khởi hành từ 
+                {orig_time_format} thành {updated_time_format}
+                {possible_reasons[i]}. Cảm ơn quý khách đã thông cảm và lựa chọn QAirline. Xin quý khách có một chuyến đi vui vẻ!
+                """
+            news_entry = News.objects.create(
+                title=smart_str(news_title, encoding='utf-8'),
+                content=smart_str(news_content, encoding='utf-8'),
+                flight_code=flight.code  # Add this line to include flight code
+            )
+            news_entry.save()
 
             tickets = Ticket.objects.filter(flight=flight)
             for ticket in tickets:

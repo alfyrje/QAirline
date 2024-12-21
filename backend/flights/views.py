@@ -290,9 +290,7 @@ class TicketsFlightsHistoryAPI(ListAPIView):
     permission_classes = [AllowAny]  # Allow unauthenticated access
     serializer_class = TicketSerializer
     def get(self, request, *args, **kwargs):
-        print("REQUEST HEADERS")
         request_jwt = request.headers.get("Authorization").replace("Bearer ", "")
-        print(request_jwt)
         request_jwt_decoded = jwt.decode(request_jwt, settings.SECRET_KEY, algorithms=['HS256'])
         user_id = request_jwt_decoded['user_id']
         

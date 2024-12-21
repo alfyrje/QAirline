@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import Header from "../partials/Header";
-import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
-import { useAuthStore } from "../../store/auth";
-import { register } from "../../utils/auth";
-
+import Swal from "sweetalert2";
 import "./profile.css";
 
 function ProfileFlights() {
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCards, setExpandedCards] = useState({});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,100 +93,122 @@ function ProfileFlights() {
     })
   };
 
+  const toggleDetails = (index) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
   return (
     <>
       <div className="profile-content">
         <div className="profile-flights-header">Lịch sử chuyến bay</div>
         <div className="profile-flights-content">
-          <div className="profile-flights-list">
-            <div className="profile-flights-list-row">
-              <div className="profile-flights-column departure-time">
-                Thời gian xuất phát
-              </div>
-              <div className="profile-flights-column arrival-time">
-                Thời gian đến
-              </div>
-              <div className="profile-flights-column departure-location">
-                Địa điểm xuất phát
-              </div>
-              <div className="profile-flights-column arrival-location">
-                Địa điểm đến
-              </div>
-              <div className="profile-flights-column passenger-info">
-                Thông tin người bay
-              </div>
-              <div className="profile-flights-column ticket-info">
-                Thông tin vé
-              </div>
-              <div className="profile-flights-column status">Trạng thái</div>
-              <div className="profile-flights-column cancel">Hủy vé</div>
-            </div>
-            <div className="profile-flights-list-body">
-              {flights.map((ticket, index) => (
-                <div key={index} className="profile-flights-list-row">
-                  <div className="profile-flights-column departure-time">
-                    {ticket.flight.start_time}
+          <div className="flight-cards-container">
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              flights.map((ticket, index) => (
+                <div key={index} className="flight-card">
+                  <div className="flight-header">
+                    <div className="flight-code">Vé số #{ticket.flight.code}</div>
+                    <div className="flight-status">{ticket.flight.delay_status}</div>
                   </div>
-                  <div className="profile-flights-column arrival-time">
-                    {ticket.flight.end_time}
-                  </div>
-                  <div className="profile-flights-column departure-location">
-                    {ticket.flight.start_location}
-                  </div>
-                  <div className="profile-flights-column arrival-location">
-                    {ticket.flight.end_location}
-                  </div>
-                  <div className="profile-flights-column passenger-info">
-                    <p>
-                      <strong>Name:</strong> {ticket.passenger_info.first_name}{" "}
-                      {ticket.passenger_info.last_name}
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {ticket.passenger_info.tel_num}
-                    </p>
-                    <p>
-                      <strong>Date of Birth:</strong>{" "}
-                      {ticket.passenger_info.date_of_birth}
-                    </p>
-                    <p>
-                      <strong>Citizen ID:</strong>{" "}
-                      {ticket.passenger_info.citizen_id}
-                    </p>
-                    <p>
-                      <strong>Nationality:</strong>{" "}
-                      {ticket.passenger_info.nationality}
-                    </p>
-                  </div>
-                  <div className="profile-flights-column ticket-info">
-                    <p>
-                      <strong>Chuyến bay:</strong>
-                      {ticket.flight.code}
-                    </p>
-                    <p>
-                      <strong>Ghế:</strong>
-                      {ticket.seat}
-                    </p>
-                    <p>
-                      <strong>Loại vé:</strong>
-                      {ticket.ticket_class}
-                    </p>
-                  </div>
-                  <div className="profile-flights-column status">
-                    {ticket.flight.delay_status}
-                  </div>
-                  <div className="profile-flights-column cancel">
-                    <button
-                      className="profile-flights-cancel-ticket-button"
-                      onClick={() => confirmCancel(ticket.ticket_id, ticket.flight.start_time)}
-                    ></button>
+                  
+                  <div className="flight-details">
+                    <div className="time-location-container">
+                      <div className="departure">
+                        <div className="time">{ticket.flight.start_time}</div>
+                        <div className="location">{ticket.flight.start_location}</div>
+                      </div>
+
+                      <div className="flight-duration">
+                        <div className="duration-line">
+                          <span className="duration-text">7h</span>
+                        </div>
+                      </div>
+
+                      <div className="arrival">
+                        <div className="time">{ticket.flight.end_time}</div>
+                        <div className="location">{ticket.flight.end_location}</div>
+                      </div>
+                    </div>
+
+                    <div className="flight-info">
+                      <div className="passenger-details">
+                        <div className="info-group">
+                          <span className="label">Họ tên:</span>
+                          <span className="value">{ticket.passenger_info.first_name} {ticket.passenger_info.last_name}</span>
+                        </div>
+                        <div className="info-group">
+                          <span className="label">CCCD:</span>
+                          <span className="value">{ticket.passenger_info.citizen_id}</span>
+                        </div>
+                        <div className="info-group">
+                          <span className="label">Ghế:</span>
+                          <span className="value">{ticket.seat}</span>
+                        </div>
+                        <div className="info-group">
+                          <span className="label">Hạng vé:</span>
+                          <span className="value">{ticket.ticket_class}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="action-buttons">
+                      <button 
+                        className="details-button"
+                        onClick={() => toggleDetails(index)}
+                      >
+                        {expandedCards[index] ? 'Ẩn chi tiết' : 'Xem chi tiết'}
+                      </button>
+                      <button 
+                        className="cancel-button"
+                        onClick={() => confirmCancel(ticket.ticket_id, ticket.flight.start_time)}
+                      >
+                        Hủy vé
+                      </button>
+                    </div>
+                    {expandedCards[index] && (
+                      <div className="expanded-details">
+                        <div className="expanded-details-content">
+                          <div className="passenger-info-section">
+                            <h3>Thông tin hành khách</h3>
+                            <div className="info-grid">
+                              <div className="info-item">
+                                <span className="info-label">Họ tên:</span>
+                                <span className="info-value">{ticket.passenger_info.first_name} {ticket.passenger_info.last_name}</span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">Số điện thoại:</span>
+                                <span className="info-value">{ticket.passenger_info.tel_num}</span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">Ngày sinh:</span>
+                                <span className="info-value">{ticket.passenger_info.date_of_birth}</span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">CCCD:</span>
+                                <span className="info-value">{ticket.passenger_info.citizen_id}</span>
+                              </div>
+                              <div className="info-item">
+                                <span className="info-label">Quốc tịch:</span>
+                                <span className="info-value">{ticket.passenger_info.nationality}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>
     </>
   );
-}
+};
+
 export default ProfileFlights;
