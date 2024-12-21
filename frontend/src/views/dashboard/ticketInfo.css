@@ -1,24 +1,31 @@
 .ticket-info-container {
   position: relative;
   width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
   /* background: #edefee; */
   align-items: center;
   justify-content: center;
 }
 
+.flight-card .flight-header {
+  background-color: #f5bcc3;
+}
+
+
 .ticket-info-wrapper {
   margin: 1rem;
   background-color: #ffffff;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 16px 0 16px 0;
 }
 
 .ticket-info-header {
-  background: linear-gradient(90deg, #a1cf67, #6fbf3f);
+  background: #d8dcd1;
+  /* background: linear-gradient(90deg, #a1cf67, #6fbf3f); */
   padding: 0.5rem;
   font-weight: bold;
   font-size: 1.5rem;
-  border-radius: 16px 0 0 0;
+  /* border-radius: 16px 0 0 0; */
   text-align: left;
 }
 
@@ -26,25 +33,53 @@
   padding: 1rem;
   display: flex;
   width: 100%;
+  
   gap: 1%;
 }
+
+.flight-id-container {
+  width: 40%;
+  margin-left: 4rem;
+}
+.ticket-code-container {
+  width: 40%;
+}
+
+.flight-id-container label{
+  color: #467928 !important;
+}
+.ticket-code-container label{
+  color: #467928 !important;
+}
+
+
+.flight-id-container input {
+  width: 90%;
+  height: 2rem;
+
+}
+.ticket-code-container input {
+  width: 90%;
+  height: 2rem;
+}
+
 
 .ticket-info-form label {
   color: #333;
   font-weight: bold;
   padding-top: 0.5rem;
   font-size: 0.9rem;
-
 }
 
 .ticket-info-form input {
   outline: none;
   color: #707070;
-  border: 1px solid #edefee;
+  border: 1px solid #b8c1bc;
   border-radius: 6px;
   padding: 0.25rem;
   font-size: 0.95rem;
   color: #333333;
+  /* width: 50%; */
   transition: border-color 0.3s;
 }
 
@@ -62,14 +97,22 @@
 
 .ticket-info-button {
   padding: 0.5rem; 
-  background: transparent url('/icons/profile-flight-search.png') no-repeat center center;
-  background-size: contain;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: transparent url('/icons/profile-flight-search.png') no-repeat center center; */
+  /* background-size: contain; */
+  background-color: #6fbf3f;
   border: none; 
   cursor: pointer; 
   transition: all 0.2s ease; 
   border-radius: 5px;
-  width: 2.5rem; 
-  height: 2.5rem;
+  /* width: 2.5rem;  */
+  font-weight: 600;
+  font-size: 40;
+  /* height: 2.5rem; */
 }
 .ticket-info-button:hover {
   transform: scale(1.1); 
