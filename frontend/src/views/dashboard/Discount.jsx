@@ -54,7 +54,7 @@ const Discount = () => {
         const formattedData = data.map(discount => ({
 
           image: discount.voucher_picture,
-          card_title: `Giảm ${discount.voucher_description}`,
+          card_title: `${discount.voucher_description}`,
           card_subtitle: `${discount.voucher_code}`, /// này là nhập mã 
           buttonText: "Chi Tiết",
           description: discount.voucher_description,
