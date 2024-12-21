@@ -17,17 +17,33 @@ const NewsCard = ({ title, content, createdAt }) => {
     </div>
   );
 };
-
+const formatDateTime = (djangoDateTime) => {
+  const date = new Date(djangoDateTime);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  
+  return `${hours}:${minutes} ${day}/${month}/${year}`;
+};
+const calculateDuration = (startTime, endTime) => {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+  const diffInHours = (end - start) / (1000 * 60 * 60);
+  return Math.round(diffInHours);
+};
 const TicketInfo = () => {
   const [searchParams, setSearchParams] = useState({
+    ticket_code: "",
     flight_code: "",
-    citizen_id: "",
-    seat: "",
-    ticket_class: "",
   });
   const [ticketData, setTicketData] = useState(null);
-  const [passengerData, setPassengerData] = useState(null);
+  const [expandedCards, setExpandedCards] = useState({});
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  const [passengerData, setPassengerData] = useState(null);
   const [news, setNews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
@@ -45,41 +61,38 @@ const TicketInfo = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: 'same-origin',
           body: JSON.stringify(searchParams),
         }
       );
-
       if (response.ok) {
         const data = await response.json();
         if (data.length > 0) {
-          const ticket = data[0].ticket_info; // Adjusted to match the nested structure
-          const passenger = data[0].passenger_info; // Adjusted to match the nested structure
-          const flight = data[0].flight; // You can use this if needed
-          setTicketData(ticket);
-          setPassengerData(passenger);
+          setTicketData(data[0]);
           setMessage("");
         } else {
           setTicketData(null);
-          setPassengerData(null);
-          setMessage("No ticket found");
+          setMessage("Không tìm thấy vé với thông tin này");
         }
-      } else if (response.status === 404) {
-        setTicketData(null);
-        setPassengerData(null);
-        setMessage("No ticket found");
       } else {
         setTicketData(null);
-        setPassengerData(null);
-        setMessage("An error occurred while searching for the ticket");
+        setMessage("Đã xảy ra lỗi khi tìm kiếm vé");
       }
     } catch (error) {
       setTicketData(null);
-      setPassengerData(null);
-      setMessage("An error occurred while searching for the ticket");
+      setMessage("Đã xảy ra lỗi khi tìm kiếm vé");
     }
   };
 
-  const handleCancel = async (ticketId) => {
+  const handleCancel = async (ticketId, startTime) => {
+    const currentTime = new Date();
+    const departureTime = new Date(startTime);
+
+    const timeDifference = (departureTime - currentTime) / (1000 * 60 * 60);
+    if (timeDifference < 2) {
+      alert("Bạn chỉ có thể hủy vé tối đa 2 giờ trước khi chuyến bay khởi hành.");
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:8000/flights/initiate-cancel/${ticketId}/`,
@@ -87,7 +100,10 @@ const TicketInfo = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRFToken": document.cookie.split('csrftoken=')[1]?.split(';')[0] || '',
           },
+          credentials: 'include', // Important for CSRF
+          body: JSON.stringify({ ticket_id: ticketId }),
         }
       );
 
@@ -101,6 +117,12 @@ const TicketInfo = () => {
     }
   };
 
+  const toggleDetails = (index) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
   const fetchNews = async () => {
     try {
       const response = await fetch("http://localhost:8000/adminapp/api/news/");
@@ -161,31 +183,123 @@ const TicketInfo = () => {
 
         {message && <div className="ticket-info-message">{message}</div>}
 
-        {ticketData && (
-          <div className="ticket-result-list">
-            <div className="ticket-result-list-header">
-              <div className="ticket-column">Mã chuyến bay</div>
-              <div className="ticket-column">Ghế ngồi</div>
-              <div className="ticket-column">Hạng</div>
-              <div className="ticket-column">Số CCCD</div>
-            </div>
-            <div className="ticket-result-list-body">
-              <div className="ticket-result-row">
-                <div className="ticket-column">{ticketData.seat}</div>
-                <div className="ticket-column">{ticketData.ticket_class}</div>
-                <div className="ticket-column">{`${passengerData.first_name} ${passengerData.last_name}`}</div>
-                <div className="ticket-column">{passengerData.citizen_id}</div>
-                <div className="ticket-column">
-                  <button
-                    className="ticket-info-cancel-button"
-                    onClick={() => handleCancel(ticketData.id)}
-                  >
-                    Yêu cầu hủy vé
-                  </button>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          ticketData && (
+            <div className="flight-cards-container">
+              <div className="flight-card">
+                <div className="flight-header">
+                  <div className="flight-code">Vé #{ticketData.ticket_code}</div>
+                  <div className="flight-status">Hoãn: {ticketData.flight.delay_status} giờ</div>
+                </div>
+                
+                <div className="flight-details">
+                  <div className="time-location-container">
+                    <div className="departure">
+                      <div className="time">{formatDateTime(ticketData.flight.start_time)}</div>
+                      <div className="location">{ticketData.flight.start_location}</div>
+                    </div>
+
+                    <div className="flight-duration">
+                      <div className="duration-line">
+                        <span className="duration-text">
+                          Thời gian bay: {calculateDuration(ticketData.flight.start_time, ticketData.flight.end_time)} giờ
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="arrival">
+                      <div className="time">{formatDateTime(ticketData.flight.end_time)}</div>
+                      <div className="location">{ticketData.flight.end_location}</div>
+                    </div>
+                  </div>
+
+                  <div className="flight-info-profile">
+                    <div className="passenger-details">
+                      <div className="info-group">
+                        <span className="label">Họ tên:</span>
+                        <span className="value">
+                          {ticketData.passenger_info.first_name} {ticketData.passenger_info.last_name}
+                        </span>
+                      </div>
+                      <div className="info-group">
+                        <span className="label">CCCD:</span>
+                        <span className="value">{ticketData.passenger_info.citizen_id}</span>
+                      </div>
+                      <div className="info-group">
+                        <span className="label">Ghế:</span>
+                        <span className="value">{ticketData.seat}</span>
+                      </div>
+                      <div className="info-group">
+                        <span className="label">Hạng vé:</span>
+                        <span className="value">{ticketData.ticket_class}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="action-buttons">
+                    <button 
+                      className="details-button"
+                      onClick={() => toggleDetails(0)}
+                    >
+                      {expandedCards[0] ? 'Ẩn chi tiết' : 'Xem chi tiết'}
+                    </button>
+                    <button 
+                      className="cancel-button"
+                      onClick={() => handleCancel(ticketData.id, ticketData.flight.start_time)}
+                    >
+                      Hủy vé
+                    </button>
+                  </div>
+
+                  {expandedCards[0] && (
+                    <div className="expanded-details">
+                      <div className="expanded-details-content">
+                        <div className="passenger-info-section">
+                          <h3>Thông tin hành khách</h3>
+                          <div className="info-grid">
+                            <div className="info-item">
+                              <span className="info-label">Họ tên:</span>
+                              <span className="info-value">
+                                {ticketData.passenger_info.first_name} {ticketData.passenger_info.last_name}
+                              </span>
+                            </div>
+                            <div className="info-item">
+                              <span className="info-label">Ngày sinh:</span>
+                              <span className="info-value">{ticketData.passenger_info.date_of_birth}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="info-label">CCCD:</span>
+                              <span className="info-value">{ticketData.passenger_info.citizen_id}</span>
+                            </div>
+                            <div className="info-item">
+                              <span className="info-label">Quốc tịch:</span>
+                              <span className="info-value">{ticketData.passenger_info.nationality}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="expanded-details-content">
+                        <h3>Thông tin vé</h3>
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="info-label">Mã chuyến bay: </span>
+                            <span className="info-value">{ticketData.flight.code}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="info-label">Giá vé: </span>
+                            <span className="info-value">{ticketData.price} đồng</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
+          )
         )}
       </div>
     

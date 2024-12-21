@@ -123,6 +123,7 @@ class TicketSearchView(ListAPIView):
                 "seat": ticket.seat,
                 "ticket_class": ticket.ticket_class,
                 "ticket_code": ticket.code,
+                "id": ticket.id,
             }
             response_data.append(ticket_info)
         print(response_data)
@@ -136,11 +137,10 @@ class InitiateCancelTicketAPI(APIView):
             ticket = Ticket.objects.get(id=ticket_id)
         except Ticket.DoesNotExist:
             return Response({"error": "Ticket not found"}, status=status.HTTP_404_NOT_FOUND)
-
         cancel_token = jwt.encode({"ticket_id": ticket_id}, settings.SECRET_KEY, algorithm='HS256')
         cancel_url = request.build_absolute_uri(reverse('confirm-cancel-ticket')) + '?' + urlencode({'token': cancel_token})
 
-        subject = "Confirm Your Ticket Cancellation"
+        subject = f"Xác nhận hủy vé cho chuyến bay {ticket.flight.code}"
         message = f"Please click the following link to confirm your ticket cancellation: {cancel_url}"
         email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [ticket.passenger.qr_email])
         try:
@@ -314,6 +314,8 @@ class TicketsFlightsHistoryAPI(ListAPIView):
                 "ticket_class": ticket.ticket_class,
                 "ticket_code": ticket.code,
                 "price": price,
+                "id": ticket.id,
+
             }
             response_data.append(ticket_info)
 
