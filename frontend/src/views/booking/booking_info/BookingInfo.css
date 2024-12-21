@@ -22,7 +22,6 @@
 .booking-cards .flight-details {
     flex: 2;
     display: flex;
-    margin: 1rem 1rem 1rem 1rem;
     height: auto;
 }
 
@@ -114,9 +113,6 @@
     font-size: 1rem;
 }
 
-.booking-info-btn-primary-wrapper {
-
-}
 h1 {
     margin-top: 1rem;
     margin-bottom: 0.5rem;
@@ -152,9 +148,25 @@ h1 {
     padding: 2% 2% 2% 2%;
 }
 
-@media (max-width: 768px) {
-    .booking-cards .flight-details {        
-        display: flex;
-        flex-direction: column;
+@media (max-width: 1000px) {
+    .booking-cards .flight-card {
+        height: auto;
+    }
+
+    .booking-cards .flight-info {
+        position: relative;
+    }
+
+    .booking-cards .flight-info span {
+        display: none;
+    }
+
+    .booking-cards .location-time {
+        width: 100%;
+    }
+
+    .booking-cards .additional-info {
+        order: 2;
+        margin: 1rem 0;
     }
 }
