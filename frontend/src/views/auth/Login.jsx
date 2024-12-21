@@ -102,7 +102,6 @@ function LogIn() {
             </p>
           </form>
         </div>
-        <Footer />
       </section>
     </>
   );
