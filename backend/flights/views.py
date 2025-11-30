@@ -22,6 +22,7 @@ import datetime
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.shortcuts import redirect
+from django.db import transaction
 
 logger = logging.getLogger(__name__)
 
@@ -210,98 +211,138 @@ class CreateTicketsAPI(ListAPIView):
             booker_id = user_id
         print("BOOKER ID", booker_id)
 
-        tickets = []
-        for flight_info in flights:
-            flight_id = flight_info.get('flightId')
-            seat_class = flight_info.get('seatClass')
+        try:
+            with transaction.atomic():
+                tickets = []
 
-            try:
-                flight = Flight.objects.get(id=flight_id)
-            except Flight.DoesNotExist:
+                for flight_info in flights:
+                    flight_id = flight_info.get('flightId')
+                    seat_class = flight_info.get('seatClass')
+
+                    try:
+                        flight = Flight.objects.select_for_update().get(id=flight_id)
+                    except Flight.DoesNotExist:
+                        return Response(
+                            {"error": f"Flight with ID {flight_id} not found"},
+                            status=status.HTTP_404_NOT_FOUND
+                        )
+
+                    requested_seats = []
+                    for passenger_data in passengers_data:
+                        seat = next((s['seat'] for s in passenger_data['seats']
+                                    if s['flight_id'] == flight_id), None)
+                        if seat:
+                            requested_seats.append(seat)
+
+                    existing_tickets = Ticket.objects.filter(
+                        flight_id=flight_id,
+                        seat__in=requested_seats,
+                        cancelled=False
+                    ).values_list('seat', flat=True)
+
+                    if existing_tickets:
+                        conflicting_seats = list(existing_tickets)
+                        return Response(
+                            {
+                                "error": "SEAT_CONFLICT",
+                                "message": f"Ghế {', '.join(conflicting_seats)} đã được đặt bởi người khác. Vui lòng chọn ghế khác.",
+                                "conflicting_seats": conflicting_seats,
+                                "flight_id": flight_id
+                            },
+                            status=status.HTTP_409_CONFLICT
+                        )
+
+                # If all seats are available, proceed with ticket creation
+                for flight_info in flights:
+                    flight_id = flight_info.get('flightId')
+                    seat_class = flight_info.get('seatClass')
+                    flight = Flight.objects.get(id=flight_id)
+
+                    for passenger_data in passengers_data:
+                        print('PASSENGER DATA', passenger_data)
+                        passenger_serializer = PassengerSerializer(data=passenger_data)
+                        
+                        try:
+                            passenger_serializer.is_valid(raise_exception=True)
+                            passenger = passenger_serializer.save()
+                            logger.info("Passenger created: %s", passenger)
+                        except Exception as e:
+                            error_message = f"Error processing passenger data: {str(e)}"
+                            print(error_message)
+                            return Response(
+                                {"error": error_message},
+                                status=status.HTTP_400_BAD_REQUEST
+                            )
+                        
+                        seat = next((s['seat'] for s in passenger_data['seats']
+                                    if s['flight_id'] == flight_id), 'TEMP')
+
+                        ticket_data = {
+                            'booker': booker_id,
+                            'flight': flight.id,
+                            'passenger': passenger.id,
+                            'seat': seat,
+                            'ticket_class': seat_class,
+                            'cancelled': False,
+                        }
+
+                        ticket_serializer = TicketSerializer(data=ticket_data)
+                        print("-----------------------------Debug Serializer Data")
+                        print("Input data:", ticket_data)
+                        if not ticket_serializer.is_valid():
+                            print("Validation errors:", ticket_serializer.errors)
+                            raise serializers.ValidationError(ticket_serializer.errors)
+                        ticket = ticket_serializer.save()
+                        tickets.append(ticket)
+
+                        qr_data = f"Ticket ID: {ticket.id}, Flight ID: {flight_id}, Seat: {seat}, Passenger: {passenger.id}"
+                        qr = qrcode.make(qr_data)
+
+                        qr_image = BytesIO()
+                        qr.save(qr_image, format='PNG')
+                        qr_image.seek(0)
+
+                        # Create a Django file-like object from the BytesIO object
+                        qr_file = File(qr_image, name=f"ticket_{ticket.id}_qr.png")
+
+                        # Send the email with the QR code attached
+                        subject = f"QAirline: Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
+                        message = (
+                            f"Hệ thống đã ghi nhận vé đặt cho quý khách cho chuyến bay {flight.code} với thông tin như sau: \n\n"
+                            + f"Mã chuyến bay: {flight.code}\n"
+                            + f"Mã vé: {ticket.code}\n"
+                            + f"Thời gian khởi hành: {flight.start_time}\n"
+                            + f"Thời gian đến: {flight.end_time}\n"
+                            + f"Địa điểm xuất phát: {flight.start_location}\n"
+                            + f"Địa điểm đến: {flight.end_location}\n"
+                            + f"Số ghế: {seat}\n"
+                            + f"Hạng vé: {seat_class}\n"
+                            + "Cảm ơn quý khách đã lựa chọn QAirline. Chúc quý khách có một chuyến đi vui vẻ!"
+                        )
+
+                        email = EmailMessage(subject, str(message), settings.DEFAULT_FROM_EMAIL, [
+                                             passenger_data['qr_email']])
+                        email.attach('ticket_qr.png', qr_file.read(), 'image/png')
+                        try:
+                            email.send()
+                            print(
+                                f"Email sent successfully to {passenger_data['qr_email']}")
+                        except Exception as e:
+                            print(
+                                f"Failed to send email to {passenger_data['qr_email']}: {e}")
+
                 return Response(
-                    {"error": f"Flight with ID {flight_id} not found"},
-                    status=status.HTTP_404_NOT_FOUND
+                    {"message": "Passengers and tickets created successfully",
+                        "tickets": [TicketSerializer(t).data for t in tickets]},
+                    status=status.HTTP_201_CREATED
                 )
-
-            for passenger_data in passengers_data:
-                print('PASSENGER DATA', passenger_data)
-                passenger_serializer = PassengerSerializer(data=passenger_data)
-                
-                try:
-                    passenger_serializer = PassengerSerializer(
-                        data=passenger_data)
-                    passenger_serializer.is_valid(raise_exception=True)
-                    passenger = passenger_serializer.save()
-                    logger.info("Passenger created: %s", passenger)
-                except Exception as e:
-                    error_message = f"Error processing passenger data: {str(e)}"
-                    print(error_message)
-                    return Response(
-                        {"error": error_message},
-                        status=status.HTTP_400_BAD_REQUEST
-                    )
-                seat = next((s['seat'] for s in passenger_data['seats']
-                            if s['flight_id'] == flight_id), 'TEMP')
-
-                ticket_data = {
-                    'booker': booker_id,
-                    'flight': flight.id,
-                    'passenger': passenger.id,
-                    'seat': seat,
-                    'ticket_class': seat_class,
-                    'cancelled': False,
-                }
-
-                ticket_serializer = TicketSerializer(data=ticket_data)
-                print("-----------------------------Debug Serializer Data")
-                print("Input data:", ticket_data)
-                if not ticket_serializer.is_valid():
-                    print("Validation errors:", ticket_serializer.errors)
-                    raise serializers.ValidationError(ticket_serializer.errors)
-                ticket = ticket_serializer.save()
-                tickets.append(ticket)
-
-                qr_data = f"Ticket ID: {ticket.id}, Flight ID: {flight_id}, Seat: {seat}, Passenger: {passenger.id}"
-                qr = qrcode.make(qr_data)
-
-                qr_image = BytesIO()
-                qr.save(qr_image, format='PNG')
-                qr_image.seek(0)
-
-                # Create a Django file-like object from the BytesIO object
-                qr_file = File(qr_image, name=f"ticket_{ticket.id}_qr.png")
-
-                # Send the email with the QR code attached
-                subject = f"QAirline: Mã QR của khách hàng cho vé của chuyến bay {flight.code}"
-                message = (
-                    f"Hệ thống đã ghi nhận vé đặt cho quý khách cho chuyến bay {flight.code} với thông tin như sau: \n\n"
-                    + f"Mã chuyến bay: {flight.code}\n"
-                    + f"Mã vé: {ticket.code}\n"
-                    + f"Thời gian khởi hành: {flight.start_time}\n"
-                    + f"Thời gian đến: {flight.end_time}\n"
-                    + f"Địa điểm xuất phát: {flight.start_location}\n"
-                    + f"Địa điểm đến: {flight.end_location}\n"
-                    + f"Số ghế: {seat}\n"
-                    + f"Hạng vé: {seat_class}\n"
-                    + "Cảm ơn quý khách đã lựa chọn QAirline. Chúc quý khách có một chuyến đi vui vẻ!"
-                )
-
-                email = EmailMessage(subject, str(message), settings.DEFAULT_FROM_EMAIL, [
-                                     passenger_data['qr_email']])
-                email.attach('ticket_qr.png', qr_file.read(), 'image/png')
-                try:
-                    email.send()
-                    print(
-                        f"Email sent successfully to {passenger_data['qr_email']}")
-                except Exception as e:
-                    print(
-                        f"Failed to send email to {passenger_data['qr_email']}: {e}")
-
-        return Response(
-            {"message": "Passengers and tickets created successfully",
-                "tickets": [TicketSerializer(t).data for t in tickets]},
-            status=status.HTTP_201_CREATED
-        )
+        
+        except Exception as e:
+            logger.error(f"Error creating tickets: {str(e)}")
+            return Response(
+                {"error": "An error occurred while processing your request. Please try again."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class TicketsFlightsHistoryAPI(ListAPIView):

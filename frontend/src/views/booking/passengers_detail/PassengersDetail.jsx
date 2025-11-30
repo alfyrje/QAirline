@@ -152,8 +152,30 @@ const PassengersDetail = () => {
                 }
             );
 
+            const responseData = await response.json();
+
             if (!response.ok) {
-                throw new Error("Failed to create tickets");
+                if (response.status === 409 && responseData.error === "SEAT_CONFLICT") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ghế đã được đặt!",
+                        text: responseData.message,
+                        showCancelButton: true,
+                        confirmButtonText: "Chọn ghế khác",
+                        cancelButtonText: "Hủy",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate("/seat-select", {
+                                state: { selectedFlights: selectedFlights, flight: flight }
+                            });
+                        } else {
+                            navigate("/dashboard");
+                        }
+                    });
+                    return;
+                }
+                
+                throw new Error(responseData.error || "Failed to create tickets");
             }
 
             Swal.fire({

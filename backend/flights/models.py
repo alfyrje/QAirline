@@ -22,6 +22,10 @@ class Flight(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     delay_status = models.IntegerField()
+    
+    available_economic_seats = models.IntegerField(default=0)
+    available_business_seats = models.IntegerField(default=0)
+
     @property
     def duration(self):
         return self.end_time - self.start_time
@@ -35,6 +39,13 @@ class Flight(models.Model):
         return self.plane.business_seats - booked_business
     economic_price = models.IntegerField(default=5000000)
     business_price = models.IntegerField(default=10000000)
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.available_economic_seats = self.plane.economic_seats
+            self.available_business_seats = self.plane.business_seats
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.code}"
 
@@ -62,5 +73,38 @@ class Ticket(models.Model):
         ('B', 'Business'),
     ]
     ticket_class = models.CharField(max_length=1, choices=CLASS_CHOICES, default='E')
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['flight', 'seat'],
+                condition=models.Q(cancelled=False),
+                name='unique_active_seat_per_flight'
+            )
+        ]
+    
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_ticket = Ticket.objects.get(pk=self.pk)
+            if not old_ticket.cancelled and self.cancelled:
+                if self.ticket_class == 'E':
+                    self.flight.available_economic_seats += 1
+                else:
+                    self.flight.available_business_seats += 1
+                self.flight.save()
+            elif old_ticket.cancelled and not self.cancelled:
+                if self.ticket_class == 'E':
+                    self.flight.available_economic_seats -= 1
+                else:
+                    self.flight.available_business_seats -= 1
+                self.flight.save()
+        else:
+            if self.ticket_class == 'E':
+                self.flight.available_economic_seats -= 1
+            else:
+                self.flight.available_business_seats -= 1
+            self.flight.save()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.booker} - {self.passenger} - {self.flight} - {self.ticket_class}"
