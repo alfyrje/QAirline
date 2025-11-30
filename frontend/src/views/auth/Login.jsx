@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react"; 
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 import { useAuthStore } from "../../store/auth";
-import {login} from "../../utils/auth";
+import { login } from "../../utils/auth";
 
 import "./login.css";
 
@@ -14,13 +14,13 @@ function LogIn() {
 
   const [formData, setFormData] = useState({
     email: "",
-    password: "",   
+    password: "",
   });
-  const[isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { isLoggedIn, checkLoginStatus } = useAuthStore();
-      
+
   useEffect(() => {
-  checkLoginStatus();
+    checkLoginStatus();
   }, []);
   const navigate = useNavigate();
 
@@ -43,12 +43,28 @@ function LogIn() {
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     setIsLoading(true);
+    setEmailError("");
+    setPasswordError("");
+
     const response = await login(formData.email, formData.password);
-    if (response.status===200) {
-      navigate("/profile");
-    } else if (response.status===404) {
+
+    if (response.status === 200) {
+      if (response.requires_2fa_setup) {
+        sessionStorage.setItem('temp_user_id', response.user_id);
+        sessionStorage.setItem('pre_token', response.pre_token);
+        navigate("/setup-2fa", { state: { user_id: response.user_id } });
+      }
+      else if (response.requires_2fa_verify) {
+        sessionStorage.setItem('temp_user_id', response.user_id);
+        sessionStorage.setItem('pre_token', response.pre_token);
+        navigate("/verify-2fa", { state: { user_id: response.user_id } });
+      }
+      else {
+        navigate("/profile");
+      }
+    } else if (response.status === 404) {
       setEmailError(response.detail || "Người dùng không tồn tại.");
-    } else if (response.status===401) {
+    } else if (response.status === 401) {
       setPasswordError(response.detail || "Mật khẩu không đúng.");
     } else {
       console.log(response);
@@ -56,16 +72,17 @@ function LogIn() {
     }
     setIsLoading(false);
   };
+
   return (
     <>
       <section className="login-container">
         <Header />
         <div className="login-form-container">
-          <form className="login-form"action="#"onSubmit={handleLogin}>
+          <form className="login-form" action="#" onSubmit={handleLogin}>
             <div className="login-form-icon">
-            <img src='/icons/hoa.png' width='50px' height='50px'></img>
+              <img src='/icons/hoa.png' width='50px' height='50px' alt="logo"></img>
             </div>
-            <h3>Đăng nhập qAirline</h3>
+            <h3>Đăng nhập QAirline</h3>
             <div className="login-input_box">
               <label htmlFor="email">Email</label>
               <input
@@ -92,10 +109,10 @@ function LogIn() {
               />
               {passwordError && <span className="error-message">{passwordError}</span>}
             </div>
-            <a className="login-a"href="#">Quên mật khẩu?</a>
+            <a className="login-a" href="#">Quên mật khẩu?</a>
             <button type="submit">Đăng nhập</button>
             <p>
-              Không có tài khoản?{" "}        
+              Không có tài khoản?{" "}
               <Link className="login-a" to="/register">
                 Đăng ký
               </Link>

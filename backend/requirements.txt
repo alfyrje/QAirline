@@ -7,3 +7,6 @@ django-cors-headers
 django-filter
 djangorestframework-simplejwt
 qrcode
+pyotp
+django-two-factor-auth
+django-otp
