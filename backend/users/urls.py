@@ -12,4 +12,7 @@ urlpatterns = [
     path('passengers/', views.PassengerView.as_view(), name='passenger-list'),
     path('register/', views.UserRegisterView.as_view(), name='user-register'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('two-factor/setup/', views.Setup2FAView.as_view(), name='set-2fa'),
+    path('two-factor/verify/', views.Verify2FAView.as_view(), name='verify-2fa'),
+    path('two-factor/enable/', views.Enable2FAView.as_view(), name='enable-2fa'),
 ]

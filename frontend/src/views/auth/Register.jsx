@@ -281,7 +281,7 @@ function Register() {
               )}
             </div>
             <button id="signup" type="submit" onClick={handleSubmit}>
-              Sign Up
+              Đăng ký
             </button>
           </form>
         </div>

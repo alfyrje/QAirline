@@ -81,11 +81,14 @@ export const login = async (email, password) => {
       body: JSON.stringify({
         username: email,
         password: password,
-        email: email, 
+        email: email,
       }),
     });
     const data = await response.json();
     if (data.status === 200) {
+      if (data.requires_2fa_setup || data.requires_2fa_verify) {
+        return data;
+      }
       setAuthUser(data.access, data.refresh);
       return data;
     } else {
@@ -98,7 +101,85 @@ export const login = async (email, password) => {
     return {
       data: "Failed",
       error: "Network error or server unreachable",
-      status: null, // Always include the 'status' property
+      status: null,
+    };
+  }
+};
+
+export const setup2FA = async (user_id, token) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await fetch("http://127.0.0.1:8000/users/two-factor/setup/", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ user_id }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error setting up 2FA:", error);
+    return {
+      error: error.message || "Failed to setup 2FA",
+      status: null,
+    };
+  }
+};
+
+export const enable2FA = async (user_id, code, token) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await fetch("http://127.0.0.1:8000/users/two-factor/enable/", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ user_id, code }),
+    });
+    const data = await response.json();
+    if (data.status === 200) {
+      setAuthUser(data.access, data.refresh);
+    }
+    return data;
+  } catch (error) {
+    console.error("Error enabling 2FA:", error);
+    return {
+      error: error.message || "Failed to enable 2FA",
+      status: null,
+    };
+  }
+};
+
+export const verify2FA = async (user_id, code, token) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await fetch("http://127.0.0.1:8000/users/two-factor/verify/", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ user_id, code }),
+    });
+    const data = await response.json();
+    if (data.status === 200) {
+      setAuthUser(data.access, data.refresh);
+    }
+    return data;
+  } catch (error) {
+    console.error("Error verifying 2FA code:", error);
+    return {
+      error: error.message || "Failed to verify 2FA code",
+      status: null,
     };
   }
 };

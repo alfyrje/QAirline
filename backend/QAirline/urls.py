@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from two_factor.urls import urlpatterns as tf_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,6 +13,7 @@ urlpatterns = [
     path('travel_info/', include('travel_info.urls')),
     # path('dynapi/', include('django_dyn_api.urls')),
     path('adminapp/', include('adminapp.urls')),
+    path('', include(tf_urls)),
 ]
 
 if settings.DEBUG:

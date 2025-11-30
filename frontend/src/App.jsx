@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Register from "./views/auth/Register";
 import LogIn from "./views/auth/Login";
+import Setup2FA from "./views/auth/Setup2FA";
+import Verify2FA from "./views/auth/Verify2FA";
 import Dashboard from "./views/dashboard/Dashboard";
 import Profile from "./views/profile/Profile";
 import MainWrapper from "../src/layouts/MainWrapper";
@@ -45,6 +47,8 @@ function App() {
                     <Routes>
                         <Route path="/register/" element={<Register />} />
                         <Route path="/login/" element={<LogIn />} />
+                        <Route path="/setup-2fa/" element={<Setup2FA />} />
+                        <Route path="/verify-2fa/" element={<Verify2FA />} />
                         <Route path="/profile/" element={
                             <PrivateRoute>
                                 <Profile />
