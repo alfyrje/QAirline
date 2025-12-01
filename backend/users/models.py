@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-# Create your models here.
-from django.db import models
 import uuid
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import timedelta, datetime
@@ -38,6 +35,10 @@ class Passenger(models.Model):
 
 class User(AbstractUser):
     personal_info = models.OneToOneField(Passenger, on_delete=models.SET_NULL, null=True)
+    is_2fa_enabled = models.BooleanField(default=False)
+    otp_secret = models.CharField(max_length=32, blank=True, null=True)
+    recovery_codes = models.JSONField(default=list, blank=True)
+
     def __str__(self):
         return f"{self.email}"
     
