@@ -146,7 +146,6 @@ def benchmark():
     print("Finding all flights with available economic seats.")
     
     # Unoptimized Filtering
-    # Without the field, we must fetch flights and check availability in Python (or use complex subqueries)
     start_time = time.time()
     # We only do 1 pass because it's very slow
     found_unopt = 0
