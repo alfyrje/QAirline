@@ -145,9 +145,7 @@ def benchmark():
     print("\nScenario 2: Filtering/Searching")
     print("Finding all flights with available economic seats.")
     
-    # Unoptimized Filtering
     start_time = time.time()
-    # We only do 1 pass because it's very slow
     found_unopt = 0
     for flight in flights_subset:
         booked = Ticket.objects.filter(flight=flight, ticket_class='E', cancelled=False).count()
@@ -157,11 +155,9 @@ def benchmark():
     filter_unopt_time = end_time - start_time
     print(f"Unoptimized: {filter_unopt_time:.4f} seconds (for {len(flights_subset)} flights)")
 
-    # Optimized Filtering
-    # With the field, we can filter directly in the database
     start_time = time.time()
     filter_iterations = 100
-    subset_ids = [f.id for f in flights_subset] # Restrict to same subset for fair comparison
+    subset_ids = [f.id for f in flights_subset]
     for _ in range(filter_iterations):
         qs = Flight.objects.filter(id__in=subset_ids, available_economic_seats__gt=0)
         found_opt = qs.count()
