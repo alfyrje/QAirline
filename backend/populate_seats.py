@@ -158,6 +158,7 @@ def benchmark():
     start_time = time.time()
     filter_iterations = 100
     subset_ids = [f.id for f in flights_subset]
+    subset_ids = [f.id for f in flights_subset]
     for _ in range(filter_iterations):
         qs = Flight.objects.filter(id__in=subset_ids, available_economic_seats__gt=0)
         found_opt = qs.count()
